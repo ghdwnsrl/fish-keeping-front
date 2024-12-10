@@ -6,7 +6,7 @@ import {IoPerson} from "react-icons/io5";
 
 function Header() {
     const [isLogin, setIsLogin] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(true);
 
     const navItems = [
         { id: 'login', label: 'LOGIN', icon: <CiLogin/>, to: '/login' },

@@ -34,7 +34,7 @@ function ComboBox({selected, setSelected}) {
     };
     return (
         <>
-            <button className='border-l p-1 font-semibold' onClick={(e) => {
+            <button className='p-1 font-semibold' onClick={(e) => {
                 e.preventDefault()
                 setIsOpen(true)
             }}>{selected}</button>

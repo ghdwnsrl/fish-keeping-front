@@ -11,6 +11,7 @@ function CardList({currentPage, data}) {
                      commentCount={data.commentCount}
                      like={data.like}
                      views={data.views}
+                     thumbnailUrl={data.thumbnailUrl}
                      page={currentPage}
                      options={(Number(id) === data.id) ? 'bg-sky-100' : ''}
         />

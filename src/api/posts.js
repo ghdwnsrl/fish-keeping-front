@@ -25,7 +25,7 @@ export function getByPostId({id}) {
     return posts.get(`/${id}`, config)
 }
 
-export function createPost({title, content, selected, urlArray}) {
+export function createPost({title, content, selected, urlArray, thumbnailUrl}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
@@ -36,7 +36,8 @@ export function createPost({title, content, selected, urlArray}) {
             title: title,
             content: content,
             archiveName: selected,
-            images: urlArray
+            images: urlArray,
+            thumbnailUrl : thumbnailUrl
         },
         config)
 }

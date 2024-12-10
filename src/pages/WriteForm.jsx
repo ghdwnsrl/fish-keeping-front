@@ -28,17 +28,18 @@ function WriteForm({type = '글쓰기',initTitle = '', initContent = '', initSel
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const {endContent:updatedContent, imgUrl} = await replaceImages(content,initContent);
-        console.log('',updatedContent);
+        const {endContent: updatedContent, imgUrl, thumbnailUrl} = await replaceImages(content, initContent);
+        console.log('', updatedContent);
+        console.log('', thumbnailUrl);
         if (isEdit) {
-            update({id: id, title, content : updatedContent, selected, urlArray : imgUrl}, {
+            update({id: id, title, content: updatedContent, selected, urlArray: imgUrl}, {
                 onSuccess: () => {
                     console.log('업데이트 성공')
                     navigate(`/${id}`)
                 }
             })
         } else {
-            create({title, content : updatedContent, selected, urlArray : imgUrl}, {
+            create({title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl}, {
                 onSuccess: (response) => {
                     console.log('생성 성공')
                     const id = response.data
@@ -52,27 +53,29 @@ function WriteForm({type = '글쓰기',initTitle = '', initContent = '', initSel
         <div className='container'>
             <h1 className='font-semibold text-2xl mb-2'>{type}</h1>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    id="title"
-                    value={title}
-                    placeholder="제목"
-                    className='w-full h-10 pl-3 border-gray-150 border-x border-t focus:outline-none'
-                    onChange={(e) => setTitle(e.target.value)}
-                />
+                <div className='flex w-full h-10 pl-3 border-gray-150 border-x border-t'>
+                    <input
+                        type="text"
+                        id="title"
+                        value={title}
+                        placeholder="제목"
+                        className='focus:outline-none flex-grow'
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    {/*<div className='border-gray-150 border-l pl-1'>*/}
+                    {/*    <span className='font-semibold mr-2'>저장소 설정</span>*/}
+                    {/*    <ComboBox selected={selected} setSelected={setSelected}/>*/}
+                    {/*</div>*/}
+                </div>
                 <ReactQuill
                     theme="snow"
                     modules={modules}
                     value={content}
                     onChange={setContent}
                 />
-                <div className='flex gap-2 items-center justify-between pt-2'>
-                    <div className='border-gray-150 border p-1'>
-                        <span className='text-lg font-semibold mr-2'>어항 설정</span>
-                        <ComboBox selected={selected} setSelected={setSelected}/>
-                    </div>
+                <div className='flex gap-2 items-center justify-end pt-2 '>
                     <button
-                        className="border rounded w-16 text-sm shadow-sm font-semibold h-8 hover:bg-gray-50"
+                        className="border rounded w-16 shadow-sm font-semibold h-8 hover:bg-gray-50"
                         type="submit">작성
                     </button>
                 </div>

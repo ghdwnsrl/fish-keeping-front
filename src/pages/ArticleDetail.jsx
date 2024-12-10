@@ -35,7 +35,6 @@ function ArticleDetail() {
                 theme="snow"
                 modules={{toolbar: false}}
             />
-            {/* 댓글 리스트 */}
             <div className='container'>
                 <CommentList/>
                 {isLogin ?

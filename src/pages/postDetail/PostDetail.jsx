@@ -57,8 +57,6 @@ function PostDetail() {
                 modules={{toolbar: false}}
                 style={{backgroundColor: 'white', minHeight: '10rem'}}
             />
-            {/* 댓글 리스트 */}
-
             <p className='font-semibold mb-2'>댓글 {comments.length}</p>
             <div className='container border-t pt-2'>
                 <CommentList comments={comments}/>
