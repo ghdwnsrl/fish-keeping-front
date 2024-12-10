@@ -42,7 +42,7 @@ export function createPost({title, content, selected, urlArray, thumbnailUrl}) {
         config)
 }
 
-export function updatePost({id, title, content, selected, urlArray}) {
+export function updatePost({id, title, content, selected, urlArray, thumbnailUrl}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
@@ -53,7 +53,8 @@ export function updatePost({id, title, content, selected, urlArray}) {
             title: title,
             content: content,
             archiveName: selected,
-            images: urlArray
+            images: urlArray,
+            thumbnailUrl : thumbnailUrl
         },
         config)
 }

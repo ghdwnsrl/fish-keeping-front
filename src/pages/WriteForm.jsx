@@ -32,7 +32,7 @@ function WriteForm({type = '글쓰기',initTitle = '', initContent = '', initSel
         console.log('', updatedContent);
         console.log('', thumbnailUrl);
         if (isEdit) {
-            update({id: id, title, content: updatedContent, selected, urlArray: imgUrl}, {
+            update({id: id, title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl}, {
                 onSuccess: () => {
                     console.log('업데이트 성공')
                     navigate(`/${id}`)

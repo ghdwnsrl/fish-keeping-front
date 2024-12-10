@@ -98,7 +98,6 @@ export default function useQuillImageReplacement() {
         console.log('current',current)
 
         const commonElements = prev.map(value => value["src"]).filter(value => current.some(obj => obj["src"] === value));
-        console.log('here',commonElements)
         const filteredPrev = prev.filter(value => !commonElements.includes(value["src"]));
         const filteredCurrent = current.filter(value => !commonElements.includes(value["src"]));
 
