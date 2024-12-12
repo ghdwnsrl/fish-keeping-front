@@ -6,7 +6,6 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import My from "./pages/userpage/My.jsx";
-import PostDetail from "./pages/postDetail/PostDetail.jsx";
 import Join from "./pages/Join.jsx";
 import WriteForm from "./pages/WriteForm.jsx";
 import UserPage from "./pages/userpage/UserPage.jsx";
@@ -14,6 +13,7 @@ import Post from "./pages/userpage/Post.jsx";
 import Tank from "./pages/userpage/Tank.jsx";
 import ArchiveDetail from "./pages/ArchiveDetail.jsx";
 import EditForm from "./pages/EditForm.jsx";
+import PostDetailPage from "./pages/PostDetailPage/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/:id',
-                element: <PostDetail/>
+                element: <PostDetailPage/>
             },
             {
                 path: '/join',

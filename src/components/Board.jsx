@@ -10,7 +10,6 @@ function Board({initialPage = 0, username, archiveName}) {
     const [currentPage, setCurrentPage] = useState(initialPage);
     const [totalPage, setTotalPage] = useState(0);
     const { execute : fetch } = useApiRequest(getPosts)
-
     useEffect( () => {
         fetch({params:currentPage, username, archiveName}, {
             onSuccess: response => {
@@ -22,6 +21,7 @@ function Board({initialPage = 0, username, archiveName}) {
 
     const handlePageChange = ({ selected }) => {
         setCurrentPage(selected);
+        console.log('clicked..')
     };
 
     return (

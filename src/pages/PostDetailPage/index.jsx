@@ -12,7 +12,7 @@ import useApiRequest from "../../hooks/useApiRequest.js";
 import {deletePost, getByPostId} from "../../api/posts.js";
 import {useSelector} from "react-redux";
 
-function PostDetail() {
+const PostDetailPage = () => {
 
     const {id} = useParams();
     const isLogin = useSelector(state => state.auth.isAuthenticated)
@@ -70,10 +70,10 @@ function PostDetail() {
             {/* Pagination */}
             <div className='pt-4'>
                 <p className='text-xl font-semibold'>다른 게시글</p>
-                <Board initialPage={page}/>
+                <Board initialPage={parseInt(page)}/>
             </div>
         </div>
     )
 }
 
-export default PostDetail;
+export default PostDetailPage;
