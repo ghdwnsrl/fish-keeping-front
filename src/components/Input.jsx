@@ -7,7 +7,7 @@ function InputWithIcon({children, label, name, placeholder, type = 'text', value
                 name={name}
                 type={type}
                 placeholder={placeholder}
-                className="flex-1 outline-none"
+                className="outline-none"
                 value={value}
                 onChange={onChange}
             />

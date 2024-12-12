@@ -1,12 +1,12 @@
-import Form from "../components/Form.jsx";
-import InputWithIcon from "../components/Input.jsx";
+import Form from "../../components/Form.jsx";
+import InputWithIcon from "../../components/Input.jsx";
 import {IoLockClosed, IoMail} from "react-icons/io5";
-import {join} from "../api/user.js";
-import useApiRequest from "../hooks/useApiRequest.js";
+import {join} from "../../api/user.js";
+import useApiRequest from "../../hooks/useApiRequest.js";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-function Join() {
+const JoinPage = () => {
     const [ username, setUsername ] = useState('')
     const [ password, setPassword ] = useState('')
     const [ confirmPassword, setConfirmPassword ] = useState('')
@@ -58,4 +58,4 @@ function Join() {
     )
 }
 
-export default Join;
+export default JoinPage;

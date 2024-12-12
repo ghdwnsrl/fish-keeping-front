@@ -1,6 +1,6 @@
-import Board from "../components/Board.jsx";
+import Board from "../../components/Board.jsx";
 
-function Home() {
+const HomePage = () => {
     return (
         <div className='container'>
             <h1 className='font-bold text-2xl'>전체 게시글</h1>
@@ -9,4 +9,4 @@ function Home() {
     )
 }
 
-export default Home;
+export default HomePage;

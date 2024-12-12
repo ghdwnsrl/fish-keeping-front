@@ -1,13 +1,12 @@
 import ReactQuill from "react-quill";
 import {useMemo, useState} from "react";
 import 'react-quill/dist/quill.snow.css';
-import useApiRequest from "../hooks/useApiRequest.js";
-import {createPost, updatePost} from "../api/posts.js";
-import ComboBox from "../components/ComboBox.jsx";
-import useQuillImageReplacement from "../hooks/useQuillImageReplacement.js";
+import useApiRequest from "../../hooks/useApiRequest.js";
+import {createPost, updatePost} from "../../api/posts.js";
+import useQuillImageReplacement from "../../hooks/useQuillImageReplacement.js";
 import {useNavigate} from "react-router-dom";
 
-function WriteForm({type = '글쓰기',initTitle = '', initContent = '', initSelected = '선택 안함', isEdit = false, id}) {
+const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', initSelected = '선택 안함', isEdit = false, id}) => {
     const [content, setContent] = useState(initContent);
     const [title, setTitle] = useState(initTitle);
     const [selected, setSelected] = useState(initSelected)
@@ -84,4 +83,4 @@ function WriteForm({type = '글쓰기',initTitle = '', initContent = '', initSel
     )
 }
 
-export default WriteForm;
+export default PostWritePage;

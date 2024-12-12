@@ -3,16 +3,16 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Home from "./pages/Home.jsx";
-import Login from "./pages/Login.jsx";
-import My from "./pages/userpage/My.jsx";
-import Join from "./pages/Join.jsx";
-import WriteForm from "./pages/WriteForm.jsx";
-import UserPage from "./pages/userpage/UserPage.jsx";
-import Post from "./pages/userpage/Post.jsx";
-import Tank from "./pages/userpage/Tank.jsx";
+import HomePage from "./pages/HomePage/index.jsx";
+import LoginPage from "./pages/LoginPage/index.jsx";
+import My from "./pages/UserPage/My.jsx";
+import JoinPage from "./pages/JoinPage/index.jsx";
+import PostWritePage from "./pages/PostWritePage/index.jsx";
+import UserPage from "./pages/UserPage/index.jsx";
+import Post from "./pages/UserPage/Post.jsx";
+import Tank from "./pages/UserPage/Tank.jsx";
 import ArchiveDetail from "./pages/ArchiveDetail.jsx";
-import EditForm from "./pages/EditForm.jsx";
+import PostEditPage from "./pages/PostEditPage/index.jsx";
 import PostDetailPage from "./pages/PostDetailPage/index.jsx";
 
 const router = createBrowserRouter([
@@ -22,15 +22,15 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '',
-                element: <Home/>
+                element: <HomePage/>
             },
             {
                 path: '/edit',
-                element: <EditForm/>
+                element: <PostEditPage/>
             },
             {
                 path: '/login',
-                element: <Login/>,
+                element: <LoginPage/>,
             },
             {
                 path: '/my',
@@ -42,11 +42,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/join',
-                element: <Join/>
+                element: <JoinPage/>
             },
             {
                 path: '/write',
-                element: <WriteForm/>,
+                element: <PostWritePage/>,
             },
             {
                 path: '/users/:username',

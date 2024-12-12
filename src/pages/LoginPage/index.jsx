@@ -1,14 +1,14 @@
 import {IoLockClosed, IoMail} from "react-icons/io5";
 import {Link, useNavigate} from "react-router-dom";
-import InputWithIcon from "../components/Input.jsx";
-import Form from "../components/Form.jsx";
-import useApiRequest from "../hooks/useApiRequest.js";
-import {login} from "../api/user.js";
+import InputWithIcon from "../../components/Input.jsx";
+import Form from "../../components/Form.jsx";
+import useApiRequest from "../../hooks/useApiRequest.js";
+import {login} from "../../api/user.js";
 import { useState } from "react";
 import {useDispatch} from "react-redux";
-import {loginSuccess} from "../feature/authSlice.js";
+import {loginSuccess} from "../../feature/authSlice.js";
 
-function Login() {
+const LoginPage = () => {
     const [ username, setUsername ] = useState('')
     const [ password, setPassword ] = useState('')
     const { execute : loginUser} = useApiRequest(login)
@@ -51,4 +51,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default LoginPage;
