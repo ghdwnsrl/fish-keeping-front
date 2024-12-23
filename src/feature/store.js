@@ -1,6 +1,6 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import authReducer from './authSlice';
-import storage from 'redux-persist/lib/storage'; // 로컬 저장소 사용
+import storage from 'redux-persist/lib/storage';
 import {persistReducer, persistStore} from "redux-persist";
 
 const persistConfig = {

@@ -28,5 +28,15 @@ export function logout() {
         },
         withCredentials: true
     }
-    return auth.post('/logout', config)
+    return auth.get('/logout', config)
+}
+
+export function checkSessionState() {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return auth.get('/session/validate', config)
 }

@@ -14,6 +14,7 @@ import Tank from "./pages/UserPage/Tank.jsx";
 import ArchiveDetail from "./pages/ArchiveDetail.jsx";
 import PostEditPage from "./pages/PostEditPage/index.jsx";
 import PostDetailPage from "./pages/PostDetailPage/index.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/write',
-                element: <PostWritePage/>,
+                element: <ProtectedRoute redirectPath='/'><PostWritePage/></ProtectedRoute>,
             },
             {
                 path: '/users/:username',

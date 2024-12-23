@@ -1,9 +1,9 @@
-function Form({children, title, handleSubmit}) {
+function Form({children, title, handleSubmit, styleType}) {
     return (
-        <form className='container flex flex-col h-56 items-center justify-center mt-36 gap-2'
+        <form noValidate className={styleType}
               onSubmit={handleSubmit}
         >
-            <p className='text-2xl font-semibold mb-5'>{title}</p>
+            {title && <p className='text-2xl font-semibold mb-5'>{title}</p>}
             {children}
         </form>
     )

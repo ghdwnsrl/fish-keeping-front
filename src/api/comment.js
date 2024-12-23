@@ -1,6 +1,6 @@
-import {comments} from "./http.js";
+import {comments, posts} from "./http.js";
 
-export function createComment({postId, content}) {
+export function createComment({postId, content, commentId}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
@@ -8,6 +8,44 @@ export function createComment({postId, content}) {
         withCredentials: true
     }
     return comments.post(`${postId}/comments`, {
-        content: content
+        content,
+        parentId: commentId
     }, config)
+}
+
+export function deleteComment({commentId}) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return comments.delete(`${commentId}`, config)
+}
+
+export function updateComment({commentId, content }) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return comments.put(`${commentId}`,{content}, config)
+}
+
+export function updatePost({id, title, content, selected, urlArray, thumbnailUrl}) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return posts.put(`${id}`, {
+            title: title,
+            content: content,
+            archiveName: selected,
+            images: urlArray,
+            thumbnailUrl : thumbnailUrl
+        },
+        config)
 }

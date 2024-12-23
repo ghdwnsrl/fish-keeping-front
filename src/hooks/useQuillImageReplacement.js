@@ -1,41 +1,12 @@
 import useApiRequest from "./useApiRequest.js";
 import {deleteImage, getPreSignedURL, upload} from "../api/image.js";
-import Resizer from "react-image-file-resizer";
+import ImageUtils from "../utils/ImageUtils.js";
 
 
 export default function useQuillImageReplacement() {
     const {execute: imageUpload }  = useApiRequest(upload);
     const {execute: imageRemove} = useApiRequest(deleteImage)
     const {execute: getPreSignedUrl }  = useApiRequest(getPreSignedURL);
-
-    const resizeFile = (file) =>
-        new Promise((resolve) => {
-            Resizer.imageFileResizer(
-                file,
-                150,
-                150,
-                "JPEG",
-                100,
-                0,
-                (uri) => {
-                    resolve(uri);
-                },
-                "file"
-            );
-        });
-
-    function transBase64ToFile(i) {
-        const byteString = atob(i.src.split(",")[1]);
-        const ab = new ArrayBuffer(byteString.length);
-        const ia = new Uint8Array(ab);
-        for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-        }
-        const blob = new Blob([ia], {
-            type: "image/jpeg"
-        });
-        return new File([blob], i.fileName);
-    }
 
     const getSrcData = (content) => {
         const srcArray= [];
@@ -74,8 +45,8 @@ export default function useQuillImageReplacement() {
                 console.log(thumbnailUrl)
             }
         })
-        const file = transBase64ToFile(newFirstImg);
-        const resizedFile = await resizeFile(file)
+        const file = ImageUtils.transBase64ToFile(newFirstImg);
+        const resizedFile = await ImageUtils.resizeFile(file)
         await imageUpload({presignedURL: thumbnailUrl, file: resizedFile, contentType: newFirstImg.contentType}, {
             onSuccess : () => {
                 console.log('thumbnailUrl',thumbnailUrl)
@@ -85,12 +56,20 @@ export default function useQuillImageReplacement() {
         return thumbnailUrl
     }
 
+    function isArrayEmpty(arr) {
+        return Array.isArray(arr) && arr.length === 0;
+    }
+
     const replaceImages = async (content, initContent = '', preThumbnailUrl) => {
         let endContent = content;
 
         //// 추가된 이미지 처리
         const prev = getSrcData(initContent)
         const current = getSrcData(content)
+
+        if (isArrayEmpty(prev) && isArrayEmpty(current)) {
+            return {endContent: content, imgUrl: [], thumbnailUrl : 'https://via.placeholder.com/150'};
+        }
 
         const thumbnailUrl =  await getThumbnail(prev[0], current[0], preThumbnailUrl);
 
@@ -129,7 +108,7 @@ export default function useQuillImageReplacement() {
         })
 
         const promises = images.map(async (i) => {
-            const file = transBase64ToFile(i);
+            const file = ImageUtils.transBase64ToFile(i);
             let imgUrl;
             await imageUpload({presignedURL: i.presignedUrl, file: file, contentType: i.contentType}, {
                 onSuccess : () => {

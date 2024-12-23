@@ -59,7 +59,7 @@ export function updatePost({id, title, content, selected, urlArray, thumbnailUrl
         config)
 }
 
-export function deletePost({id}) {
+export function deleteByPost({id}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,

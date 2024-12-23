@@ -1,27 +1,26 @@
-import {useState} from "react";
-import {useParams} from "react-router-dom";
-import useApiRequest from "../hooks/useApiRequest.js";
-import {createComment} from "../api/comment.js";
+import {useRef, useState} from "react";
+import Button from "./Button.jsx";
 
-function TextArea() {
-    const [content, setContent] = useState('')
-    const {execute : create } = useApiRequest(createComment)
-    const {id} = useParams()
-    const handleSubmit = () => {
-      create({postId : id, content}, {
-          onSuccess: () => {
-              console.log('성공')
-          }
-      })}
+function TextArea({styleType, btValue = '작 성', initialContent = '', handleSubmit}) {
+    const [content, setContent] = useState(initialContent.replace("\r\n", "<br>"))
+    console.log(content)
+    const textareaRef = useRef();
     return (
-        <form className='flex flex-col items-center w-full' onSubmit={handleSubmit}>
-            <textarea className='h-20 w-full border p-2 m-2 rounded-lg resize-none'
-                      onChange={(e) => setContent(e.target.value)}
+        <form className='grid' onSubmit={(e) => {
+            e.preventDefault()
+            handleSubmit(content)
+        }}>
+            <textarea ref={textareaRef}
+                      className={`h-20 border rounded-lg resize-none ${styleType}`}
+                      onChange={(e) => {
+                          const textarea = textareaRef.current;
+                          textarea.style.height = "auto";
+                          textarea.style.height = `${textarea.scrollHeight}px`;
+                          setContent(e.target.value);
+                      }}
                       value={content}
             />
-            <button className='border rounded-lg h-8 w-16 hover:bg-gray-50 '
-                    type='submit'
-            >작 성</button>
+            <Button type='submit' styleType="h-8 w-16 justify-self-end">{btValue}</Button>
         </form>
     )
 }

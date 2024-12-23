@@ -32,6 +32,7 @@ function ComboBox({selected, setSelected}) {
         tanks.push({id: tanks.length , title : newTank})
         setNewTank('')
     };
+
     return (
         <>
             <button className='p-1 font-semibold' onClick={(e) => {

@@ -1,59 +1,89 @@
 import Form from "../../components/Form.jsx";
-import InputWithIcon from "../../components/Input.jsx";
+import Input from "../../components/Input.jsx";
 import {IoLockClosed, IoMail} from "react-icons/io5";
 import {join} from "../../api/user.js";
 import useApiRequest from "../../hooks/useApiRequest.js";
-import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {useEffect} from "react";
+import Button from "../../components/Button.jsx";
 
 const JoinPage = () => {
-    const [ username, setUsername ] = useState('')
-    const [ password, setPassword ] = useState('')
-    const [ confirmPassword, setConfirmPassword ] = useState('')
+    const { register, handleSubmit, getValues, setFocus, setError, reset, formState: { errors}} = useForm();
     const navigate = useNavigate();
     const { execute : joinUser} = useApiRequest(join)
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        joinUser({username, password, confirmPassword}, {
-            onSuccess: () => navigate('/login')
+    const onSubmit = (data) => {
+        console.log(data)
+        joinUser(data, {
+            onSuccess: () => navigate('/login'),
+            onError: (error) => {
+                console.log(error)
+                if (error.response && error.response.status === 400) {
+                    setError('root.serverError', {
+                        type: error.response.status,
+                        message: error.response.data.message
+                    })
+                }
+            }
         })
     }
+
+    useEffect(() => {
+        setFocus('username')
+    }, [setFocus]);
+
     return (
         <Form title='회 원 가 입'
-              handleSubmit={handleSubmit}
+              styleType='container flex flex-col h-56 items-center justify-center mt-36 gap-2'
+              handleSubmit={handleSubmit(onSubmit)}
         >
-            <InputWithIcon placeholder='ID'
-                           label='username'
-                           name='username'
-                           value={username}
-                           onChange={(e) => setUsername(e.target.value)}
-            >
+            <Input placeholder='ID'
+                   name='username'
+                   register={register}
+                   condition={{
+                               required: true,
+                               pattern: {
+                                   value: /^[a-zA-Z0-9]+$/,
+                                   message: '영문자와 숫자만 입력 가능합니다.'
+                               }
+            }}>
                 <IoMail className="text-2xl mr-2"/>
-            </InputWithIcon>
-            <InputWithIcon placeholder='PASSWORD'
-                           label='password'
-                           name='password'
-                           type='password'
-                           value={password}
-                           onChange={(e) => setPassword(e.target.value)}
+            </Input>
+            {errors.username && <p className='text-red-600 text-xs'>{errors.username.message}</p>}
+            <Input placeholder='PASSWORD'
+                   name='password'
+                   type='password'
+                   register={register}
+                   condition={{
+                               required: '비밀번호를 입력해주세요.',
+                               pattern: {
+                                   value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()])[a-zA-Z\d!@#$%^&*()]{8,12}$/,
+                                   message: '비밀번호는 8~12자 사이로, 영문자, 숫자, 특수문자가 모두 포함되어야 합니다.'
+                               }
+            }}>
+                <IoLockClosed className="text-2xl mr-2"/>
+            </Input>
+            {errors.password && <p className='text-red-600 text-xs'>{errors.password.message}</p>}
+            <Input placeholder='CONFIRM PASSWORD'
+                   name='confirmPassword'
+                   type='password'
+                   register={register}
+                   condition={{required: '비밀번호를 다시 입력해주세요.',
+                               validate: {
+                                   matchesPassword: (value) => {
+                                       const { password } = getValues();
+                                       return value === password || '비밀번호와 일치하지 않습니다.'
+                                   }
+                               }}}
             >
                 <IoLockClosed className="text-2xl mr-2"/>
-            </InputWithIcon>
-            <InputWithIcon placeholder='CONFIRM PASSWORD'
-                           label='confirmPassword'
-                           name='confirmPassword'
-                           type='password'
-                           value={confirmPassword}
-                           onChange={(e) => setConfirmPassword(e.target.value)}
-            >
-                <IoLockClosed className="text-2xl mr-2"/>
-            </InputWithIcon>
-            <button className='w-96 w-max:32 rounded-lg border p-1 text-xl font-semibold hover:bg-gray-50 '
-                    type='submit'
-            >
-                확 인
-            </button>
+            </Input>
+            {errors.confirmPassword && <p className='text-red-600 text-xs'>{errors.confirmPassword.message}</p>}
+            <Button type='submit' styleType='w-96 w-max:32'>확 인</Button>
+            {errors.root?.serverError && (
+                <p className='text-red-600 text-xs'>{errors.root.serverError.message}</p>
+            )}
         </Form>
     )
 }

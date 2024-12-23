@@ -1,6 +1,6 @@
 import './App.css'
-import Header from "./components/pages/Header.jsx";
-import Main from "./components/pages/Main.jsx";
+import Header from "./components/page/Header.jsx";
+import Main from "./components/page/Main.jsx";
 import {Outlet} from "react-router-dom";
 import {AuthContext} from "./contexts/AuthContext.jsx";
 import {useState} from "react";
@@ -8,6 +8,7 @@ import ScrollToTop from "./api/ScrollToTop.js";
 import {store, persistor} from './feature/store';
 import {Provider} from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
+import PopupMessage from "./components/PopupMessage.jsx";
 
 function App() {
     const [isLogin, setIsLogin] = useState(false);

@@ -28,8 +28,7 @@ const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', ini
     const handleSubmit = async (e) => {
         e.preventDefault()
         const {endContent: updatedContent, imgUrl, thumbnailUrl} = await replaceImages(content, initContent);
-        console.log('', updatedContent);
-        console.log('', thumbnailUrl);
+
         if (isEdit) {
             update({id: id, title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl}, {
                 onSuccess: () => {
