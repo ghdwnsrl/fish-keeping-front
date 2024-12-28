@@ -11,6 +11,7 @@ import {useSelector} from "react-redux";
 import Title from "../../components/Title.jsx";
 import CommentWriteForm from "./CommentWriteForm.jsx";
 import PostDetail from "./PostDetail.jsx";
+import {getCommentByPage} from "../../api/comment.js";
 
 const PostDetailPage = () => {
 
@@ -26,18 +27,33 @@ const PostDetailPage = () => {
     const isWriter = loginUsername === post.username
     const [comments, setComments] = useState([]);
     const {execute: getPost} = useApiRequest(getByPostId);
-
+    const {execute: fetch} = useApiRequest(getCommentByPage)
+    const [currentPage, setCurrentPage] = useState(0)
 
     useEffect(() => {
         getPost({id}, {
             onSuccess: (response) => {
                 setPost(response.data)
-                setComments(response.data.comments.content)
             }
         })
     }, [getPost, id]);
 
-    console.log(comments)
+
+    useEffect(() => {
+        fetch({ currentPage, postId: id}, {
+            onSuccess: response => {
+                const transformedList = response.data.content.map(item => ({
+                    ...item,
+                    isReply: false,
+                }));
+                setComments({...response.data, content: transformedList})
+            }
+        });
+    }, [currentPage]);
+
+    const handlePageChange = ({selected}) => {
+        setCurrentPage(selected);
+    };
 
     return (
         <div className='container'>
@@ -46,9 +62,9 @@ const PostDetailPage = () => {
                 <Title>전체 게시글</Title>
             </div>
             <PostDetail isWriter={isWriter} post={post} id={id}/>
-            <p className='font-semibold mb-2'>댓글 {comments.length}</p>
+            <p className='font-semibold mb-2'>댓글 {comments.totalElements}</p>
             <div className='container border-t pt-2'>
-                <CommentList postId={id} comments={comments}/>
+                <CommentList postId={id} comments={comments} setComments={setComments} currentPage={currentPage} handlePageChange={handlePageChange} />
                 {isLogin ?
                     <CommentWriteForm postId={id}/> :
                     <Link to='/login'><p className='text-center text-lg'><u>로그인</u> 후 이용 가능합니다.</p></Link>

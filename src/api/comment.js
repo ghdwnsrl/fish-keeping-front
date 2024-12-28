@@ -13,6 +13,21 @@ export function createComment({postId, content, commentId}) {
     }, config)
 }
 
+export function getCommentByPage({currentPage , postId}) {
+    console.log('getCommentByPage', currentPage)
+    console.log('getCommentByPage postId', postId)
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        params: {
+            page: currentPage,
+        },
+        withCredentials: true
+    }
+    return comments.get(`${postId}/comments`, config)
+}
+
 export function deleteComment({commentId}) {
     const config = {
         headers: {

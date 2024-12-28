@@ -1,5 +1,6 @@
 .ql-editor {
     min-height: 300px;
+    font-size: 18px;
 }
 .ql-container.ql-snow.ql-disabled {
     border: none;

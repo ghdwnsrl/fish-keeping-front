@@ -9,7 +9,6 @@ const CommentWriteForm = ({postId, commentId=null}) => {
     const {execute: create} = useApiRequest(createComment)
     const [content, setContent] = useState()
 
-    console.log(postId,commentId)
     const handleSubmit = (e) => {
         e.preventDefault()
         create({postId, content, commentId}, {
