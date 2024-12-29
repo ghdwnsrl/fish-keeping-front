@@ -15,6 +15,7 @@ import ArchiveDetail from "./pages/ArchiveDetail.jsx";
 import PostEditPage from "./pages/PostEditPage/index.jsx";
 import PostDetailPage from "./pages/PostDetailPage/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import SettingPage from "./pages/SettingPage/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: '/join',
                 element: <JoinPage/>
+            },
+            {
+                path: '/setting',
+                element: <SettingPage/>
             },
             {
                 path: '/write',

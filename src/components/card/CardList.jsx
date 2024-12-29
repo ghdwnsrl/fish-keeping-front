@@ -9,7 +9,7 @@ function CardList({currentPage, data}) {
                      title={data.title}
                      createdAt={data.createdAt}
                      commentCount={data.commentCount}
-                     like={data.like}
+                     like={data.likeCount}
                      views={data.views}
                      thumbnailUrl={data.thumbnailUrl}
                      page={currentPage}

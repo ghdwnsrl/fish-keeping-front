@@ -48,6 +48,7 @@ function Header() {
 
     const authNavItems = [
         <NavLink key="write" onClick={onClickHandler} to="/write" className='font-semibold hover:text-gray-300'>작성하기</NavLink>,
+        <NavLink key="setting" onClick={onClickHandler} to="/setting" className='font-semibold hover:text-gray-300'>설정</NavLink>,
         <NavLink key="my" onClick={onClickHandler} to={`/users/${username}/posts`} className='font-semibold hover:text-gray-300'>마이페이지</NavLink>,
         <button key="logout" className='font-semibold hover:text-gray-300 text-left' onClick={onLogoutClickHandler}>로그아웃</button>,
     ];

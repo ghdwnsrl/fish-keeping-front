@@ -49,7 +49,14 @@ const PostDetailPage = () => {
                 setComments({...response.data, content: transformedList})
             }
         });
-    }, [currentPage]);
+    }, [currentPage, id]);
+
+    const handleClickLike = () => {
+        setPost((prevState) => ({
+            ...prevState,
+            liked: !prevState.liked
+        }));
+    }
 
     const handlePageChange = ({selected}) => {
         setCurrentPage(selected);
@@ -61,7 +68,7 @@ const PostDetailPage = () => {
                 <FaAngleLeft className="text-xl mr-1"/>
                 <Title>전체 게시글</Title>
             </div>
-            <PostDetail isWriter={isWriter} post={post} id={id}/>
+            <PostDetail isWriter={isWriter} post={post} id={id} handleClickLike={handleClickLike}/>
             <p className='font-semibold mb-2'>댓글 {comments.totalElements}</p>
             <div className='container border-t pt-2'>
                 <CommentList postId={id} comments={comments} setComments={setComments} currentPage={currentPage} handlePageChange={handlePageChange} />

@@ -16,7 +16,6 @@ function CommentList({comments, postId, handlePageChange, currentPage, setCommen
             })
         }))
     }
-
     return (
         <div className='gap-2 container'>
             {comments.content && comments.content.map(comment => {
@@ -50,8 +49,9 @@ function CommentList({comments, postId, handlePageChange, currentPage, setCommen
                             { comment.isReply && <CommentWriteForm postId={postId} commentId={comment.id} /> }
                         </div>
                 </>
-                )})}
-            <Paginate totalPage={comments.totalPages} currentPage={currentPage} handlePageChange={onPageChange}/>
+                )})
+            }
+            {comments.totalElements > 0 && <Paginate totalPage={comments.totalPages} currentPage={currentPage} handlePageChange={onPageChange}/>}
         </div>
     )
 }

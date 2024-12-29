@@ -3,10 +3,14 @@ import ReactQuill from "react-quill";
 import useApiRequest from "../../hooks/useApiRequest.js";
 import {deleteByPost} from "../../api/posts.js";
 import {useNavigate} from "react-router-dom";
+import {BiLike, BiSolidLike} from "react-icons/bi";
+import {deleteLike, postLike} from "../../api/likes.js";
 
-const PostDetail = ({id, post, isWriter}) => {
-
+const PostDetail = ({id, post, isWriter, handleClickLike}) => {
+    console.log(post.liked)
     const {execute: deletePost} = useApiRequest(deleteByPost);
+    const {execute: postLikes} = useApiRequest(postLike);
+    const {execute: deleteLikes} = useApiRequest(deleteLike);
     const navigate = useNavigate();
 
     const onDelete = () => {
@@ -15,6 +19,22 @@ const PostDetail = ({id, post, isWriter}) => {
                 navigate('/')
             }
         })
+    }
+
+    const onLikeClick = () => {
+        if (post.liked) {
+            deleteLikes({postId: id}, {
+                onSuccess: () => {
+                    handleClickLike()
+                }
+            })
+        } else {
+            postLikes({postId :id}, {
+                onSuccess : () => {
+                    handleClickLike()
+                }
+            })
+        }
     }
 
     return <>
@@ -46,6 +66,9 @@ const PostDetail = ({id, post, isWriter}) => {
             modules={{toolbar: false}}
             style={{backgroundColor: 'white', minHeight: '10rem'}}
         />
+        <div className='text-5xl flex justify-center items-center text-red-500'>
+            {post.liked ? <BiSolidLike onClick={onLikeClick}/> : <BiLike onClick={onLikeClick}/> }
+        </div>
     </>
 }
 

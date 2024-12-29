@@ -7,7 +7,6 @@ export function upload({presignedURL, file}) {
         },
         withCredentials: true
     };
-
     return images.put(`${presignedURL}`,file, config)
 }
 

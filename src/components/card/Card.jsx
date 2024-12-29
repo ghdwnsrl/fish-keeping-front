@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import {BiCommentDots, BiLike, BiShow} from "react-icons/bi";
+import {timeago} from "../../utils/timeagoUtils.js";
 
 function Card({options, page, id, thumbnailUrl,
                   title, createdAt, handleClick, like=0, commentCount = 0, views}) {
@@ -10,7 +11,7 @@ function Card({options, page, id, thumbnailUrl,
             <div className='flex justify-center flex-col  gap-1'>
                 <p className='font-semibold text-lg'>{title}</p>
                 <div className='flex flex-grow gap-1'>
-                    <p className='text-xs text-gray-500'>{createdAt}</p>
+                    <p className='text-xs text-gray-500'>{timeago(createdAt)}</p>
                     <BiLike/>
                     <p className='text-xs'>{like}</p>
                     <BiCommentDots/>
