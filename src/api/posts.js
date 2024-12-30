@@ -25,6 +25,16 @@ export function getByPostId({id}) {
     return posts.get(`/${id}`, config)
 }
 
+export function getPopularPosts() {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return posts.get('/popular', config)
+}
+
 export function createPost({title, content, selected, urlArray, thumbnailUrl}) {
     const config = {
         headers: {

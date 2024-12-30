@@ -6,7 +6,7 @@ function Card({options, page, id, thumbnailUrl,
                   title, createdAt, handleClick, like=0, commentCount = 0, views}) {
     const url = thumbnailUrl !== null ? thumbnailUrl : 'https://via.placeholder.com/150'
     return (
-        <Link to={`/${id}?page=${page}`} className={`${options} flex items-center h-20 bg-gray-50 my-4 gap-1 rounded-xl`} onClick={handleClick}>
+        <Link to={`/${id}?page=${page}`} className={`${options} flex items-center h-20 bg-gray-50 my-1 gap-1 rounded-xl`} onClick={handleClick}>
             <img className='rounded h-16 w-16 mx-3' src={url} alt='thumbnail'/>
             <div className='flex justify-center flex-col  gap-1'>
                 <p className='font-semibold text-lg'>{title}</p>
