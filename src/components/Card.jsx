@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 
 
 const Card = ({ header, data = [], footer }) => {
-    console.log(data)
     return (
         <div>
             {header && <header>{header}</header>}

@@ -1,15 +1,15 @@
-import Board from "../../components/Board.jsx";
-import Title from "../../components/Title.jsx";
-import PopularPostCard from "./PopularPostCard.jsx";
 import useApiRequest from "../../hooks/useApiRequest.js";
 import {getPopularPosts} from "../../api/posts.js";
 import {useEffect, useState} from "react";
+import PopularPostCard from "./PopularPostCard.jsx";
+import Title from "../../components/Title.jsx";
+import Board from "../../components/Board.jsx";
 
 
 const HomePage = () => {
 
     const {execute : fetchPopularPosts} = useApiRequest(getPopularPosts);
-    const [popularPosts, setPopularPosts] = useState()
+    const [popularPosts, setPopularPosts] = useState();
 
     useEffect(() => {
         fetchPopularPosts({}, {

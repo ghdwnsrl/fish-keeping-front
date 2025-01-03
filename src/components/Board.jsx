@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import useApiRequest from "../hooks/useApiRequest.js";
 import {getPosts} from "../api/posts.js";
 import Paginate from "./Paginate.jsx";
-
+import SearchBar from "./SearchBar.jsx";
 
 function Board({initialPage = 0, username, archiveName}) {
     const [data, setData] = useState([]);
@@ -15,13 +15,15 @@ function Board({initialPage = 0, username, archiveName}) {
             onSuccess: response => {
                 setData(response.data.content)
                 setTotalPage(response.data.totalPages)
+            },
+            onError: (error) => {
+                console.log('실패', error)
             }
         });
-    }, [currentPage, archiveName]);
+    }, []);
 
     const handlePageChange = ({selected}) => {
         setCurrentPage(selected);
-        console.log('clicked..')
     };
 
     return (
@@ -31,6 +33,7 @@ function Board({initialPage = 0, username, archiveName}) {
                 currentPage={currentPage}
             />
             <Paginate currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange}/>
+            <SearchBar setData={setData} setTotalPage={setTotalPage}/>
         </>
     )
 }
