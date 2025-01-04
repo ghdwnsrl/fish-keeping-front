@@ -21,12 +21,12 @@ const CommentEditForm = ({initialContent, commentId}) => {
                  handleSubmit={onSubmit}
     >
         <textarea
-                ref={textareaRef}
-                className={`h-20 border rounded-lg resize-none`}
-                onChange={(e) => {
-                    setContent(e.target.value);
-                }}
-                value={content}
+            ref={textareaRef}
+            className={`h-20 border rounded-lg resize-none`}
+            onChange={(e) => {
+                setContent(e.target.value);
+            }}
+            value={content}
         />
         <Button type='submit' styleType="h-8 w-16 mt-2 justify-self-end">수정</Button>
     </Form>
