@@ -1,10 +1,10 @@
 import {posts} from "./http.js";
 
-export function getPosts({params, username, archiveName, condition}) {
-    let searchCondition, searchValue;
-    if (condition) {
-        searchCondition = condition.searchCondition;
-        searchValue = condition.searchValue;
+export function getPosts({params, username, archiveName, searchParams}) {
+    let type, target;
+    if (searchParams) {
+        type = searchParams.type;
+        target = searchParams.keyword;
     }
     const config = {
         headers: {
@@ -14,8 +14,8 @@ export function getPosts({params, username, archiveName, condition}) {
             page:params,
             username: username,
             archiveName: archiveName,
-            type: searchCondition,
-            target: searchValue,
+            type,
+            target
         },
         withCredentials: true
     }

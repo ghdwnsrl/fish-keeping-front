@@ -16,6 +16,7 @@ import PostEditPage from "./pages/PostEditPage/index.jsx";
 import PostDetailPage from "./pages/PostDetailPage/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import SettingPage from "./pages/SettingPage/index.jsx";
+import SearchPage from "./pages/SearchPage/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
             {
                 path: '/users/:username/archives/:archiveName',
                 element: <ArchiveDetail/>
+            },
+            {
+                path: '/search',
+                element: <SearchPage/>
             }
 
         ],

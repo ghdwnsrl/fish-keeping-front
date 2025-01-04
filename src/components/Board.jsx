@@ -5,13 +5,14 @@ import {getPosts} from "../api/posts.js";
 import Paginate from "./Paginate.jsx";
 import SearchBar from "./SearchBar.jsx";
 
-function Board({initialPage = 0, username, archiveName}) {
+function Board({initialPage = 0, username, archiveName, searchParams}) {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(initialPage);
     const [totalPage, setTotalPage] = useState(0);
     const {execute: fetch} = useApiRequest(getPosts)
+
     useEffect(() => {
-        fetch({params: currentPage, username, archiveName}, {
+        fetch({params: currentPage, username, archiveName, searchParams}, {
             onSuccess: response => {
                 setData(response.data.content)
                 setTotalPage(response.data.totalPages)
@@ -20,7 +21,7 @@ function Board({initialPage = 0, username, archiveName}) {
                 console.log('실패', error)
             }
         });
-    }, []);
+    }, [username,searchParams]);
 
     const handlePageChange = ({selected}) => {
         setCurrentPage(selected);
@@ -32,8 +33,11 @@ function Board({initialPage = 0, username, archiveName}) {
                 data={data}
                 currentPage={currentPage}
             />
-            <Paginate currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange}/>
-            <SearchBar setData={setData} setTotalPage={setTotalPage}/>
+            { totalPage === 0 ?
+                    <div>검색 결과가 없습니다.</div> :
+                    <Paginate currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange}/>
+            }
+            <SearchBar searchParams={searchParams}/>
         </>
     )
 }
