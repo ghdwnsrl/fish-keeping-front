@@ -17,11 +17,11 @@ function Tank() {
     }, []);
 
     return (
-        <>
+        <div className='grid grid-cols-2 mt-3 gap-1 sm:grid-cols-3'>
             {datas.map(data => {
                 return <TankCard username={username} key={data.id} props={data}/>
             })}
-        </>
+        </div>
     )
 }
 

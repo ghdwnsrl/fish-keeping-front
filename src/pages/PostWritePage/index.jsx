@@ -5,6 +5,8 @@ import useApiRequest from "../../hooks/useApiRequest.js";
 import {createPost, updatePost} from "../../api/posts.js";
 import useQuillImageReplacement from "../../hooks/useQuillImageReplacement.js";
 import {useNavigate} from "react-router-dom";
+import ComboBox from "../../components/ComboBox.jsx";
+import {FaBox} from "react-icons/fa";
 
 const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', initSelected = '선택 안함', isEdit = false, id}) => {
     const [content, setContent] = useState(initContent);
@@ -60,10 +62,10 @@ const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', ini
                         className='focus:outline-none flex-grow'
                         onChange={(e) => setTitle(e.target.value)}
                     />
-                    {/*<div className='border-gray-150 border-l pl-1'>*/}
-                    {/*    <span className='font-semibold mr-2'>저장소 설정</span>*/}
-                    {/*    <ComboBox selected={selected} setSelected={setSelected}/>*/}
-                    {/*</div>*/}
+                    <div className='flex items-center border-gray-150 gap-2 border-l pl-2'>
+                        <FaBox/>
+                        <ComboBox selected={selected} setSelected={setSelected}/>
+                    </div>
                 </div>
                 <ReactQuill
                     theme="snow"

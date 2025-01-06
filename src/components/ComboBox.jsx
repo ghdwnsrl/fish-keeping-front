@@ -1,41 +1,64 @@
 import {Description, Dialog, DialogPanel, DialogTitle} from "@headlessui/react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import useApiRequest from "../hooks/useApiRequest.js";
+import {addArchivesByUsername, getArchivesByUsername} from "../api/archive.js";
+import {useSelector} from "react-redux";
+import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
 
 function ComboBox({selected, setSelected}) {
     const [isOpen, setIsOpen] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
+    const {execute : postArchive} = useApiRequest(addArchivesByUsername)
+    const { username} = useSelector(state => ({username: state.auth.username,}))
+    const [newArchive, setNewArchive] = useState("")
 
-    const [newTank, setNewTank] = useState('')
-    {/* 전체 카테고리 통신은 콤보박스 내에서 함*/}
-    const [tanks, setTanks] = useState([
-        { id: 0, title: '선택 안함'},
-        { id: 1, title: '첫번째 어항'},
-        { id: 2, title: '두번째 어항'},
-        { id: 3, title: '세번째 어항'},
-        { id: 4, title: '네번째 어항'},
-    ])
+    const {data, refetch} = useQuery(
+        {
+            queryKey: ['archiveList'],
+            queryFn: async () => {
+                const config = {
+                    headers: {
+                        "Content-Type": `application/json`,
+                    },
+                    params: {
+                        username: username
+                    },
+                    withCredentials: true
+                }
+                const res = await axios.get("http://localhost:8080/api/archives", config)
+                return res.data.data
+            }
+        }
+    );
+
+    useEffect(() => {
+        console.log('fetch 후',data)
+    }, [data]);
+
     const handleClickTank = (tank) => {
-        console.log(tank)
-        setSelected(tank.title)
+        setSelected(tank.name)
         setIsOpen(false)
     }
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && !e.nativeEvent.isComposing) {
             e.preventDefault()
-            tanks.push({id: tanks.length , title : newTank})
-            setNewTank('')
         }
     }
 
     const handleClickAddBtn = () => {
-        tanks.push({id: tanks.length , title : newTank})
-        setNewTank('')
+        postArchive({archiveName: newArchive}, {
+            onSuccess: ()=> {
+                console.log('추가 완료')
+            }}
+        )
+        refetch()
     };
 
     return (
         <>
-            <button className='p-1 font-semibold' onClick={(e) => {
+            <button className='p-1 w-32 overflow-hidden text-ellipsis whitespace-nowrap font-semibold ' onClick={(e) => {
                 e.preventDefault()
                 setIsOpen(true)
             }}>{selected}</button>
@@ -48,9 +71,9 @@ function ComboBox({selected, setSelected}) {
                             <button onClick={() => setIsAdd(!isAdd)}>새 어항 추가하기</button>
                             {isAdd &&
                                 <div>
-                                    <input onChange={(e)=> setNewTank(e.target.value)}
+                                    <input onChange={(e)=> setNewArchive(e.target.value)}
                                            className='border-b outline-none border-gray-300 p-2'
-                                           value={newTank}
+                                           value={newArchive}
                                            onKeyDown={handleKeyDown}
                                     />
                                     <button onClick={handleClickAddBtn}>추가</button>
@@ -58,9 +81,9 @@ function ComboBox({selected, setSelected}) {
 
                             }
                         </div>
-                        <ul>{tanks.map((tank) => {
+                        <ul>{data && data.map((tank) => {
                             return <li className='py-1' onClick={() => handleClickTank(tank)}
-                                       key={tank.id}>{tank.title}</li>
+                                       key={tank.id}>{tank.name}</li>
                         })}
                         </ul>
                         <button onClick={() => setIsOpen(false)}>취소</button>

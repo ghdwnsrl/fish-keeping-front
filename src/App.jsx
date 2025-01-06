@@ -8,25 +8,29 @@ import ScrollToTop from "./api/ScrollToTop.js";
 import {store, persistor} from './feature/store';
 import {Provider} from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
-import PopupMessage from "./components/PopupMessage.jsx";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
+const queryClient = new QueryClient()
 
 function App() {
     const [isLogin, setIsLogin] = useState(false);
     const [username, setUsername] = useState('');
     return (
-        <AuthContext.Provider value={{isLogin, setIsLogin, username, setUsername}}>
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <ScrollToTop/>
-                    <div className='min-h-screen'>
-                        <Header/>
-                        <Main>
-                            <Outlet/>
-                        </Main>
-                    </div>
-                </PersistGate>
-            </Provider>
-        </AuthContext.Provider>
+        <QueryClientProvider client={queryClient}>
+            <AuthContext.Provider value={{isLogin, setIsLogin, username, setUsername}}>
+                <Provider store={store}>
+                    <PersistGate loading={null} persistor={persistor}>
+                        <ScrollToTop/>
+                        <div className='min-h-screen'>
+                            <Header/>
+                            <Main>
+                                <Outlet/>
+                            </Main>
+                        </div>
+                    </PersistGate>
+                </Provider>
+            </AuthContext.Provider>
+        </QueryClientProvider>
     )
 }
 
