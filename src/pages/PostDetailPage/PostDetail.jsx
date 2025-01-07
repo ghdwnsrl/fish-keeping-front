@@ -7,7 +7,7 @@ import {BiLike, BiSolidLike} from "react-icons/bi";
 import {deleteLike, postLike} from "../../api/likes.js";
 
 const PostDetail = ({id, post, isWriter, handleClickLike}) => {
-    console.log(post.liked)
+    console.log(post)
     const {execute: deletePost} = useApiRequest(deleteByPost);
     const {execute: postLikes} = useApiRequest(postLike);
     const {execute: deleteLikes} = useApiRequest(deleteLike);
@@ -51,6 +51,7 @@ const PostDetail = ({id, post, isWriter, handleClickLike}) => {
                                 type: "수정하기",
                                 initTitle: post.title,
                                 initContent: post.content,
+                                prevThumbnailUrl : post.thumbnailUrl,
                                 id: id
                             }
                         })}>수정</span>

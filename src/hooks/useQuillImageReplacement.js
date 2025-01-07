@@ -60,7 +60,7 @@ export default function useQuillImageReplacement() {
         return Array.isArray(arr) && arr.length === 0;
     }
 
-    const replaceImages = async (content, initContent = '', preThumbnailUrl) => {
+    const replaceImages = async (content, initContent = '', prevThumbnailUrl) => {
         let endContent = content;
 
         //// 추가된 이미지 처리
@@ -71,7 +71,7 @@ export default function useQuillImageReplacement() {
             return {endContent: content, imgUrl: [], thumbnailUrl : 'https://via.placeholder.com/150'};
         }
 
-        const thumbnailUrl =  await getThumbnail(prev[0], current[0], preThumbnailUrl);
+        const thumbnailUrl =  await getThumbnail(prev[0], current[0], prevThumbnailUrl);
 
         console.log('prev', prev)
         console.log('current',current)
@@ -126,5 +126,5 @@ export default function useQuillImageReplacement() {
         const imgUrl = await Promise.all(promises);
         return {endContent, imgUrl, thumbnailUrl};
     };
-    return { replaceImages, getSrcData };
+    return { replaceImages };
 };

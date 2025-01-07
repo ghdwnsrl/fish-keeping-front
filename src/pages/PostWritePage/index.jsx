@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import ComboBox from "../../components/ComboBox.jsx";
 import {FaBox} from "react-icons/fa";
 
-const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', initSelected = '선택 안함', isEdit = false, id}) => {
+const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', initSelected = '선택 안함', prevThumbnailUrl, isEdit = false, id}) => {
     const [content, setContent] = useState(initContent);
     const [title, setTitle] = useState(initTitle);
     const [selected, setSelected] = useState(initSelected)
@@ -29,7 +29,7 @@ const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', ini
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const {endContent: updatedContent, imgUrl, thumbnailUrl} = await replaceImages(content, initContent);
+        const {endContent: updatedContent, imgUrl, thumbnailUrl} = await replaceImages(content, initContent, prevThumbnailUrl);
 
         if (isEdit) {
             update({id: id, title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl}, {

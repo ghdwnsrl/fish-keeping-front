@@ -1,7 +1,7 @@
 import {Description, Dialog, DialogPanel, DialogTitle} from "@headlessui/react";
 import {useEffect, useState} from "react";
 import useApiRequest from "../hooks/useApiRequest.js";
-import {addArchivesByUsername, getArchivesByUsername} from "../api/archive.js";
+import {addArchivesByUsername} from "../api/archive.js";
 import {useSelector} from "react-redux";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
@@ -50,10 +50,9 @@ function ComboBox({selected, setSelected}) {
     const handleClickAddBtn = () => {
         postArchive({archiveName: newArchive}, {
             onSuccess: ()=> {
-                console.log('추가 완료')
+                refetch()
             }}
         )
-        refetch()
     };
 
     return (
