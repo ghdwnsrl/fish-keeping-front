@@ -11,7 +11,7 @@ const SettingPage = () => {
     const {execute: getPreSignedUrl }  = useApiRequest(getPreSignedURL);
     const {execute: imageUpload }  = useApiRequest(upload);
     const {execute: updateUser }  = useApiRequest(updateUserInfo);
-    const fileInputRef = useRef(null); // 파일 입력 필드를 참조하기 위한 ref
+    const fileInputRef = useRef(null);
 
     const {data, refetch} = useQuery({
         queryKey : ["userInfo"],

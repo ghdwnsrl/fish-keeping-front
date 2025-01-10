@@ -16,7 +16,7 @@ function UserPage() {
             <div className='flex-row justify-items-center'>
                 <img alt='profileUrl' className='w-52 h-52 bg-gray-100 rounded-full p-5' src={data?.profileImageUrl}/>
                 <h1 className='text-6xl'>{data?.username}</h1>
-                <p>한줄 소개</p>
+                <p>{data?.introText}</p>
             </div>
             <div className='flex justify-center w-full flex-col'>
                 <div className='flex gap-2 text-xl font-bold'>

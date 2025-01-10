@@ -21,24 +21,26 @@ export function join({username, password, confirmPassword}) {
     return auth.post('/join', {username, password, confirmPassword}, config)
 }
 
-export function logout() {
+export async function logout() {
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    return auth.get('/logout', config)
+    const response = await auth.get('/logout', config)
+    return response.data;
 }
 
-export function checkSessionState() {
+export async function checkSessionState() {
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    return auth.get('/session/validate', config)
+    const response =  auth.get('/session/validate', config)
+    return response.data;
 }
 
 export function getUerInfo({username}) {

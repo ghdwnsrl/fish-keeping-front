@@ -4,42 +4,43 @@ import {Link, NavLink, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {checkSessionState, logout} from "../../api/user.js";
 import * as AuthSlice from "../../feature/authSlice.js";
-import useApiRequest from "../../hooks/useApiRequest.js";
+import {useMutation} from "@tanstack/react-query";
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {isAuthenticated : isLogin, username} = useSelector(state => state.auth)
-    const {execute: executeLogout} = useApiRequest(logout)
-    const {execute: checkSession} = useApiRequest(checkSessionState)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
 
-    const onClickHandler = () => {
-        checkSession({}, {
-            onSuccess: () => {
-                console.log('유효한 세션')
-            },
-            onError: (error) => {
+    const { mutate: checkAuth } = useMutation({
+        mutationFn : checkSessionState,
+        onError: (error) => {
                 if (error.response && error.response.status === 401) {
                     console.log('session 만료')
                     dispatch(AuthSlice.logout())
                     navigate('/login')
                 }
             }
-        })
-    }
+        }
+    )
 
-
-    const onLogoutClickHandler = () => {
-        executeLogout({},{
-            onSuccess : () => {
+    const { mutate: logoutUser } = useMutation({
+            mutationFn: logout,
+            onSuccess: () => {
                 dispatch(AuthSlice.logout())
                 navigate('/login')
-            },
-            onError: () => {
-                console.log('실패')
-            },
-        });
+            }
+        }
+    )
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const onClickHandler = () => {
+        setIsMenuOpen(!isMenuOpen)
+        checkAuth()
+    }
+
+    const onLogoutClickHandler = () => {
+        logoutUser()
     }
 
     const navItems = [

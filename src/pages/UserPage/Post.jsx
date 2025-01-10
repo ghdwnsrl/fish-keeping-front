@@ -3,7 +3,6 @@ import Board from "../../components/Board.jsx";
 
 function Post() {
     const {username} = useParams()
-    console.log(username)
     return (
         <div className='container'>
             <Board username={username}/>
