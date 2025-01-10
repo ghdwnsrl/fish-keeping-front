@@ -1,6 +1,6 @@
 import {auth} from "./http.js";
 
-export function login({username, password}) {
+export async function login({username, password}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
@@ -8,17 +8,19 @@ export function login({username, password}) {
         withCredentials: true
     }
 
-    return auth.post('/login', {username, password}, config)
+    const response = await auth.post('/login', {username, password}, config)
+    return response.data
 }
 
-export function join({username, password, confirmPassword}) {
+export async function join({username, password, confirmPassword}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    return auth.post('/join', {username, password, confirmPassword}, config)
+    const response = await auth.post('/join', {username, password, confirmPassword}, config)
+    return response.data
 }
 
 export async function logout() {
@@ -39,8 +41,7 @@ export async function checkSessionState() {
         },
         withCredentials: true
     }
-    const response =  auth.get('/session/validate', config)
-    return response.data;
+    return auth.get('/session/validate', config)
 }
 
 export function getUerInfo({username}) {

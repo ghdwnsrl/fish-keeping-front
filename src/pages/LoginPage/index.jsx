@@ -2,39 +2,42 @@ import {IoLockClosed, IoMail} from "react-icons/io5";
 import {Link, useNavigate} from "react-router-dom";
 import Input from "../../components/Input.jsx";
 import Form from "../../components/Form.jsx";
-import useApiRequest from "../../hooks/useApiRequest.js";
-import {login} from "../../api/user.js";
+import { login } from "../../api/user.js";
 import {useDispatch} from "react-redux";
 import {loginSuccess} from "../../feature/authSlice.js";
 import {useForm} from "react-hook-form";
 import { useEffect } from "react";
 import Button from "../../components/Button.jsx";
+import {useMutation} from "@tanstack/react-query";
 
 const LoginPage = () => {
 
     const {register, handleSubmit, setFocus, setError, reset , formState: { errors}} = useForm()
 
-    const {execute: loginUser } = useApiRequest(login)
+    // const {execute: loginUser } = useApiRequest(login)
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    const onSubmit = (loginValue) => {
-        loginUser(loginValue, {
-            onSuccess: () => {
-                dispatch(loginSuccess(loginValue.username));
-                navigate('/');
-            },
-            onError: (err) => {
-                if (err.response && err.response.status === 403 ) {
-                    setFocus('username')
-                    reset()
-                    setError('root.serverError', {
-                        type: "403",
-                        message: "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요."
-                    })
-                }
+    const { mutate : loginUser } = useMutation({
+        mutationFn: login,
+        onSuccess: (variables) => {
+            dispatch(loginSuccess(variables.username));
+            navigate('/');
+        },
+        onError: (err) => {
+            if (err.response && err.response.status === 403 ) {
+                setFocus('username')
+                reset()
+                setError('root.serverError', {
+                    type: "403",
+                    message: "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요."
+                })
             }
-        })
+        }
+    })
+
+    const onSubmit = (loginValue) => {
+        loginUser(loginValue)
     };
 
     useEffect(() => {
