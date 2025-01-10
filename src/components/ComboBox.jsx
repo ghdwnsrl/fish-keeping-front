@@ -1,26 +1,26 @@
 import {Description, Dialog, DialogPanel, DialogTitle} from "@headlessui/react";
 import { useState } from "react";
-import useApiRequest from "../hooks/useApiRequest.js";
 import {addArchivesByUsername, getArchivesByUsername} from "../api/archive.js";
 import {useSelector} from "react-redux";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 
 function ComboBox({selected, setSelected}) {
     const [isOpen, setIsOpen] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
-    const {execute : postArchive} = useApiRequest(addArchivesByUsername)
-    const { username} = useSelector(state => ({username: state.auth.username,}))
+    const { username } = useSelector(state => ({username: state.auth.username}))
     const [newArchive, setNewArchive] = useState("")
 
-    const {data, refetch} = useQuery(
-        {
-            queryKey: ['archiveList'],
-            queryFn: () => {
-                const res = getArchivesByUsername({username})
-                return res.data.data
-            }
+    const {data, refetch} = useQuery({
+        queryKey: ['archiveList', username],
+        queryFn: getArchivesByUsername,
+    });
+
+    const {mutate} = useMutation({
+        mutationFn: addArchivesByUsername,
+        onSuccess: () => {
+            refetch()
         }
-    );
+    })
 
     const handleClickTank = (tank) => {
         setSelected(tank.name)
@@ -34,11 +34,7 @@ function ComboBox({selected, setSelected}) {
     }
 
     const handleClickAddBtn = () => {
-        postArchive({archiveName: newArchive}, {
-            onSuccess: ()=> {
-                refetch()
-            }}
-        )
+        mutate({newArchive})
     };
 
     return (

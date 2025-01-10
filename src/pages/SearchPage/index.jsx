@@ -8,7 +8,6 @@ const SearchPage = () => {
         type: searchParams.get("type"),
         keyword: searchParams.get("keyword"),
     }
-    console.log(searchParamsResult)
     return (
         <div>
             <Title>&#39;{searchParamsResult.keyword} &#39; 검색 결과</Title>

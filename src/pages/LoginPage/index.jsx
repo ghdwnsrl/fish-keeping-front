@@ -14,13 +14,12 @@ const LoginPage = () => {
 
     const {register, handleSubmit, setFocus, setError, reset , formState: { errors}} = useForm()
 
-    // const {execute: loginUser } = useApiRequest(login)
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
     const { mutate : loginUser } = useMutation({
         mutationFn: login,
-        onSuccess: (variables) => {
+        onSuccess: (data, variables, context) => {
             dispatch(loginSuccess(variables.username));
             navigate('/');
         },

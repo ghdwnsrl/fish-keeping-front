@@ -1,6 +1,7 @@
 import {archives} from "./http.js";
 
-export function getArchivesByUsername({username}) {
+export async function getArchivesByUsername({queryKey}) {
+    const [, username] = queryKey;
     const config = {
         headers: {
             "Content-Type": `application/json`,
@@ -10,15 +11,16 @@ export function getArchivesByUsername({username}) {
         },
         withCredentials: true
     }
-    return archives.get(``, config)
+    const response = await archives.get(``, config)
+    return response.data.data
 }
 
-export function addArchivesByUsername({archiveName}) {
+export function addArchivesByUsername({newArchive}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    return archives.post(``,{name:archiveName}, config);
+    return archives.post(``,{name:newArchive}, config);
 }
