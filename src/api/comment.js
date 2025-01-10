@@ -14,8 +14,6 @@ export function createComment({postId, content, commentId}) {
 }
 
 export function getCommentByPage({currentPage , postId}) {
-    console.log('getCommentByPage', currentPage)
-    console.log('getCommentByPage postId', postId)
     const config = {
         headers: {
             "Content-Type": `application/json`,

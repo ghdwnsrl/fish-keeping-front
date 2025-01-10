@@ -1,25 +1,27 @@
 import {posts} from "./http.js";
 
-export function getPosts({params, username, archiveName, searchParams}) {
+export async function getPosts({ queryKey }) {
+    const [_, currentPage, username, archiveName, condition] = queryKey;
     let type, target;
-    if (searchParams) {
-        type = searchParams.type;
-        target = searchParams.keyword;
+    if (condition && condition.keyword) {
+        type = condition.type;
+        target = condition.keyword;
     }
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         params: {
-            page:params,
-            username: username,
-            archiveName: archiveName,
+            page : currentPage,
+            username,
+            archiveName,
             type,
             target
         },
         withCredentials: true
     }
-    return posts.get(``, config)
+    const response = await posts.get(``, config)
+    return response.data
 }
 
 export function getByPostId({id}) {

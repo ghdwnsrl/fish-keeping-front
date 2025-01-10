@@ -1,31 +1,21 @@
 import CardList from "./card/CardList.jsx";
-import {useEffect, useState} from "react";
-import useApiRequest from "../hooks/useApiRequest.js";
-import {getPosts} from "../api/posts.js";
+import { useState } from "react";
+import { getPosts } from "../api/posts.js";
 import Paginate from "./Paginate.jsx";
 import SearchBar from "./SearchBar.jsx";
+import { useQuery } from "@tanstack/react-query";
 
-function Board({initialPage = 0, username, archiveName, searchParams, moveToPage}) {
-    const [data, setData] = useState([]);
+function Board({initialPage, username, archiveName, searchParams, moveToPage}) {
     const [currentPage, setCurrentPage] = useState(initialPage);
-    const [totalPage, setTotalPage] = useState(0);
     const [condition, setCondition] = useState({
-        type : searchParams ? searchParams.type : "title",
-        keyword : searchParams ? searchParams.keyword : ""
+        type: searchParams ? searchParams.type : "title",
+        keyword: searchParams ? searchParams.keyword : ""
     })
-    const {execute: fetch} = useApiRequest(getPosts)
 
-    useEffect(() => {
-        fetch({params: currentPage, username, archiveName, searchParams:condition}, {
-            onSuccess: response => {
-                setData(response.data.content)
-                setTotalPage(response.data.totalPages)
-            },
-            onError: (error) => {
-                console.log('실패', error)
-            }
-        });
-    }, [username,condition]);
+    const {data, isLoading} = useQuery({
+        queryKey: ['Posts', currentPage, username, archiveName, condition],
+        queryFn: getPosts
+    })
 
     const handlePageChange = ({selected}) => {
         setCurrentPage(selected);
@@ -39,17 +29,23 @@ function Board({initialPage = 0, username, archiveName, searchParams, moveToPage
         setCondition(value)
     }
 
+    if (isLoading) {
+        return <div>로딩 중...</div>;
+    }
+
+    if (!data || data.totalPages === 0) {
+        return <div>검색 결과가 없습니다.</div>;
+    }
+
     return (
         <>
             <CardList
-                data={data}
+                data={data.content}
                 currentPage={currentPage}
             />
-            { totalPage === 0 ?
-                    <div>검색 결과가 없습니다.</div> :
-                    <Paginate currentPage={currentPage} totalPage={totalPage} handlePageChange={handlePageChange}/>
-            }
-            <SearchBar condition={condition} setCondition={setCondition} onSearchBarClickHandler={onSearchBarClickHandler}/>
+            <Paginate currentPage={data.number} totalPage={data.totalPages} handlePageChange={handlePageChange}/>
+            <SearchBar condition={condition} setCondition={setCondition}
+                       onSearchBarClickHandler={onSearchBarClickHandler}/>
         </>
     )
 }

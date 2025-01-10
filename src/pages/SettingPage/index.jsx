@@ -21,10 +21,7 @@ const SettingPage = () => {
         }
     })
 
-    const { mutate } = useMutation({mutationFn : deleteUser, onSuccess: () => {
-            console.log('삭제 요청 성공')
-        }}
-    );
+    const { mutate } = useMutation({mutationFn : deleteUser});
 
     const fetch = async (img) => {
         let thumbnailUrl;

@@ -7,7 +7,6 @@ import {BiLike, BiSolidLike} from "react-icons/bi";
 import {deleteLike, postLike} from "../../api/likes.js";
 
 const PostDetail = ({id, post, isWriter, handleClickLike}) => {
-    console.log(post)
     const {execute: deletePost} = useApiRequest(deleteByPost);
     const {execute: postLikes} = useApiRequest(postLike);
     const {execute: deleteLikes} = useApiRequest(deleteLike);

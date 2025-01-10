@@ -1,21 +1,35 @@
 import ReactQuill from "react-quill";
 import {useMemo, useState} from "react";
 import 'react-quill/dist/quill.snow.css';
-import useApiRequest from "../../hooks/useApiRequest.js";
 import {createPost, updatePost} from "../../api/posts.js";
 import useQuillImageReplacement from "../../hooks/useQuillImageReplacement.js";
 import {useNavigate} from "react-router-dom";
 import ComboBox from "../../components/ComboBox.jsx";
 import {FaBox} from "react-icons/fa";
+import {useMutation} from "@tanstack/react-query";
 
 const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', initSelected = '선택 안함', prevThumbnailUrl, isEdit = false, id}) => {
     const [content, setContent] = useState(initContent);
     const [title, setTitle] = useState(initTitle);
     const [selected, setSelected] = useState(initSelected)
     const {replaceImages} = useQuillImageReplacement();
-    const {execute: create} = useApiRequest(createPost);
-    const {execute: update} = useApiRequest(updatePost);
     const navigate = useNavigate()
+
+    const {mutate: create} = useMutation({
+        mutationFn: createPost,
+        onSuccess: (response) => {
+            const id = response.data
+            navigate(`/${id}`)
+        }
+    })
+
+    const {mutate: update} = useMutation({
+        mutationFn: updatePost,
+        onSuccess: () => {
+            console.log('업데이트 성공')
+            navigate(`/${id}`)
+        }
+    })
 
     const modules = useMemo(() => ({
         toolbar: {
@@ -32,20 +46,9 @@ const PostWritePage = ({type = '글쓰기',initTitle = '', initContent = '', ini
         const {endContent: updatedContent, imgUrl, thumbnailUrl} = await replaceImages(content, initContent, prevThumbnailUrl);
 
         if (isEdit) {
-            update({id: id, title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl}, {
-                onSuccess: () => {
-                    console.log('업데이트 성공')
-                    navigate(`/${id}`)
-                }
-            })
+            update({id: id, title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl})
         } else {
-            create({title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl}, {
-                onSuccess: (response) => {
-                    console.log('생성 성공')
-                    const id = response.data
-                    navigate(`/${id}`)
-                }
-            })
+            create({title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl})
         }
     }
 
