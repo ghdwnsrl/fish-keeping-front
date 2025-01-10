@@ -1,10 +1,9 @@
 import {Description, Dialog, DialogPanel, DialogTitle} from "@headlessui/react";
-import {useEffect, useState} from "react";
+import { useState } from "react";
 import useApiRequest from "../hooks/useApiRequest.js";
-import {addArchivesByUsername} from "../api/archive.js";
+import {addArchivesByUsername, getArchivesByUsername} from "../api/archive.js";
 import {useSelector} from "react-redux";
 import {useQuery} from "@tanstack/react-query";
-import axios from "axios";
 
 function ComboBox({selected, setSelected}) {
     const [isOpen, setIsOpen] = useState(false)
@@ -16,25 +15,12 @@ function ComboBox({selected, setSelected}) {
     const {data, refetch} = useQuery(
         {
             queryKey: ['archiveList'],
-            queryFn: async () => {
-                const config = {
-                    headers: {
-                        "Content-Type": `application/json`,
-                    },
-                    params: {
-                        username: username
-                    },
-                    withCredentials: true
-                }
-                const res = await axios.get("http://localhost:8080/api/archives", config)
+            queryFn: () => {
+                const res = getArchivesByUsername({username})
                 return res.data.data
             }
         }
     );
-
-    useEffect(() => {
-        console.log('fetch 후',data)
-    }, [data]);
 
     const handleClickTank = (tank) => {
         setSelected(tank.name)
@@ -80,7 +66,9 @@ function ComboBox({selected, setSelected}) {
 
                             }
                         </div>
-                        <ul>{data && data.map((tank) => {
+                        <ul>
+                            <li className='py-1' onClick={() => handleClickTank({name: "선택 안함"})}>선택 안함</li>
+                            {data && data.map((tank) => {
                             return <li className='py-1' onClick={() => handleClickTank(tank)}
                                        key={tank.id}>{tank.name}</li>
                         })}

@@ -4,7 +4,7 @@ import {deleteComment} from "../../api/comment.js";
 import { useState} from "react";
 import CommentEditForm from "../../pages/PostDetailPage/CommentEditForm.jsx";
 
-function Comment({commentId, content, postId, handleReply, ...rest}) {
+function Comment({commentId, content,  postId, handleReply, ...rest}) {
     const {execute: deleteCommentById} = useApiRequest(deleteComment);
     const [isEdit, setIsEdit] = useState(false)
     const {parentId} = {...rest}

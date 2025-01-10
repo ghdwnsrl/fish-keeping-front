@@ -40,3 +40,35 @@ export function checkSessionState() {
     }
     return auth.get('/session/validate', config)
 }
+
+export function getUerInfo({username}) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        params: { username },
+        withCredentials: true
+    }
+    return auth.get('/users', config)
+}
+
+export function updateUserInfo({ profileImageUrl, introText }) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return auth.put('/users', {profileImageUrl, introText}, config)
+}
+
+export async function deleteUser() {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    const response = await auth.delete('/users', config)
+    return response.data
+}

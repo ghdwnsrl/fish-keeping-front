@@ -27,6 +27,7 @@ function CommentList({comments, postId, handlePageChange, currentPage, setCommen
                             postId={postId}
                             username={comment.username}
                             content={comment.content}
+                            profileImageUrl={comment.profileImageUrl}
                             createdAt={comment.createdAt}
                             handleReply={handleReply}
                             parentId={comment.id}
@@ -40,6 +41,7 @@ function CommentList({comments, postId, handlePageChange, currentPage, setCommen
                                         postId={postId}
                                         username={reply.username}
                                         content={reply.content}
+                                        profileImageUrl={comment.profileImageUrl}
                                         createdAt={reply.createdAt}
                                         handleReply={handleReply}
                                         parentId={comment.id}
