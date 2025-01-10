@@ -32,14 +32,15 @@ export function getByPostId({id}) {
     return posts.get(`/${id}`, config)
 }
 
-export function getPopularPosts() {
+export async function getPopularPosts() {
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    return posts.get('/popular', config)
+    const response = await posts.get('/popular', config)
+    return response.data;
 }
 
 export function createPost({title, content, selected, urlArray, thumbnailUrl}) {

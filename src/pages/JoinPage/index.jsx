@@ -2,31 +2,32 @@ import Form from "../../components/Form.jsx";
 import Input from "../../components/Input.jsx";
 import {IoLockClosed, IoMail} from "react-icons/io5";
 import {join} from "../../api/user.js";
-import useApiRequest from "../../hooks/useApiRequest.js";
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {useEffect} from "react";
 import Button from "../../components/Button.jsx";
+import {useMutation} from "@tanstack/react-query";
 
 const JoinPage = () => {
     const { register, handleSubmit, getValues, setFocus, setError, reset, formState: { errors}} = useForm();
     const navigate = useNavigate();
-    const { execute : joinUser} = useApiRequest(join)
+
+    const { mutate : joinUser } = useMutation({
+        mutationFn: join,
+        onSuccess: () => navigate('/login'),
+        onError : (error) => {
+            console.log(error)
+            if (error.response && error.response.status === 400) {
+                setError('root.serverError', {
+                    type: error.response.status,
+                    message: error.response.data.message
+                })
+            }
+        }
+    })
 
     const onSubmit = (data) => {
-        console.log(data)
-        joinUser(data, {
-            onSuccess: () => navigate('/login'),
-            onError: (error) => {
-                console.log(error)
-                if (error.response && error.response.status === 400) {
-                    setError('root.serverError', {
-                        type: error.response.status,
-                        message: error.response.data.message
-                    })
-                }
-            }
-        })
+        joinUser(data);
     }
 
     useEffect(() => {
