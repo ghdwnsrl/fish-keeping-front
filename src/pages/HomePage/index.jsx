@@ -10,7 +10,7 @@ const HomePage = () => {
     const navigate = useNavigate()
 
     const { data : popularPosts } = useQuery({
-        queryKey: 'PopularPosts',
+        queryKey: ['PopularPosts'],
         queryFn: getPopularPosts
     } )
 

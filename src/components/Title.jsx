@@ -1,6 +1,8 @@
 
-const Title = ({children}) => {
-    return <h1 className='font-bold text-2xl'>{children}</h1>
+const Title = ({styleType, ...rest }) => {
+    let className = "font-bold text-2xl";
+    if (styleType) className += ` ${styleType}`;
+    return <h1 {...rest} className={className}/>
 }
 
 export default Title;
