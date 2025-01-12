@@ -44,7 +44,8 @@ export async function checkSessionState() {
     return auth.get('/session/validate', config)
 }
 
-export function getUerInfo({username}) {
+export async function getUerInfo({queryKey}) {
+    const [_, username] = queryKey;
     const config = {
         headers: {
             "Content-Type": `application/json`,
@@ -52,10 +53,12 @@ export function getUerInfo({username}) {
         params: { username },
         withCredentials: true
     }
-    return auth.get('/users', config)
+    const response =  await auth.get('/users', config)
+    return response.data.data;
 }
 
 export function updateUserInfo({ profileImageUrl, introText }) {
+    console.log(profileImageUrl, introText)
     const config = {
         headers: {
             "Content-Type": `application/json`,

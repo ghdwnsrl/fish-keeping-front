@@ -68,7 +68,11 @@ export default function useQuillImageReplacement() {
         const current = getSrcData(content)
 
         if (isArrayEmpty(prev) && isArrayEmpty(current)) {
-            return {endContent: content, imgUrl: [], thumbnailUrl : 'https://via.placeholder.com/150'};
+            return {
+                endContent: content,
+                imgUrl: [],
+                thumbnailUrl : 'https://via.placeholder.com/150'
+            };
         }
 
         const thumbnailUrl =  await getThumbnail(prev[0], current[0], prevThumbnailUrl);

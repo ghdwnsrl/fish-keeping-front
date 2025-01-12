@@ -5,11 +5,8 @@ import {getUerInfo} from "../../api/user.js";
 function UserPage() {
     const {username} = useParams();
     const {data} = useQuery({
-        queryKey : ["userInfo"],
-        queryFn: async () =>  {
-            const res = await getUerInfo({username})
-            return res.data.data;
-        }
+        queryKey : ["userInfo", username],
+        queryFn: getUerInfo
     })
     return (
         <>

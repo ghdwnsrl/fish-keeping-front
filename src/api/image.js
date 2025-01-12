@@ -1,13 +1,15 @@
 import {images, preURL} from "./http.js";
 
-export function upload({presignedURL, file}) {
+export async function upload({presignedURL, file}) {
+    console.log(presignedURL, file)
     const config = {
         header: {
             'content-type': 'multipart/form-data'
         },
         withCredentials: true
     };
-    return images.put(`${presignedURL}`,file, config)
+    const response = await images.put(`${presignedURL}`,file, config)
+    return response.data
 }
 
 export function deleteImage({fileName}) {
@@ -20,12 +22,13 @@ export function deleteImage({fileName}) {
     return images.delete(`http://localhost:8080/api/images/${fileName}`, config)
 }
 
-export function getPreSignedURL({files}) {
+export async function getPreSignedURL({files}) {
     const config = {
         header: {
             'content-type': 'application/json'
         },
         withCredentials: true
     };
-    return preURL.post('', {files}, config)
+    const response = await preURL.post('', {files}, config)
+    return response.data;
 }

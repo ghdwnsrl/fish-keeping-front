@@ -3,74 +3,38 @@ import {deleteUser, getUerInfo, updateUserInfo} from "../../api/user.js";
 import {useSelector} from "react-redux";
 import Button from "../../components/Button.jsx";
 import {useEffect, useRef, useState} from "react";
-import useApiRequest from "../../hooks/useApiRequest.js";
-import {getPreSignedURL, upload} from "../../api/image.js";
+import useImageUpload from "../../hooks/useImageUpload.jsx";
 
 const SettingPage = () => {
     const {username} = useSelector(state => state.auth)
-    const {execute: getPreSignedUrl }  = useApiRequest(getPreSignedURL);
-    const {execute: imageUpload }  = useApiRequest(upload);
-    const {execute: updateUser }  = useApiRequest(updateUserInfo);
     const fileInputRef = useRef(null);
 
+    const {uploadImage} = useImageUpload();
+
     const {data, refetch} = useQuery({
-        queryKey : ["userInfo"],
-        queryFn: async () =>  {
-            const res = await getUerInfo({username})
-            return res.data.data;
-        }
+        queryKey : ["userInfo", username],
+        queryFn:getUerInfo
     })
 
-    const { mutate } = useMutation({mutationFn : deleteUser});
-
-    const fetch = async (img) => {
-        let thumbnailUrl;
-        await getPreSignedUrl({files: [{fileName: "profile.jpg"}]}, {
-            onSuccess: (response) => {
-                console.log('성공')
-                thumbnailUrl = response.data[0].split("?")[0]
-                console.log(thumbnailUrl)
-            }
-        })
-        await imageUpload({presignedURL: thumbnailUrl, file: img, contentType: img.contentType}, {
-            onSuccess: () => {
-                console.log('thumbnailUrl', thumbnailUrl)
-                console.log('resized 된 이미지 전송 완료..')
-            }
-        })
-
-        await updateUser({profileImageUrl : thumbnailUrl}, {
-            onSuccess: () => {
-                console.log('서버로 요청 성공')
-            }
-        })
-
-        return thumbnailUrl
-    }
-
-    const updateUserData = async (data) => {
-        console.log(data)
-        const {profileImageUrl, introText} = data
-        const res = await updateUser({profileImageUrl, introText}, {
-            onSuccess: () => {
-                console.log('성공')
-                refetch()
-                setIsEditing(!isEditing)
-            }
-        })
-    }
+    const { mutate : handleUserDelete } = useMutation({mutationFn : deleteUser});
+    const { mutateAsync : handleUserUpdate } = useMutation({mutationFn : updateUserInfo})
 
     const [value, setValue] = useState(data?.introText)
     const [isEditing, setIsEditing] = useState(false)
     const valueRef = useRef(null)
 
+    useEffect(() => {
+        if (data?.introText !== undefined) {
+            setValue(data.introText);
+        }
+    }, [data?.introText]);
+
     const onDeleteUserHandler = () => {
-        mutate()
+        handleUserDelete()
     }
 
     const onInputChange = (e) => {
         setValue(e.target.value);
-        console.log(value)
     }
 
     const onEditIntroTextHandler = () => {
@@ -82,31 +46,23 @@ const SettingPage = () => {
         }, 0);
     }
 
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
-        // s3 서버에 업로드
-        const profileImageUrl = fetch(file)
-
-        // spring 서버에 수정
-        updateUserData({profileImageUrl})
-        console.log(profileImageUrl)
+        const urls = await uploadImage(file)
+        await handleUserUpdate({profileImageUrl : urls[0].split("?")[0]})
+        refetch()
     };
 
     const onEditProfileImageHandler = () => {
         fileInputRef.current.click()
     }
 
-    const onSubmitIntroTextHandler = () => {
-        updateUserData({introText: value});
+    const onSubmitIntroTextHandler = async () => {
+        await handleUserUpdate({introText: value});
+        setIsEditing(!isEditing)
+        refetch()
     };
-
-    useEffect(() => {
-        if (data?.introText !== undefined) {
-            setValue(data.introText);
-        }
-    }, [data?.introText]);
 
     return <div className='flex-row justify-items-center'>
         <img alt='profileUrl m-auto' className='m-auto w-52 h-52 bg-gray-100 rounded-full p-5' src={data?.profileImageUrl} />
