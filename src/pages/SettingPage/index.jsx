@@ -47,7 +47,7 @@ const SettingPage = () => {
     }
 
     const handleFileChange = async (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files;
         if (!file) return;
         const urls = await uploadImage(file)
         await handleUserUpdate({profileImageUrl : urls[0].split("?")[0]})

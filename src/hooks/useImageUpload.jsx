@@ -8,19 +8,23 @@ export default function useImageUpload() {
     })
 
     const { mutateAsync : uploadImageS3 } = useMutation({
-        mutationFn: upload,
-        onSuccess: () => {
-            console.log('업로드 성공')
-        }
+        mutationFn: upload
     })
 
-    const uploadImage = async (file) => {
-        const fileName = file.name;
-        const preSignedUrls = await getPreSignedUrl({files: [{fileName}]})
-        for (const p of preSignedUrls) {
-            console.log('서버 업로드')
-            await uploadImageS3({presignedURL : p, file})
-        }
+    const uploadImage = async (files) => {
+        const filenames = Array.from(files).map(f => {
+            console.log(f)
+            return { fileName : f.name }
+        })
+        const preSignedUrls = await getPreSignedUrl({filenames})
+        console.log(preSignedUrls)
+
+        const uploadPromises = preSignedUrls.map((presignedURL, index) => {
+            return uploadImageS3({ presignedURL, file: files[index] });
+        });
+
+        const results = await Promise.all(uploadPromises);
+        console.log(results)
         return preSignedUrls;
     }
 

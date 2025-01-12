@@ -22,13 +22,13 @@ export function deleteImage({fileName}) {
     return images.delete(`http://localhost:8080/api/images/${fileName}`, config)
 }
 
-export async function getPreSignedURL({files}) {
+export async function getPreSignedURL({filenames}) {
     const config = {
         header: {
             'content-type': 'application/json'
         },
         withCredentials: true
     };
-    const response = await preURL.post('', {files}, config)
+    const response = await preURL.post('', {filenames}, config)
     return response.data;
 }
