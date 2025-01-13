@@ -8,24 +8,35 @@ export default function useImageUpload() {
     })
 
     const { mutateAsync : uploadImageS3 } = useMutation({
-        mutationFn: upload
+        mutationFn: upload,
+        onSuccess: () => {
+            console.log('이미지 업로드 완료')
+        }
     })
 
+    // {image name, preSignedUrl} 반환
     const uploadImage = async (files) => {
-        const filenames = Array.from(files).map(f => {
-            console.log(f)
-            return { fileName : f.name }
-        })
-        const preSignedUrls = await getPreSignedUrl({filenames})
-        console.log(preSignedUrls)
-
+        const fileArray =  files instanceof File ? [files] : files
+        const filenames = files instanceof File ? [{fileName: files.name}] : Array.from(files).map(f => { return { fileName : f.name }})
+        const preSignedUrls = await getPreSignedUrl({ filenames })
+        const urlFilePairs = preSignedUrls.map((presignedURL, index) => {
+            const url = presignedURL.split("?")[0]
+            return {
+                presignedURL : url,
+                file: fileArray[index],
+                filename: filenames[index].fileName,
+            }
+        });
+        console.log('urlFilePairs', urlFilePairs)
         const uploadPromises = preSignedUrls.map((presignedURL, index) => {
-            return uploadImageS3({ presignedURL, file: files[index] });
+            console.log(presignedURL, fileArray[index])
+            return uploadImageS3({ presignedURL, file: fileArray[index] });
         });
 
-        const results = await Promise.all(uploadPromises);
-        console.log(results)
-        return preSignedUrls;
+        await Promise.all(uploadPromises);
+        const datas = urlFilePairs.map(({ presignedURL, filename }) => ({ url : presignedURL, filename }));
+        console.log(datas)
+        return { datas }
     }
 
     return {

@@ -17,7 +17,12 @@ const SettingPage = () => {
     })
 
     const { mutate : handleUserDelete } = useMutation({mutationFn : deleteUser});
-    const { mutateAsync : handleUserUpdate } = useMutation({mutationFn : updateUserInfo})
+    const { mutateAsync : handleUserUpdate } = useMutation({
+        mutationFn : updateUserInfo,
+        onSuccess: () => {
+            console.log('변경 완료')
+        }
+    })
 
     const [value, setValue] = useState(data?.introText)
     const [isEditing, setIsEditing] = useState(false)
@@ -49,8 +54,10 @@ const SettingPage = () => {
     const handleFileChange = async (event) => {
         const file = event.target.files;
         if (!file) return;
-        const urls = await uploadImage(file)
-        await handleUserUpdate({profileImageUrl : urls[0].split("?")[0]})
+        const {datas} = await uploadImage(file)
+        console.log(datas)
+        await handleUserUpdate({profileImageUrl : datas[0]?.url})
+        console.log('refetch 수행')
         refetch()
     };
 

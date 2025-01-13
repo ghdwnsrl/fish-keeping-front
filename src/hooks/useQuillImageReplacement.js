@@ -1,12 +1,11 @@
 import useApiRequest from "./useApiRequest.js";
-import {deleteImage, getPreSignedURL, upload} from "../api/image.js";
+import {deleteImage} from "../api/image.js";
 import ImageUtils from "../utils/ImageUtils.js";
-
+import useImageUpload from "./useImageUpload.jsx";
 
 export default function useQuillImageReplacement() {
-    const {execute: imageUpload }  = useApiRequest(upload);
     const {execute: imageRemove} = useApiRequest(deleteImage)
-    const {execute: getPreSignedUrl }  = useApiRequest(getPreSignedURL);
+    const { uploadImage } = useImageUpload();
 
     const getSrcData = (content) => {
         const srcArray= [];
@@ -19,10 +18,10 @@ export default function useQuillImageReplacement() {
         return srcArray
     }
 
-    /*
-        -> 초기 이미지 없고, 새로운 썸네일을 저장해야하는 경우. (작성하는 경우)
-        -> 초기 이미지 있고, 새로운 썸네일을 저장해야하는 경우. (수정하는 경우)
-     */
+    function isArrayEmpty(arr) {
+        return Array.isArray(arr) && arr.length === 0;
+    }
+
     const getThumbnail = async (initImg, newFirstImg, preThumbnailUrl = '') => {
         console.log(initImg)
         console.log(newFirstImg)
@@ -37,33 +36,18 @@ export default function useQuillImageReplacement() {
                 }
             })
         }
-        let thumbnailUrl;
-        await getPreSignedUrl({files : [{fileName: "thumbnail.jpg"}]}, {
-            onSuccess: (response) => {
-                console.log('성공')
-                thumbnailUrl = response.data[0].split("?")[0]
-                console.log(thumbnailUrl)
-            }
-        })
         const file = ImageUtils.transBase64ToFile(newFirstImg);
         const resizedFile = await ImageUtils.resizeFile(file)
-        await imageUpload({presignedURL: thumbnailUrl, file: resizedFile, contentType: newFirstImg.contentType}, {
-            onSuccess : () => {
-                console.log('thumbnailUrl',thumbnailUrl)
-                console.log('resized 된 이미지 전송 완료..')
-            }
-        })
-        return thumbnailUrl
-    }
-
-    function isArrayEmpty(arr) {
-        return Array.isArray(arr) && arr.length === 0;
+        console.log(resizedFile)
+        const { datas } = await uploadImage(resizedFile)
+        console.log(datas[0].url)
+        return datas[0].url
     }
 
     const replaceImages = async (content, initContent = '', prevThumbnailUrl) => {
+
         let endContent = content;
 
-        //// 추가된 이미지 처리
         const prev = getSrcData(initContent)
         const current = getSrcData(content)
 
@@ -76,14 +60,24 @@ export default function useQuillImageReplacement() {
         }
 
         const thumbnailUrl =  await getThumbnail(prev[0], current[0], prevThumbnailUrl);
-
-        console.log('prev', prev)
-        console.log('current',current)
-
+        console.log('here',thumbnailUrl)
+        // 공통 이미지를 추출
         const commonElements = prev.map(value => value["src"]).filter(value => current.some(obj => obj["src"] === value));
-        const filteredPrev = prev.filter(value => !commonElements.includes(value["src"]));
-        const filteredCurrent = current.filter(value => !commonElements.includes(value["src"]));
 
+        // 이전 이미지들에서 중복 이미지 삭제
+        const filteredPrev = prev.filter(value => !commonElements.includes(value["src"]));
+
+        // 현재 이미지들에서 중복 이미지 삭제
+        const filteredCurrent = current.filter(value => !commonElements.includes(value["src"]));
+        const filteredCurrentMap = filteredCurrent.reduce((map, obj) => {
+            map.set(obj.fileName, obj.src);
+            return map;
+        }, new Map);
+
+        console.log(filteredCurrent)
+
+        // 이전 이미지들 중 중복 제거 후 값이 남아 있는 경우는
+        // 더 이상 사용하지 않는 이미지이기 때문에 서버로 삭제 요청을 한다.
         if (filteredPrev) {
             filteredPrev.forEach(i => {
                 const storeImageName = i.src.match(/[^/]+\.jpg$/)
@@ -94,41 +88,17 @@ export default function useQuillImageReplacement() {
                 })
             })
         }
-        const files = filteredCurrent.map(i => {
-            return {fileName : i.fileName}
-        })
 
-        let images;
-        console.log('files',files)
-        await getPreSignedUrl({files: files}, {
-            onSuccess: (response) => {
-                images = filteredCurrent.map( (item, index) => {
-                    return {
-                        ...item,
-                        presignedUrl: response.data[index]
-                    }
-                })
-            }
+        const files = ImageUtils.transBase64ToFileList(filteredCurrent)
+        const { datas } = await uploadImage(files)
+        console.log(datas)
+        datas.forEach(d => {
+            const result = filteredCurrentMap.get(d.filename)
+            endContent = endContent.replace(result, d.url)
         })
+        console.log(endContent)
+        return { endContent, datas, thumbnailUrl};
+    }
 
-        const promises = images.map(async (i) => {
-            const file = ImageUtils.transBase64ToFile(i);
-            let imgUrl;
-            await imageUpload({presignedURL: i.presignedUrl, file: file, contentType: i.contentType}, {
-                onSuccess : () => {
-                    const imageUrl = i.presignedUrl.split("?")[0]
-                    imgUrl = imageUrl
-                    endContent = endContent.replace(i.src, imageUrl)
-                    console.log(endContent)
-                },
-                onError : () => {
-                    console.log('이미지 업로드 실패')
-                }
-            })
-            return {url:imgUrl};
-        })
-        const imgUrl = await Promise.all(promises);
-        return {endContent, imgUrl, thumbnailUrl};
-    };
     return { replaceImages };
 };

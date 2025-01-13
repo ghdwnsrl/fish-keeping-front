@@ -57,7 +57,7 @@ export async function getUerInfo({queryKey}) {
     return response.data.data;
 }
 
-export function updateUserInfo({ profileImageUrl, introText }) {
+export async function updateUserInfo({ profileImageUrl, introText }) {
     console.log(profileImageUrl, introText)
     const config = {
         headers: {
@@ -65,7 +65,8 @@ export function updateUserInfo({ profileImageUrl, introText }) {
         },
         withCredentials: true
     }
-    return auth.put('/users', {profileImageUrl, introText}, config)
+    const response = await auth.put('/users', {profileImageUrl, introText}, config)
+    return response.data;
 }
 
 export async function deleteUser() {

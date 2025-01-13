@@ -1,7 +1,6 @@
 import {images, preURL} from "./http.js";
 
 export async function upload({presignedURL, file}) {
-    console.log(presignedURL, file)
     const config = {
         header: {
             'content-type': 'multipart/form-data'

@@ -29,6 +29,21 @@ const ImageUtils = {
             type: "image/jpeg"
         });
         return new File([blob], i.fileName);
+    },
+
+    transBase64ToFileList(files) {
+        return files.map((i) => {
+            const byteString = atob(i.src.split(",")[1]);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            const blob = new Blob([ia], {
+                type: "image/jpeg"
+            });
+            return new File([blob], i.fileName);
+        });
     }
 }
 

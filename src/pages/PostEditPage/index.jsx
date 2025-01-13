@@ -19,12 +19,9 @@ const PostEditPage = () => {
     })
 
     const handleSubmit = async (title, content, selected, initContent, prevThumbnailUrl) => {
-        const {
-            endContent: updatedContent,
-            imgUrl,
-            thumbnailUrl
-        } = await replaceImages(content, initContent, prevThumbnailUrl);
-        update({id: id, title, content: updatedContent, selected, urlArray: imgUrl, thumbnailUrl: thumbnailUrl})
+        const {endContent: updatedContent, datas, thumbnailUrl} = await replaceImages(content, initContent, prevThumbnailUrl);
+        const imgUrls = datas.map(d => ({url: d.url}));
+        update({id: id, title, content: updatedContent, selected, urlArray: imgUrls, thumbnailUrl: thumbnailUrl})
     }
 
     return <div className='container'>
