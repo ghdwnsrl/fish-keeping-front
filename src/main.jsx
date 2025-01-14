@@ -17,6 +17,7 @@ import PostDetailPage from "./pages/PostDetailPage/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import SettingPage from "./pages/SettingPage/index.jsx";
 import SearchPage from "./pages/SearchPage/index.jsx";
+import Test from "./pages/Test.jsx";
 
 const router = createBrowserRouter([
     {
@@ -29,7 +30,9 @@ const router = createBrowserRouter([
             },
             {
                 path: '/edit',
-                element: <PostEditPage/>
+                element: <ProtectedRoute>
+                    <PostEditPage/>
+                </ProtectedRoute>
             },
             {
                 path: '/login',
@@ -37,7 +40,9 @@ const router = createBrowserRouter([
             },
             {
                 path: '/my',
-                element: <My/>,
+                element: <ProtectedRoute>
+                    <My/>
+                </ProtectedRoute>,
             },
             {
                 path: '/:id',
@@ -49,11 +54,15 @@ const router = createBrowserRouter([
             },
             {
                 path: '/setting',
-                element: <SettingPage/>
+                element: <ProtectedRoute>
+                    <SettingPage/>
+                </ProtectedRoute>
             },
             {
                 path: '/write',
-                element: <ProtectedRoute redirectPath='/'><PostWritePage/></ProtectedRoute>,
+                element: <ProtectedRoute>
+                    <PostWritePage/>
+                </ProtectedRoute>,
             },
             {
                 path: '/users/:username',
@@ -77,7 +86,6 @@ const router = createBrowserRouter([
                 path: '/search',
                 element: <SearchPage/>
             }
-
         ],
         errorElement: <div>error</div>
     }]);

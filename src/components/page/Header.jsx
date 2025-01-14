@@ -5,18 +5,23 @@ import {useDispatch, useSelector} from "react-redux";
 import {checkSessionState, logout} from "../../api/user.js";
 import * as AuthSlice from "../../feature/authSlice.js";
 import {useMutation} from "@tanstack/react-query";
+import {openModal} from "../../feature/dialogSlice.js";
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {isAuthenticated : isLogin, username} = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const { mutate: checkAuth } = useMutation({
         mutationFn : checkSessionState,
         onError: (error) => {
                 if (error.response && error.response.status === 401) {
-                    console.log('session 만료')
-                    dispatch(AuthSlice.logout())
-                    navigate('/login')
+                    dispatch(openModal({
+                        title: "로그인 만료",
+                        content: "로그인 페이지로 이동할까요?",
+                        redirectPath: '/login'
+                    }))
                 }
             }
         }
@@ -31,16 +36,9 @@ function Header() {
         }
     )
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-
     const onClickHandler = () => {
         setIsMenuOpen(!isMenuOpen)
         checkAuth()
-    }
-
-    const onLogoutClickHandler = () => {
-        logoutUser()
     }
 
     const navItems = [
@@ -50,8 +48,8 @@ function Header() {
     const authNavItems = [
         <NavLink key="write" onClick={onClickHandler} to="/write" className='font-semibold hover:text-gray-300'>작성하기</NavLink>,
         <NavLink key="setting" onClick={onClickHandler} to="/setting" className='font-semibold hover:text-gray-300'>설정</NavLink>,
-        <NavLink key="my" onClick={onClickHandler} to={`/users/${username}/posts`} className='font-semibold hover:text-gray-300'>마이페이지</NavLink>,
-        <button key="logout" className='font-semibold hover:text-gray-300 text-left' onClick={onLogoutClickHandler}>로그아웃</button>,
+        <NavLink key="my" onClick={() => setIsMenuOpen(!isMenuOpen)} to={`/users/${username}/posts`} className='font-semibold hover:text-gray-300'>마이페이지</NavLink>,
+        <button key="logout" className='font-semibold hover:text-gray-300 text-left' onClick={() => logoutUser()}>로그아웃</button>,
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen)

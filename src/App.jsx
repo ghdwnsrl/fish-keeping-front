@@ -9,6 +9,7 @@ import {store, persistor} from './feature/store';
 import {Provider} from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import GlobalDialog from "./components/GlobalDialog.jsx";
 
 const queryClient = new QueryClient()
 
@@ -27,6 +28,7 @@ function App() {
                                 <Outlet/>
                             </Main>
                         </div>
+                        <GlobalDialog/>
                     </PersistGate>
                 </Provider>
             </AuthContext.Provider>

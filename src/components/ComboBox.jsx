@@ -59,7 +59,6 @@ function ComboBox({selected, setSelected}) {
                                     />
                                     <button onClick={handleClickAddBtn}>추가</button>
                                 </div>
-
                             }
                         </div>
                         <ul>
