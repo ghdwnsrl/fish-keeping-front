@@ -1,11 +1,17 @@
-import useApiRequest from "./useApiRequest.js";
 import {deleteImage} from "../api/image.js";
 import ImageUtils from "../utils/ImageUtils.js";
 import useImageUpload from "./useImageUpload.jsx";
+import {useMutation} from "@tanstack/react-query";
 
 export default function useQuillImageReplacement() {
-    const {execute: imageRemove} = useApiRequest(deleteImage)
     const { uploadImage } = useImageUpload();
+
+    const {mutate : imageRemove} = useMutation({
+        mutationFn: deleteImage,
+        onSuccess: () => {
+            console.log('이미지 삭제 완료')
+        }
+    })
 
     const getSrcData = (content) => {
         const srcArray= [];
@@ -30,11 +36,7 @@ export default function useQuillImageReplacement() {
             if ((Object.entries(initImg).toString() === Object.entries(newFirstImg).toString())) {
                 return preThumbnailUrl
             }
-            imageRemove({fileName: preThumbnailUrl}, {
-                onSuccess: () => {
-                    console.log('더이상 사용하지 않는 썸네일 이미지 삭제 완료')
-                }
-            })
+            imageRemove({fileName: preThumbnailUrl})
         }
         const file = ImageUtils.transBase64ToFile(newFirstImg);
         const resizedFile = await ImageUtils.resizeFile(file)
@@ -55,7 +57,7 @@ export default function useQuillImageReplacement() {
             return {
                 endContent: content,
                 imgUrl: [],
-                thumbnailUrl : 'https://via.placeholder.com/150'
+                thumbnailUrl : 'https://placehold.co/200x240?text=NO%20IMAGE'
             };
         }
 
@@ -81,11 +83,7 @@ export default function useQuillImageReplacement() {
         if (filteredPrev) {
             filteredPrev.forEach(i => {
                 const storeImageName = i.src.match(/[^/]+\.jpg$/)
-                imageRemove({fileName: storeImageName}, {
-                    onSuccess: () => {
-                        console.log('더이상 사용하지 않는 이미지 삭제 완료')
-                    }
-                })
+                imageRemove({fileName: storeImageName})
             })
         }
 

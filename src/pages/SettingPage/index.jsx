@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import Button from "../../components/Button.jsx";
 import {useEffect, useRef, useState} from "react";
 import useImageUpload from "../../hooks/useImageUpload.jsx";
+import ImageUtils from "../../utils/ImageUtils.js";
 
 const SettingPage = () => {
     const {username} = useSelector(state => state.auth)
@@ -15,14 +16,8 @@ const SettingPage = () => {
         queryKey : ["userInfo", username],
         queryFn:getUerInfo
     })
-
     const { mutate : handleUserDelete } = useMutation({mutationFn : deleteUser});
-    const { mutateAsync : handleUserUpdate } = useMutation({
-        mutationFn : updateUserInfo,
-        onSuccess: () => {
-            console.log('변경 완료')
-        }
-    })
+    const { mutateAsync : handleUserUpdate } = useMutation({mutationFn : updateUserInfo})
 
     const [value, setValue] = useState(data?.introText)
     const [isEditing, setIsEditing] = useState(false)
@@ -54,10 +49,13 @@ const SettingPage = () => {
     const handleFileChange = async (event) => {
         const file = event.target.files;
         if (!file) return;
-        const {datas} = await uploadImage(file)
-        console.log(datas)
-        await handleUserUpdate({profileImageUrl : datas[0]?.url})
-        console.log('refetch 수행')
+        const resizedImage = await ImageUtils.resizeFile(file[0])
+        const fileArray = Array.of(file[0], resizedImage)
+        const { datas  } = await uploadImage(fileArray)
+        await handleUserUpdate({
+            profileImageUrl : datas[0]?.url,
+            resizedProfileImageUrl : datas[1]?.url,
+        })
         refetch()
     };
 
@@ -72,7 +70,7 @@ const SettingPage = () => {
     };
 
     return <div className='flex-row justify-items-center'>
-        <img alt='profileUrl m-auto' className='m-auto w-52 h-52 bg-gray-100 rounded-full p-5' src={data?.profileImageUrl} />
+        <img alt='profileUrl' className='m-auto w-52 h-52 bg-gray-100 rounded-full' src={data?.profileImageUrl} />
         <div className='w-64 h-64 flex-row space-y-2'>
             <p className='text-6xl block text-center'>{data?.username}</p>
             {!isEditing ?

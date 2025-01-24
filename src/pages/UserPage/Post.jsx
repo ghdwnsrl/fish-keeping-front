@@ -5,7 +5,10 @@ function Post() {
     const {username} = useParams()
     return (
         <div className='container'>
-            <Board username={username}/>
+            <Board username={username}>
+                <option value="title">제목</option>
+                <option value="all">제목 + 게시글</option>
+            </Board>
         </div>
     )
 }

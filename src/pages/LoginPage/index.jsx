@@ -19,17 +19,24 @@ const LoginPage = () => {
 
     const { mutate : loginUser } = useMutation({
         mutationFn: login,
-        onSuccess: (data, variables, context) => {
+        onSuccess: (data, variables) => {
             dispatch(loginSuccess(variables.username));
             navigate('/');
         },
         onError: (err) => {
-            if (err.response && err.response.status === 403 ) {
+            if (err.response && err.response.status === 401 ) {
                 setFocus('username')
                 reset()
                 setError('root.serverError', {
                     type: "403",
-                    message: "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요."
+                    message: "아이디 또는 비밀번호가 잘못 되었습니다. \n 아이디와 비밀번호를 정확히 입력해 주세요."
+                })
+            } else if (err.response && err.response.status === 404 ) {
+                setFocus('username')
+                reset()
+                setError('root.serverError', {
+                    type: "403",
+                    message: "존재하지 않는 회원입니다."
                 })
             }
         }

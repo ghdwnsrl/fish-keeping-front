@@ -18,7 +18,7 @@ export function deleteImage({fileName}) {
         },
         withCredentials: true
     };
-    return images.delete(`http://localhost:8080/api/images/${fileName}`, config)
+    return images.delete(`/api/images/${fileName}`, config)
 }
 
 export async function getPreSignedURL({filenames}) {

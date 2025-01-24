@@ -20,7 +20,8 @@ const PostWritePage = () => {
 
     const handleSubmit = async ( title, content, selected, initContent, prevThumbnailUrl) => {
         const {endContent: updatedContent, datas, thumbnailUrl} = await replaceImages(content, initContent, prevThumbnailUrl);
-        const imgUrls = datas.map(d => ({url: d.url}));
+        console.log(updatedContent, datas, thumbnailUrl)
+        const imgUrls = datas?.map(d => ({url: d.url}));
         console.log(imgUrls)
         create({title, content: updatedContent, selected, urlArray: imgUrls, thumbnailUrl: thumbnailUrl})
     }

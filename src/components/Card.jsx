@@ -1,36 +1,34 @@
-import {timeago} from "../utils/timeagoUtils.js";
-import {BiCommentDots, BiLike, BiShow} from "react-icons/bi";
 import {Link} from "react-router-dom";
+import PostItemFooter from "./PostItemFooter.jsx";
 
 
 const Card = ({ header, data = [], footer }) => {
+    console.log(data)
     return (
-        <div>
+        <>
             {header && <header>{header}</header>}
             <div className='grid grid-cols-3 mt-3 gap-1 mx-auto'>
-                {data.map(({id, title, description, createdAt, thumbnailUrl, views, likeCount, commentCount}) => (
+                {data?.map(({id, username, title, description, createdAt, thumbnailUrl, views, likeCount, commentCount}) => (
                     <Link key={id} to={`/${id}`}>
-                    <div key={id}>
+                    <div key={id} className='hover:bg-gray-50'>
                         <img className='object-cover w-48 h-48 sm:h-64 sm:w-64 rounded-lg' src={thumbnailUrl} alt='thumbnail'/>
-                        <dl key={title} className='m-1'>
+                        <dl key={title} className='flex-row m-1'>
                             <dt className='font-bold'>{title}</dt>
                             <dd>{description}</dd>
-                            <div className='flex flex-grow gap-1'>
-                                <p className='text-xs text-gray-500'>{timeago(createdAt)}</p>
-                                <BiLike/>
-                                <p className='text-xs'>{likeCount}</p>
-                                <BiCommentDots/>
-                                <p className='text-xs'>{commentCount}</p>
-                                <BiShow/>
-                                <p className='text-xs'>{views}</p>
-                            </div>
+                            <PostItemFooter
+                                username={username}
+                                createdAt={createdAt}
+                                like={likeCount}
+                                commentCount={commentCount}
+                                views={views}
+                            />
                         </dl>
                     </div>
                     </Link>
                 ))}
             </div>
             {footer && <footer>{footer}</footer>}
-        </div>
+        </>
     );
 };
 

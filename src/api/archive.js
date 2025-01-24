@@ -24,3 +24,13 @@ export function addArchivesByUsername({newArchive}) {
     }
     return archives.post(``,{name:newArchive}, config);
 }
+
+export function deleteArchive({name}) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return archives.delete(`${name}`, config);
+}

@@ -8,10 +8,20 @@ const SearchPage = () => {
         type: searchParams.get("type"),
         keyword: searchParams.get("keyword"),
     }
+    const searchType = {
+        TITLE: "제목",
+        ALL: "제목 + 게시글",
+        USERNAME: "작성자",
+    };
+
     return (
-        <div>
-            <Title>&#39;{searchParamsResult.keyword} &#39; 검색 결과</Title>
-            <Board searchParams={searchParamsResult}/>
+        <div className='container'>
+            <Title>{searchParamsResult.type} &#39;{searchParamsResult.keyword}&#39; 검색 결과</Title>
+            <Board searchParams={searchParamsResult}>
+                <option value="title">{searchType.TITLE}</option>
+                <option value="all">{searchType.ALL}</option>
+                <option value="username">{searchType.USERNAME}</option>
+            </Board>
         </div>
     )
 }

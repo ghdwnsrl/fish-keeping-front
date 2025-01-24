@@ -1,7 +1,7 @@
 
 import {Link} from "react-router-dom";
 
-function TankCard({ username, imgURL='https://via.placeholder.com/150', props}) {
+function TankCard({ username, imgURL='https://placehold.co/200x240?text=NO%20IMAGE', props}) {
     const {name, id, description, lastModified = '-', totalPosts} = props
     console.log('tankCard ', username, name)
     return (

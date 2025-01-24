@@ -6,7 +6,7 @@ function Input({children, placeholder, type = "text", register, name, condition}
                 name={name}
                 type={type}
                 placeholder={placeholder}
-                className="outline-none"
+                className="outline-none w-full"
                 {...register(name, condition)}
             />
         </div>

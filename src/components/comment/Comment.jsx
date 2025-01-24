@@ -4,6 +4,7 @@ import {deleteComment} from "../../api/comment.js";
 import { useState} from "react";
 import CommentEditForm from "../../pages/PostDetailPage/CommentEditForm.jsx";
 
+// todo : 댓글에 대해 댓글 작성자인지 아닌지 확인
 function Comment({commentId, content,  postId, handleReply, ...rest}) {
     const {execute: deleteCommentById} = useApiRequest(deleteComment);
     const [isEdit, setIsEdit] = useState(false)
@@ -25,6 +26,7 @@ function Comment({commentId, content,  postId, handleReply, ...rest}) {
         <div className='mb-2 pb-4 border-b w-full'>
             <UserHeader data={{...rest}}
                         textStyle='gap-1'
+                        height='h-8 w-8'
             >
                 <div className=' flex gap-1 text-sm mt-1 opacity-70'>
                     <span onClick={() => setIsEdit(!isEdit)}>수정</span>

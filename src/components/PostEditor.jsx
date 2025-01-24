@@ -1,8 +1,28 @@
 import {FaBox} from "react-icons/fa";
-import ComboBox from "./ComboBox.jsx";
+import ArchiveDialog from "./ArchiveDialog.jsx";
 import ReactQuill from "react-quill";
 import Button from "./Button.jsx";
 import {useMemo, useState} from "react";
+
+const formats = [
+    'font',
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'align',
+    'color',
+    'background',
+    'size',
+    'h1',
+    'image'
+];
 
 const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', handleSubmit}) => {
     const [content, setContent] = useState(initContent);
@@ -12,9 +32,13 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
     const modules = useMemo(() => ({
         toolbar: {
             container: [
+                [{ size: ['small', false, 'large', 'huge'] }],
+                [{ align: [] }],
+                [{ list: 'ordered' }, { list: 'bullet' }],
                 ["image"],
                 [{header: [1, 2, 3, 4, 5, false]}],
-                ["bold", "underline"]
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ color: [], }, { background: [] },],
             ]
         },
     }), []);
@@ -37,13 +61,14 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
                 />
                 <div className='flex items-center border-gray-150 gap-2 border-l pl-2'>
                     <FaBox/>
-                    <ComboBox selected={selected} setSelected={setSelected}/>
+                    <ArchiveDialog selected={selected} setSelected={setSelected}/>
                 </div>
             </div>
             <ReactQuill
                 theme="snow"
                 modules={modules}
                 value={content}
+                formats={formats}
                 onChange={setContent}
             />
             <div className='flex gap-2 items-center justify-end pt-2 '>

@@ -57,15 +57,18 @@ export async function getUerInfo({queryKey}) {
     return response.data.data;
 }
 
-export async function updateUserInfo({ profileImageUrl, introText }) {
-    console.log(profileImageUrl, introText)
+export async function updateUserInfo({ profileImageUrl, resizedProfileImageUrl, introText }) {
+    let profileImage;
+    if (profileImageUrl && resizedProfileImageUrl) {
+        profileImage = {profileImageUrl, resizedProfileImageUrl}
+    }
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    const response = await auth.put('/users', {profileImageUrl, introText}, config)
+    const response = await auth.put('/users', {profileImage, introText}, config)
     return response.data;
 }
 

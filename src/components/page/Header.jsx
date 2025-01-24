@@ -1,11 +1,12 @@
 import {useState} from "react";
-import {FaBars, FaTimes} from "react-icons/fa";
+import {FaBars} from "react-icons/fa";
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {checkSessionState, logout} from "../../api/user.js";
 import * as AuthSlice from "../../feature/authSlice.js";
 import {useMutation} from "@tanstack/react-query";
 import {openModal} from "../../feature/dialogSlice.js";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,6 +17,7 @@ function Header() {
     const { mutate: checkAuth } = useMutation({
         mutationFn : checkSessionState,
         onError: (error) => {
+            console.log(error)
                 if (error.response && error.response.status === 401) {
                     dispatch(openModal({
                         title: "로그인 만료",
@@ -31,25 +33,28 @@ function Header() {
             mutationFn: logout,
             onSuccess: () => {
                 dispatch(AuthSlice.logout())
+                setIsMenuOpen(!isMenuOpen)
                 navigate('/login')
             }
         }
     )
 
     const onClickHandler = () => {
-        setIsMenuOpen(!isMenuOpen)
         checkAuth()
     }
 
     const navItems = [
-        <NavLink key="login" to="/login" className='font-semibold hover:text-gray-300'>로그인</NavLink>,
+        <NavLink key="login" to="/login" onClick={() => setIsMenuOpen(!isMenuOpen)} className='font-semibold hover:text-gray-300'>로그인</NavLink>,
     ];
 
     const authNavItems = [
         <NavLink key="write" onClick={onClickHandler} to="/write" className='font-semibold hover:text-gray-300'>작성하기</NavLink>,
         <NavLink key="setting" onClick={onClickHandler} to="/setting" className='font-semibold hover:text-gray-300'>설정</NavLink>,
-        <NavLink key="my" onClick={() => setIsMenuOpen(!isMenuOpen)} to={`/users/${username}/posts`} className='font-semibold hover:text-gray-300'>마이페이지</NavLink>,
-        <button key="logout" className='font-semibold hover:text-gray-300 text-left' onClick={() => logoutUser()}>로그아웃</button>,
+        <NavLink key="my" to={`/users/${username}/posts`} className='font-semibold hover:text-gray-300'>마이페이지</NavLink>,
+        <button key="logout" className='font-semibold hover:text-gray-300 text-left' onClick={() => {
+            logoutUser()
+            setIsMenuOpen(false)
+        }}>로그아웃</button>,
     ];
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
@@ -62,39 +67,24 @@ function Header() {
     }
 
     return (
-        <header className='bg-sky-800 text-white px-4'>
+        <header className='px-4 border-b'>
             <div className='flex justify-between container mx-auto items-center h-14'>
-                <div>
-                    <Link to='/' className='text-4xl font-bold'> Test </Link>
-                </div>
-                <nav className='hidden md:flex space-x-4'>
-                    {isLogin? authNavItems : navItems}
+                <Link to='/' className='text-4xl h-full block'>
+                    <img className='h-full p-2' alt='logo' src="/logo2.svg"/>
+                </Link>
+                <nav className=' space-x-4'>
+                    {isLogin? <Menu>
+                        <MenuButton><FaBars/></MenuButton>
+                        <MenuItems anchor="bottom" className='mt-5 bg-white flex flex-col border p-5 min-w-[150px]'>
+                            {authNavItems.map((item, index) => {
+                                return <MenuItem key={index}>
+                                    {item}
+                                </MenuItem>
+                            })}
+                        </MenuItems>
+                    </Menu> : navItems}
                 </nav>
-                <button className='md:hidden' onClick={toggleMenu}>
-                    <FaBars/>
-                </button>
             </div>
-
-            {/*   mobile   */}
-            <aside className={`
-                fixed top-0 left-0 w-64 h-full bg-sky-800 z-50
-                ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-                md:hidden transform transition-transform duration-300 ease-in-out
-                `
-            }>
-                <div className='flex justify-end p-4'>
-                    <button
-                        className='text-white focus:outline-none'
-                        aria-label='Close menu'
-                        onClick={toggleMenu}
-                    >
-                        <FaTimes className="h-6 w-6"/>
-                    </button>
-                </div>
-                <nav className='flex flex-col space-y-4 p-4'>
-                    {renderNavItems()}
-                </nav>
-            </aside>
         </header>
     )
 }

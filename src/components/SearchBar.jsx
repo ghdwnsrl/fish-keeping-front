@@ -1,14 +1,17 @@
 import {FaMagnifyingGlass} from "react-icons/fa6";
 import {Select} from "@headlessui/react";
 import {useState} from "react";
+import Button from "./Button.jsx";
 
-const SearchBar = ({condition, onSearchBarClickHandler}) => {
+const SearchBar = ({condition, children, onSearchBarClickHandler}) => {
+
     const [value, setValue] = useState({
-        type : condition ? condition.type : "title",
-        keyword : condition ? condition.keyword : ""
+        type: condition ? condition.type : "title",
+        keyword: condition ? condition.keyword : ""
     })
+
     const handleOnChangeCondition = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setValue((prevState) => ({
             ...prevState,
             [name]: value
@@ -19,22 +22,26 @@ const SearchBar = ({condition, onSearchBarClickHandler}) => {
         onSearchBarClickHandler(value);
     }
 
-    return (<div className='flex gap-5 justify-center pt-5'>
-            <Select name="type"
-                    value={value.type}
-                    onChange={handleOnChangeCondition}
-                    className='border rounded-xl px-1'
-            >
-                <option value="title">제목</option>
-                <option value="all">제목 + 게시글</option>
-                <option value="username">작성자</option>
-            </Select>
-            <div className='flex border p-2 rounded-xl'>
-                <input className='outline-none' name='keyword' value={value.keyword} onChange={handleOnChangeCondition}/>
-                <button className='px-1' onClick={handleClick}>{<FaMagnifyingGlass/>}</button>
-            </div>
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+            onSearchBarClickHandler(value);
+        }
+    }
+
+    return <div className='flex gap-5 justify-center pt-5'>
+        <Select name="type"
+                value={value.type}
+                onChange={handleOnChangeCondition}
+                className='border rounded-xl px-1'
+        >
+            {children}
+        </Select>
+        <div className='flex border p-2 rounded-xl'>
+            <input className='outline-none' name='keyword' onKeyDown={handleKeyDown} value={value.keyword} onChange={handleOnChangeCondition}/>
+            <Button styleType='px-1 border-none' onClick={handleClick}>{<FaMagnifyingGlass/>}</Button>
         </div>
-    )
+    </div>
+
 }
 
 export default SearchBar;

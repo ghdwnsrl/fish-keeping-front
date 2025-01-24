@@ -12,8 +12,6 @@ const GlobalDialog = () => {
 
     if (!isOpen) return null;
 
-    console.log(content)
-
     const handleOnConfirm = () => {
         dispatch(AuthSlice.logout())
         navigate(redirectPath)

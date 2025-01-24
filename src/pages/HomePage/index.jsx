@@ -24,7 +24,11 @@ const HomePage = () => {
                 <PopularPostCard data={popularPosts}/>
             </div>
             <Title>전체 게시글</Title>
-            <Board moveToPage={moveToPage}/>
+            <Board moveToPage={moveToPage}>
+                <option value="title">제목</option>
+                <option value="all">제목 + 게시글</option>
+                <option value="username">작성자</option>
+            </Board>
         </div>
     )
 }

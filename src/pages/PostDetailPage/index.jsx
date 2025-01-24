@@ -79,7 +79,12 @@ const PostDetailPage = () => {
             </div>
             <div className='pt-4'>
                 <p className='text-xl font-semibold'>다른 게시글</p>
-                <Board initialPage={page ? parseInt(page) : 0}/>
+                <Board initialPage={page ? parseInt(page) : 0}
+                >
+                    <option value="title">제목</option>
+                    <option value="all">제목 + 게시글</option>
+                    <option value="username">작성자</option>
+                </Board>
             </div>
         </div>
     )
