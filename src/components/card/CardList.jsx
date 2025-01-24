@@ -1,7 +1,7 @@
 import Card from "./Card.jsx";
 import {useParams} from "react-router-dom";
 
-function CardList({currentPage, data}) {
+function CardList({currentPage = 0, data}) {
     const {id} = useParams();
     return <div className='mb-4'>
         {data?.map(data => {

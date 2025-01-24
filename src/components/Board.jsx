@@ -27,7 +27,6 @@ function Board({initialPage, username, archiveName, searchParams, children, move
             moveToPage(value)
             return
         }
-        console.log('here')
         setCondition(value)
     }
 

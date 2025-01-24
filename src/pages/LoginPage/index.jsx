@@ -12,26 +12,26 @@ import {useMutation} from "@tanstack/react-query";
 
 const LoginPage = () => {
 
-    const {register, handleSubmit, setFocus, setError, reset , formState: { errors}} = useForm()
+    const {register, handleSubmit, setFocus, setError, reset, formState: {errors}} = useForm()
 
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    const { mutate : loginUser } = useMutation({
+    const {mutate: loginUser} = useMutation({
         mutationFn: login,
         onSuccess: (data, variables) => {
             dispatch(loginSuccess(variables.username));
             navigate('/');
         },
         onError: (err) => {
-            if (err.response && err.response.status === 401 ) {
+            if (err.response && err.response.status === 401) {
                 setFocus('username')
                 reset()
                 setError('root.serverError', {
                     type: "403",
                     message: "아이디 또는 비밀번호가 잘못 되었습니다. \n 아이디와 비밀번호를 정확히 입력해 주세요."
                 })
-            } else if (err.response && err.response.status === 404 ) {
+            } else if (err.response && err.response.status === 404) {
                 setFocus('username')
                 reset()
                 setError('root.serverError', {
@@ -51,33 +51,35 @@ const LoginPage = () => {
     }, [setFocus]);
 
     return (
-        <Form title='LOGIN'
-              handleSubmit={handleSubmit(onSubmit)}
-              styleType='container flex flex-col h-56 items-center justify-center mt-36 gap-2'
-        >
-            <Input placeholder='ID'
-                   name='username'
-                   type='text'
-                   register={register}
-                   condition={{required: true}}
+        <div className='flex flex-col items-center'>
+            <Form title='LOGIN'
+                  handleSubmit={handleSubmit(onSubmit)}
+                  styleType='container flex flex-col h-56 items-center justify-center mt-36 gap-2'
             >
-                <IoMail className="text-2xl mr-2"/>
-            </Input>
-            <Input placeholder='PASSWORD'
-                   name='password'
-                   type='password'
-                   register={register}
-                   condition={{required: true}}
-            >
-                <IoLockClosed className="text-2xl mr-2"/>
-            </Input>
-            {(errors.username || errors.password) && <p className='text-red-600 text-xs'>아이디 또는 비밀번호를 입력하세요.</p>}
-            {errors.root?.serverError && (
-                <p className='text-red-600 text-xs'>{errors.root.serverError.message}</p>
-            )}
-            <Button type='submit' styleType='w-96 text-xl w-max:32'>확 인</Button>
+                <Input placeholder='ID'
+                       name='username'
+                       type='text'
+                       register={register}
+                       condition={{required: true}}
+                >
+                    <IoMail className="text-2xl mr-2"/>
+                </Input>
+                <Input placeholder='PASSWORD'
+                       name='password'
+                       type='password'
+                       register={register}
+                       condition={{required: true}}
+                >
+                    <IoLockClosed className="text-2xl mr-2"/>
+                </Input>
+                {(errors.username || errors.password) && <p className='text-red-600 text-xs'>아이디 또는 비밀번호를 입력하세요.</p>}
+                {errors.root?.serverError && (
+                    <p className='text-red-600 text-xs'>{errors.root.serverError.message}</p>
+                )}
+                <Button type='submit' styleType='w-96 text-xl w-max:32'>확 인</Button>
+            </Form>
             <Link to='/join'>회원이 아니신가요? <u>회원가입</u></Link>
-        </Form>
+        </div>
     )
 }
 

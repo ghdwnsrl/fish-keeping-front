@@ -5,6 +5,8 @@ import Button from "../../components/Button.jsx";
 import {useEffect, useRef, useState} from "react";
 import useImageUpload from "../../hooks/useImageUpload.jsx";
 import ImageUtils from "../../utils/ImageUtils.js";
+import HiddenFileInput from "./HiddenFileInput.jsx";
+import Image from "../../components/Image.jsx";
 
 const SettingPage = () => {
     const {username} = useSelector(state => state.auth)
@@ -70,9 +72,9 @@ const SettingPage = () => {
     };
 
     return <div className='flex-row justify-items-center'>
-        <img alt='profileUrl' className='m-auto w-52 h-52 bg-gray-100 rounded-full' src={data?.profileImageUrl} />
+        <Image alt='profileUrl' src={data?.profileImageUrl}/>
+        <p className='text-6xl block text-center'>{data?.username}</p>
         <div className='w-64 h-64 flex-row space-y-2'>
-            <p className='text-6xl block text-center'>{data?.username}</p>
             {!isEditing ?
                 <p className='block w-full text-center h-5'>{data?.introText}</p> :
                 <div className='flex w-full space-x-1 justify-around'>
@@ -81,15 +83,10 @@ const SettingPage = () => {
                 </div>
             }
             <Button styleType='w-full' onClick={onEditProfileImageHandler}>프로필 사진 변경</Button>
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept="image/*"
-                style={{display: 'none'}}
-            />
+            <HiddenFileInput ref={fileInputRef} onChange={handleFileChange}/>
             {!isEditing && <Button styleType='w-full' onClick={onEditIntroTextHandler}>한줄 소개 수정</Button>}
-            <Button styleType='w-full bg-red-500 text-white hover:bg-red-400' onClick={onDeleteUserHandler}>회원 탈퇴</Button>
+            <Button styleType='w-full bg-red-500 text-white hover:bg-red-400' onClick={onDeleteUserHandler}>회원
+                탈퇴</Button>
         </div>
     </div>
 }
