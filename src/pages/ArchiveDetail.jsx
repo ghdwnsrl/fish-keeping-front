@@ -3,6 +3,8 @@ import Board from "../components/Board.jsx";
 import {useSelector} from "react-redux";
 import {useMutation} from "@tanstack/react-query";
 import {deleteArchive} from "../api/archive.js";
+import {Suspense} from "react";
+import PostSkeleton from "./HomePage/skeleton/PostSkeleton.jsx";
 
 
 function ArchiveDetail() {
@@ -19,12 +21,14 @@ function ArchiveDetail() {
                 <span onClick={() => {mutate({name:archiveName})}}>삭제</span>
             </div> : <></>
             }
-            <Board username={username}
-                   archiveName={archiveName}
-            >
-                <option value="title">제목</option>
-                <option value="all">제목 + 게시글</option>
-            </Board>
+            <Suspense fallback={<PostSkeleton/>}>
+                <Board username={username}
+                       archiveName={archiveName}
+                >
+                    <option value="title">제목</option>
+                    <option value="all">제목 + 게시글</option>
+                </Board>
+            </Suspense>
         </div>
     )
 }

@@ -1,5 +1,4 @@
 import Skeleton from "react-loading-skeleton";
-import {Link} from "react-router-dom";
 
 const TankCardListSkeleton = () => {
     return (
