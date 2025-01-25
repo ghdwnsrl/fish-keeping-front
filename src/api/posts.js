@@ -24,14 +24,16 @@ export async function getPosts({ queryKey }) {
     return response.data
 }
 
-export function getByPostId({id}) {
+export async function getByPostId({ queryKey }) {
+    const [_, id] = queryKey
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    return posts.get(`/${id}`, config)
+    const response = await posts.get(`/${id}`, config)
+    return response.data;
 }
 
 export async function getPopularPosts() {
@@ -79,7 +81,7 @@ export function updatePost({id, title, content, selected, urlArray, thumbnailUrl
         config)
 }
 
-export function deleteByPost({id}) {
+export function deleteByPostId({id}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,

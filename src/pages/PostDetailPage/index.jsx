@@ -6,38 +6,26 @@ import './Quill.css'
 import {FaAngleLeft} from "react-icons/fa";
 import Board from "../../components/Board.jsx";
 import useApiRequest from "../../hooks/useApiRequest.js";
-import { getByPostId} from "../../api/posts.js";
 import {useSelector} from "react-redux";
 import Title from "../../components/Title.jsx";
 import CommentWriteForm from "./CommentWriteForm.jsx";
-import PostDetail from "./PostDetail.jsx";
+import PostDetail from "./PostDetail/PostDetail.jsx";
 import {getCommentByPage} from "../../api/comment.js";
 import PostSkeleton from "../HomePage/skeleton/PostSkeleton.jsx";
 
 const PostDetailPage = () => {
 
     const {id} = useParams();
-    const {isLogin, loginUsername} = useSelector(state => ({
+    const {isLogin} = useSelector(state => ({
         isLogin: state.auth.isAuthenticated,
-        loginUsername: state.auth.username,
     }))
     const [searchParams] = useSearchParams()
     const page = searchParams.get('page')
     const navigate = useNavigate();
-    const [post, setPost] = useState({});
-    const isWriter = loginUsername === post.username
     const [comments, setComments] = useState([]);
-    const {execute: getPost} = useApiRequest(getByPostId);
+
     const {execute: fetch} = useApiRequest(getCommentByPage)
     const [currentPage, setCurrentPage] = useState(0)
-
-    useEffect(() => {
-        getPost({id}, {
-            onSuccess: (response) => {
-                setPost(response.data)
-            }
-        })
-    }, [getPost, id]);
 
 
     useEffect(() => {
@@ -52,13 +40,6 @@ const PostDetailPage = () => {
         });
     }, [currentPage, id]);
 
-    const handleClickLike = () => {
-        setPost((prevState) => ({
-            ...prevState,
-            liked: !prevState.liked
-        }));
-    }
-
     const handlePageChange = ({selected}) => {
         setCurrentPage(selected);
     };
@@ -69,7 +50,9 @@ const PostDetailPage = () => {
                 <FaAngleLeft className="text-xl mr-1"/>
                 <Title>전체 게시글</Title>
             </div>
-            <PostDetail isWriter={isWriter} post={post} id={id} handleClickLike={handleClickLike}/>
+            <Suspense>
+                <PostDetail id={id}/>
+            </Suspense>
             <p className='font-semibold mb-2'>댓글 {comments.totalElements}</p>
             <div className='container border-t pt-2'>
                 <CommentList postId={id} comments={comments} setComments={setComments} currentPage={currentPage} handlePageChange={handlePageChange} />
