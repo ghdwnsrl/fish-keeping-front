@@ -1,8 +1,8 @@
 import axios from "axios";
 
 function create(baseURL, options) {
-    return axios.create(Object.assign({baseURL: "http://localhost:8080" + baseURL} ), options)
-    // return axios.create(Object.assign({baseURL} ), options)
+    // return axios.create(Object.assign({baseURL: "http://localhost:8080" + baseURL} ), options)
+    return axios.create(Object.assign({baseURL} ), options)
 }
 
 export const posts = create("/api/posts")

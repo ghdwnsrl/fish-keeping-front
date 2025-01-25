@@ -1,11 +1,11 @@
 import Image from "./Image.jsx";
 
-const UserProfile = (data) => {
+const UserProfile = ({profileImageUrl, username, introText, isEditing}) => {
     return (
         <>
-            <Image alt='profileUrl' src={data.profileImageUrl}/>
-            <h1 className='text-6xl'>{data.username}</h1>
-            <p>{data.introText}</p>
+            <Image alt='profileUrl' src={profileImageUrl}/>
+            <h1 className='text-6xl'>{username}</h1>
+            {!isEditing && <p>{introText}</p>}
         </>
     )
 }

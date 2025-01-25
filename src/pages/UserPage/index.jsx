@@ -1,13 +1,14 @@
 import {Outlet, useParams} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
+import {useSuspenseQuery} from "@tanstack/react-query";
 import {getUerInfo} from "../../api/user.js";
 import UserProfile from "../../components/UserProfile.jsx";
-import TabNavigation from "../SettingPage/TabNavigation.jsx";
+import TabNavigation from "./TabNavigation.jsx";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function UserPage() {
     const {username} = useParams();
-    const {data} = useQuery({
-        queryKey : ["userInfo", username],
+    const {data} = useSuspenseQuery({
+        queryKey: ["userInfo", username],
         queryFn: getUerInfo
     })
     return (
@@ -19,7 +20,7 @@ function UserPage() {
                 />
             </div>
             <div className='flex justify-center items-center w-full flex-col'>
-                <TabNavigation username={username} />
+                <TabNavigation username={username}/>
                 <div className='w-full flex justify-center'>
                     <Outlet/>
                 </div>

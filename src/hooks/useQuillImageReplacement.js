@@ -57,7 +57,7 @@ export default function useQuillImageReplacement() {
             return {
                 endContent: content,
                 imgUrl: [],
-                thumbnailUrl : 'https://placehold.co/200x240?text=NO%20IMAGE'
+                thumbnailUrl : 'https://placehold.co/240x240?text=NO%20IMAGE'
             };
         }
 
