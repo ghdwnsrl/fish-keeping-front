@@ -3,7 +3,6 @@ import PostItemFooter from "./PostItemFooter.jsx";
 
 
 const Card = ({ header, data = [], footer }) => {
-    console.log(data)
     return (
         <>
             {header && <header>{header}</header>}
