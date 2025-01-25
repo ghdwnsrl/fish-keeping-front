@@ -8,8 +8,8 @@ const PopularPostSkeleton = () => {
             <Title>인기 게시글</Title>
             <div className='grid grid-cols-3 mt-3 gap-1 mx-auto'>
                 {Array.from({length: 3}).map((_, index) =>
-                    <div>
-                        <Skeleton className='w-48 h-48 sm:h-64 sm:w-64'/>
+                    <div key={index}>
+                        <Skeleton borderRadius={8} className='w-48 h-48 sm:h-64 sm:w-64'/>
                         <dl className='flex-row m-1'>
                             <Skeleton width={50} height={20}/>
                             <div className='flex flex-wrap gap-1'>
