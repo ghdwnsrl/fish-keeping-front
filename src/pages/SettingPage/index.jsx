@@ -56,7 +56,7 @@ const SettingPage = () => {
                          isEditing={isEditing}
             />
         }
-        <div className='w-64 h-64 flex-row space-y-2'>
+        <div className='w-64 h-64 flex-row space-y-2 mx-auto'>
             {isEditing && <div className='flex w-full space-x-1 justify-around'>
                 <input ref={valueRef} value={value} className='' onChange={onInputChange}/>
                 <Button styleType='w-1/6' onClick={onSubmitIntroTextHandler}>완료</Button>

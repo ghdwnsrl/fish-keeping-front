@@ -1,6 +1,6 @@
 import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import CommentList from "../../components/comment/CommentList.jsx";
-import { useEffect, useState} from "react";
+import {Suspense, useEffect, useState} from "react";
 import 'react-quill/dist/quill.snow.css';
 import './Quill.css'
 import {FaAngleLeft} from "react-icons/fa";
@@ -12,6 +12,7 @@ import Title from "../../components/Title.jsx";
 import CommentWriteForm from "./CommentWriteForm.jsx";
 import PostDetail from "./PostDetail.jsx";
 import {getCommentByPage} from "../../api/comment.js";
+import PostSkeleton from "../HomePage/skeleton/PostSkeleton.jsx";
 
 const PostDetailPage = () => {
 
@@ -79,12 +80,14 @@ const PostDetailPage = () => {
             </div>
             <div className='pt-4'>
                 <p className='text-xl font-semibold'>다른 게시글</p>
-                <Board initialPage={page ? parseInt(page) : 0}
-                >
-                    <option value="title">제목</option>
-                    <option value="all">제목 + 게시글</option>
-                    <option value="username">작성자</option>
-                </Board>
+                <Suspense fallback={<PostSkeleton/>}>
+                    <Board initialPage={page ? parseInt(page) : 0}
+                    >
+                        <option value="title">제목</option>
+                        <option value="all">제목 + 게시글</option>
+                        <option value="username">작성자</option>
+                    </Board>
+                </Suspense>
             </div>
         </div>
     )
