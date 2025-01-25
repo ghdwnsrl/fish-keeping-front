@@ -3,7 +3,7 @@ import {useState} from "react";
 import {getPosts} from "../api/posts.js";
 import Paginate from "./Paginate.jsx";
 import SearchBar from "./SearchBar.jsx";
-import {useQuery} from "@tanstack/react-query";
+import {useSuspenseQuery} from "@tanstack/react-query";
 
 function Board({initialPage, username, archiveName, searchParams, children, moveToPage}) {
     const [currentPage, setCurrentPage] = useState(initialPage);
@@ -12,7 +12,7 @@ function Board({initialPage, username, archiveName, searchParams, children, move
         keyword: searchParams ? searchParams.keyword : ""
     })
 
-    const {data, isLoading} = useQuery({
+    const {data, isLoading} = useSuspenseQuery({
         queryKey: ['Posts', currentPage, username, archiveName, condition],
         queryFn: getPosts
     })

@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useSuspenseQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {getUerInfo, updateUserInfo} from "../../api/user.js";
 import {useSelector} from "react-redux";
 import Button from "../../components/Button.jsx";

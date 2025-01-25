@@ -4,6 +4,9 @@ import Title from "../../components/Title.jsx";
 import Board from "../../components/Board.jsx";
 import {useNavigate} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
+import {Suspense} from "react";
+import UserProfileSkeleton from "../../components/skeleton/UserProfileSkeleton.jsx";
+import PostSkeleton from "./PostSkeleton.jsx";
 
 
 const HomePage = () => {
@@ -24,11 +27,13 @@ const HomePage = () => {
                 <PopularPostCard data={popularPosts}/>
             </div>
             <Title>전체 게시글</Title>
-            <Board moveToPage={moveToPage}>
-                <option value="title">제목</option>
-                <option value="all">제목 + 게시글</option>
-                <option value="username">작성자</option>
-            </Board>
+            <Suspense fallback={<PostSkeleton/>} >
+                <Board moveToPage={moveToPage}>
+                    <option value="title">제목</option>
+                    <option value="all">제목 + 게시글</option>
+                    <option value="username">작성자</option>
+                </Board>
+            </Suspense>
         </div>
     )
 }
