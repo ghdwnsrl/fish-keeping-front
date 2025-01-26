@@ -6,7 +6,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const CommentWriteForm = ({postId, commentId=null}) => {
     const [content, setContent] = useState()
-    const client=useQueryClient()
+    const client= useQueryClient()
 
     const handleSubmit = (e) => {
         e.preventDefault()

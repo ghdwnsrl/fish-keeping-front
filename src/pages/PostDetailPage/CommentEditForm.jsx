@@ -1,20 +1,25 @@
 import Form from "../../components/Form.jsx";
 import Button from "../../components/Button.jsx";
-import useApiRequest from "../../hooks/useApiRequest.js";
 import {updateComment} from "../../api/comment.js";
 import {useRef, useState} from "react";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 
-const CommentEditForm = ({initialContent, commentId}) => {
+const CommentEditForm = ({initialContent, setIsEdit, commentId}) => {
     const [content, setContent] = useState(initialContent.replace("\r\n", "<br>"))
-    const {execute: updateCommentById} = useApiRequest(updateComment);
     const textareaRef = useRef();
-    const onSubmit = () => {
-        updateCommentById({commentId, content}, {
-            onSuccess: () => {
-                console.log('성공')
-            }
-        })
+    const client = useQueryClient();
+    const {mutate : updateCommentById} = useMutation({
+        mutationFn:updateComment,
+        onSuccess: () => {
+            client.invalidateQueries(["comments"])
+            setIsEdit(false);
+        }
+    })
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        updateCommentById({commentId, content})
     }
 
     return <Form styleType={'grid'}

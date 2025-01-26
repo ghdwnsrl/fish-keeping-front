@@ -44,7 +44,7 @@ function Comment({commentId, content,  postId, handleReply, ...rest}) {
                 </div>
             </UserHeader>
             <div className='mx-10'>
-                {isEdit ? <CommentEditForm initialContent={content} commentId={commentId}/>
+                {isEdit ? <CommentEditForm initialContent={content} setIsEdit={setIsEdit} commentId={commentId}/>
                     : <p className='whitespace-pre-wrap'>{content}</p>}
             </div>
         </div>
