@@ -5,14 +5,14 @@ import Paginate from "./Paginate.jsx";
 import SearchBar from "./SearchBar.jsx";
 import {useSuspenseQuery} from "@tanstack/react-query";
 
-function Board({initialPage, username, archiveName, searchParams, children, moveToPage}) {
+function Board({initialPage, username, archiveName, searchParams, children}) {
     const [currentPage, setCurrentPage] = useState(initialPage);
     const [condition, setCondition] = useState({
         type: searchParams ? searchParams.type : "title",
         keyword: searchParams ? searchParams.keyword : ""
     })
 
-    const {data, isLoading} = useSuspenseQuery({
+    const {data} = useSuspenseQuery({
         queryKey: ['Posts', currentPage, username, archiveName, condition],
         queryFn: getPosts
     })
@@ -21,22 +21,13 @@ function Board({initialPage, username, archiveName, searchParams, children, move
         setCurrentPage(selected);
     };
 
-    // todo : 값 이상함
     const onSearchBarClickHandler = (value) => {
-        if (moveToPage) {
-            moveToPage(value)
-            return
-        }
         setCondition(value)
-    }
-
-    if (isLoading) {
-        return <div>로딩 중...</div>;
     }
 
     if (!data || data.totalPages === 0) {
         return <>
-            <div>검색 결과가 없습니다.</div>
+            <p className='text-center text-xl'>검색 결과가 없습니다.</p>
             <SearchBar condition={condition} setCondition={setCondition}
                        onSearchBarClickHandler={onSearchBarClickHandler}>
                 {children}
