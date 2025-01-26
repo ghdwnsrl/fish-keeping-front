@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import Board from "../../components/Board.jsx";
 import Title from "../../components/Title.jsx";
+import {Suspense} from "react";
 
 const SearchPage = () => {
     const [searchParams] = useSearchParams();
@@ -17,11 +18,13 @@ const SearchPage = () => {
     return (
         <div className='container'>
             <Title>{searchParamsResult.type} &#39;{searchParamsResult.keyword}&#39; 검색 결과</Title>
-            <Board searchParams={searchParamsResult}>
-                <option value="title">{searchType.TITLE}</option>
-                <option value="all">{searchType.ALL}</option>
-                <option value="username">{searchType.USERNAME}</option>
-            </Board>
+            <Suspense>
+                <Board searchParams={searchParamsResult}>
+                    <option value="title">{searchType.TITLE}</option>
+                    <option value="all">{searchType.ALL}</option>
+                    <option value="username">{searchType.USERNAME}</option>
+                </Board>
+            </Suspense>
         </div>
     )
 }

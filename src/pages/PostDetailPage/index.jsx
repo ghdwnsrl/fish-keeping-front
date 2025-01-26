@@ -10,6 +10,7 @@ import Title from "../../components/Title.jsx";
 import CommentWriteForm from "./CommentWriteForm.jsx";
 import PostDetail from "./PostDetail/PostDetail.jsx";
 import PostSkeleton from "../HomePage/skeleton/PostSkeleton.jsx";
+import PostDetailSkeleton from "./PostDetail/PostDetailSkeleton.jsx";
 
 const PostDetailPage = () => {
 
@@ -27,7 +28,7 @@ const PostDetailPage = () => {
                 <FaAngleLeft className="text-xl mr-1"/>
                 <Title>전체 게시글</Title>
             </div>
-            <Suspense>
+            <Suspense fallback={<PostDetailSkeleton/>}>
                 <PostDetail id={id}/>
             </Suspense>
             <div className='container pt-2'>
