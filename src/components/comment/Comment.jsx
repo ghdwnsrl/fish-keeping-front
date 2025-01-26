@@ -3,11 +3,16 @@ import {deleteComment} from "../../api/comment.js";
 import { useState} from "react";
 import CommentEditForm from "../../pages/PostDetailPage/CommentEditForm.jsx";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useSelector} from "react-redux";
 
 function Comment({commentId, content,  postId, handleReply, ...rest}) {
     const client = useQueryClient()
     const [isEdit, setIsEdit] = useState(false)
-    const {parentId} = {...rest}
+    const {parentId, username: writer} = {...rest}
+    const {username} = useSelector(state => ({
+        username: state.auth.username,
+    }))
+    const isWriter = writer === username
 
     const {mutate : deleteCommentById } = useMutation({
         mutationFn : deleteComment,
@@ -31,8 +36,10 @@ function Comment({commentId, content,  postId, handleReply, ...rest}) {
                         height='h-8 w-8'
             >
                 <div className=' flex gap-1 text-sm mt-1 opacity-70'>
-                    <span onClick={() => setIsEdit(!isEdit)}>수정</span>
-                    <span onClick={onDeleteHandler}>삭제</span>
+                    {isWriter && <>
+                        <span onClick={() => setIsEdit(!isEdit)}>수정</span>
+                        <span onClick={onDeleteHandler}>삭제</span>
+                    </>}
                     {handleReply && <span onClick={onClickReply}>댓글 달기</span>}
                 </div>
             </UserHeader>
