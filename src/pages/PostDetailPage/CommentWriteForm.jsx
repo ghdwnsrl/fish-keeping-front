@@ -1,22 +1,24 @@
 import Form from "../../components/Form.jsx";
-import useApiRequest from "../../hooks/useApiRequest.js";
 import {createComment} from "../../api/comment.js";
 import {useState} from "react";
 import Button from "../../components/Button.jsx";
-
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const CommentWriteForm = ({postId, commentId=null}) => {
-    const {execute: create} = useApiRequest(createComment)
     const [content, setContent] = useState()
+    const client=useQueryClient()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        create({postId, content, commentId}, {
-            onSuccess: () => {
-                console.log('성공')
-            }
-        })
+        create({postId, content, commentId})
     }
+
+    const {mutate: create} = useMutation({
+        mutationFn: createComment,
+        onSuccess: () => {
+            client.invalidateQueries(["comments"])
+        }
+    })
 
     return <Form
         handleSubmit={handleSubmit}
