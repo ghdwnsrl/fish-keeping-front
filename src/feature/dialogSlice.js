@@ -15,7 +15,6 @@ const modalSlice = createSlice({
             state.title = action.payload.title;
             state.content = action.payload.content;
             state.redirectPath = action.payload.redirectPath || '';
-
         },
         closeModal: (state) => {
             state.isOpen = false;
