@@ -17,6 +17,7 @@ const CommentWriteForm = ({postId, commentId=null}) => {
             }
         })
     }
+
     return <Form
         handleSubmit={handleSubmit}
         styleType='grid'

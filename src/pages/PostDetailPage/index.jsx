@@ -1,16 +1,14 @@
 import {Link, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import CommentList from "../../components/comment/CommentList.jsx";
-import {Suspense, useEffect, useState} from "react";
+import {Suspense} from "react";
 import 'react-quill/dist/quill.snow.css';
 import './Quill.css'
 import {FaAngleLeft} from "react-icons/fa";
 import Board from "../../components/Board.jsx";
-import useApiRequest from "../../hooks/useApiRequest.js";
 import {useSelector} from "react-redux";
 import Title from "../../components/Title.jsx";
 import CommentWriteForm from "./CommentWriteForm.jsx";
 import PostDetail from "./PostDetail/PostDetail.jsx";
-import {getCommentByPage} from "../../api/comment.js";
 import PostSkeleton from "../HomePage/skeleton/PostSkeleton.jsx";
 
 const PostDetailPage = () => {
@@ -22,27 +20,6 @@ const PostDetailPage = () => {
     const [searchParams] = useSearchParams()
     const page = searchParams.get('page')
     const navigate = useNavigate();
-    const [comments, setComments] = useState([]);
-
-    const {execute: fetch} = useApiRequest(getCommentByPage)
-    const [currentPage, setCurrentPage] = useState(0)
-
-
-    useEffect(() => {
-        fetch({ currentPage, postId: id}, {
-            onSuccess: response => {
-                const transformedList = response.data.content.map(item => ({
-                    ...item,
-                    isReply: false,
-                }));
-                setComments({...response.data, content: transformedList})
-            }
-        });
-    }, [currentPage, id]);
-
-    const handlePageChange = ({selected}) => {
-        setCurrentPage(selected);
-    };
 
     return (
         <div className='container'>
@@ -53,9 +30,10 @@ const PostDetailPage = () => {
             <Suspense>
                 <PostDetail id={id}/>
             </Suspense>
-            <p className='font-semibold mb-2'>댓글 {comments.totalElements}</p>
-            <div className='container border-t pt-2'>
-                <CommentList postId={id} comments={comments} setComments={setComments} currentPage={currentPage} handlePageChange={handlePageChange} />
+            <div className='container pt-2'>
+                <Suspense fallback={<></>}>
+                    <CommentList postId={id} />
+                </Suspense>
                 {isLogin ?
                     <CommentWriteForm postId={id}/> :
                     <Link to='/login'><p className='text-center text-lg'><u>로그인</u> 후 이용 가능합니다.</p></Link>

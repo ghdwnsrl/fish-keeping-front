@@ -1,24 +1,31 @@
 import Comment from "./Comment.jsx";
 import Paginate from "../Paginate.jsx";
 import CommentWriteForm from "../../pages/PostDetailPage/CommentWriteForm.jsx";
+import {useSuspenseQuery} from "@tanstack/react-query";
+import {getCommentByPage} from "../../api/comment.js";
+import {useState} from "react";
 
-function CommentList({comments, postId, handlePageChange, currentPage, setComments}) {
+function CommentList({postId}) {
+    const [page, setPage] = useState(0)
+
+    const {data: comments} = useSuspenseQuery({
+        queryKey: ["comments", postId, page],
+        queryFn:getCommentByPage
+    })
+
+    const [isReply, setIsReply] = useState(false)
 
     const onPageChange = ({selected}) => {
-        handlePageChange({selected});
+        setPage({selected});
     };
 
-    const handleReply = (commentId) => {
-        setComments((prevData) => ({
-            ...prevData,
-            content: prevData.content.map((comment) => {
-                return comment.id === commentId ? {...comment, isReply: !comment.isReply} : comment;
-            })
-        }))
+    const handleReply = () => {
+        setIsReply(!isReply)
     }
     return (
         <div className='gap-2 container'>
-            {comments.content && comments.content.map(comment => {
+            <p className='font-semibold border-b py-2  mb-2'>댓글 {comments.totalElements}</p>
+            {comments.content.map(comment => {
                 return (
                     <>
                         {comment.id && <Comment
@@ -29,8 +36,8 @@ function CommentList({comments, postId, handlePageChange, currentPage, setCommen
                             content={comment.content}
                             profileImageUrl={comment.profileImageUrl}
                             createdAt={comment.createdAt}
-                            handleReply={handleReply}
                             parentId={comment.id}
+                            handleReply={handleReply}
                         />}
                         <div className="ml-10">
                             {comment.replies && comment.replies.length > 0 && comment.replies.map(reply => {
@@ -43,17 +50,18 @@ function CommentList({comments, postId, handlePageChange, currentPage, setCommen
                                         content={reply.content}
                                         profileImageUrl={comment.profileImageUrl}
                                         createdAt={reply.createdAt}
-                                        handleReply={handleReply}
                                         parentId={comment.id}
                                     />
                                 );
                             })}
-                            { comment.isReply && <CommentWriteForm postId={postId} commentId={comment.id} /> }
+                            {isReply && <CommentWriteForm postId={postId} commentId={comment.id}/>}
                         </div>
-                </>
-                )})
+                    </>
+                )
+            })
             }
-            {comments.totalElements > 0 && <Paginate totalPage={comments.totalPages} currentPage={currentPage} handlePageChange={onPageChange}/>}
+            {comments.totalElements > 0 &&
+                <Paginate totalPage={comments.totalPages} currentPage={page} handlePageChange={onPageChange}/>}
         </div>
     )
 }

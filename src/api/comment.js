@@ -13,17 +13,17 @@ export function createComment({postId, content, commentId}) {
     }, config)
 }
 
-export function getCommentByPage({currentPage , postId}) {
+export async function getCommentByPage({queryKey}) {
+    const [_, postId, page] = queryKey
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
-        params: {
-            page: currentPage,
-        },
+        params: {page,},
         withCredentials: true
     }
-    return comments.get(`${postId}/comments`, config)
+    const response = await comments.get(`${postId}/comments`, config)
+    return response.data
 }
 
 export function deleteComment({commentId}) {
