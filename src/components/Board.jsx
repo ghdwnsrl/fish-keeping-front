@@ -4,9 +4,11 @@ import {getPosts} from "../api/posts.js";
 import Paginate from "./Paginate.jsx";
 import SearchBar from "./SearchBar.jsx";
 import {useSuspenseQuery} from "@tanstack/react-query";
+import {useNavigate} from "react-router-dom";
 
 function Board({initialPage, username, archiveName, searchParams, children}) {
     const [currentPage, setCurrentPage] = useState(initialPage);
+    const navigate = useNavigate();
     const [condition, setCondition] = useState({
         type: searchParams ? searchParams.type : "title",
         keyword: searchParams ? searchParams.keyword : ""
@@ -18,6 +20,7 @@ function Board({initialPage, username, archiveName, searchParams, children}) {
     })
 
     const handlePageChange = ({selected}) => {
+        navigate(`?page=${selected}`)
         setCurrentPage(selected);
     };
 
@@ -40,7 +43,7 @@ function Board({initialPage, username, archiveName, searchParams, children}) {
             data={data.content}
             currentPage={currentPage}
         />
-        <Paginate currentPage={data.number} totalPage={data.totalPages} handlePageChange={handlePageChange}/>
+        <Paginate currentPage={data.number} totalPage={data.pageable.totalPages} handlePageChange={handlePageChange}/>
         <SearchBar condition={condition} setCondition={setCondition}
                    onSearchBarClickHandler={onSearchBarClickHandler}>
             {children}

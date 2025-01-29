@@ -1,18 +1,12 @@
 import PopularPostCard from "./PopularPostCard.jsx";
 import Title from "../../components/Title.jsx";
 import Board from "../../components/Board.jsx";
-import {useNavigate} from "react-router-dom";
 import {Suspense} from "react";
 import PostSkeleton from "./skeleton/PostSkeleton.jsx";
 import PopularPostSkeleton from "./skeleton/PopularPostSkeleton.jsx";
 
 
 const HomePage = () => {
-    // const navigate = useNavigate()
-    //
-    // const moveToPage = (condition) => {
-    //     navigate(`/search?type=${condition.type}&keyword=${condition.keyword}`)
-    // }
 
     return (
         <div className='container'>

@@ -2,7 +2,10 @@ import {FaBox} from "react-icons/fa";
 import ArchiveDialog from "./ArchiveDialog.jsx";
 import ReactQuill from "react-quill";
 import Button from "./Button.jsx";
-import {useMemo, useState} from "react";
+import {useMemo} from "react";
+import Form from "./Form.jsx";
+import {useForm} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
 
 const formats = [
     'font',
@@ -24,10 +27,15 @@ const formats = [
     'image'
 ];
 
-const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', handleSubmit}) => {
-    const [content, setContent] = useState(initContent);
-    const [title, setTitle] = useState(initTitle);
-    const [selected, setSelected] = useState(initSelected)
+const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', onSubmit }) => {
+    const {register, handleSubmit, setValue, watch
+    } = useForm({defaultValues: {
+            title : initTitle,
+            content: initContent,
+            selected: initSelected
+        }})
+
+    const content = watch("content", initContent);
 
     const modules = useMemo(() => ({
         toolbar: {
@@ -43,25 +51,23 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
         },
     }), []);
 
-    const onHandleSubmit = (e) => {
-        e.preventDefault()
-        handleSubmit(title, content, selected, initContent);
+    const handleEditorChange = (value) => {
+        setValue("content", value); // content 값을 업데이트
+    };
+
+    const onHandleSubmit = (value) => {
+        const {title, content, selected} = value
+        onSubmit(title, content, selected, initContent);
     }
 
     return (
-        <form onSubmit={onHandleSubmit}>
+        <Form handleSubmit={handleSubmit(onHandleSubmit)}>
             <div className='flex w-full h-10 pl-3 border-gray-150 border-x border-t'>
-                <input
-                    type="text"
-                    id="title"
-                    value={title}
-                    placeholder="제목"
-                    className='focus:outline-none flex-grow'
-                    onChange={(e) => setTitle(e.target.value)}
-                />
+                <input className='focus:outline-none flex-grow'
+                       {...register("title", {required : "제목은 필수입니다."})} />
                 <div className='flex items-center border-gray-150 gap-2 border-l pl-2'>
                     <FaBox/>
-                    <ArchiveDialog selected={selected} setSelected={setSelected}/>
+                    <ArchiveDialog watch={watch} setValue={setValue}/>
                 </div>
             </div>
             <ReactQuill
@@ -69,7 +75,7 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
                 modules={modules}
                 value={content}
                 formats={formats}
-                onChange={setContent}
+                onChange={handleEditorChange}
             />
             <div className='flex gap-2 items-center justify-end pt-2 '>
                 <Button
@@ -77,7 +83,7 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
                     type="submit"
                 >작성</Button>
             </div>
-        </form>
+        </Form>
     )
 }
 

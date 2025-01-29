@@ -1,42 +1,28 @@
 import {Description, Dialog, DialogPanel, DialogTitle} from "@headlessui/react";
 import { useState } from "react";
-import {addArchivesByUsername, getArchivesByUsername} from "../api/archive.js";
+import { getArchivesByUsername} from "../api/archive.js";
 import {useSelector} from "react-redux";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import Button from "./Button.jsx";
+import ArchiveDialogForm from "./ArchiveDialogForm.jsx";
 
-function ArchiveDialog({selected, setSelected}) {
+function ArchiveDialog({watch, setValue}) {
     const [isOpen, setIsOpen] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
     const { username } = useSelector(state => ({username: state.auth.username}))
-    const [newArchive, setNewArchive] = useState("")
 
-    const {data, refetch} = useQuery({
+    const {data} = useQuery({
         queryKey: ['archiveList', username],
         queryFn: getArchivesByUsername,
     });
 
-    const {mutate} = useMutation({
-        mutationFn: addArchivesByUsername,
-        onSuccess: () => {
-            refetch()
-        }
-    })
+    const selected = watch("selected");
 
     const handleClickTank = (tank) => {
-        setSelected(tank.name)
+        let selected = tank.name.trim();
+        setValue("selected",selected)
         setIsOpen(false)
     }
-
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-            e.preventDefault()
-        }
-    }
-
-    const handleClickAddBtn = () => {
-        mutate({newArchive})
-    };
 
     return (
         <>
@@ -52,14 +38,7 @@ function ArchiveDialog({selected, setSelected}) {
                         <div className='flex flex-col'>
                             <Button block onClick={() => setIsAdd(!isAdd)}>새 어항 추가하기</Button>
                             {isAdd &&
-                                <>
-                                    <input onChange={(e)=> setNewArchive(e.target.value)}
-                                           className='border-b outline-none border-gray-300 p-2'
-                                           value={newArchive}
-                                           onKeyDown={handleKeyDown}
-                                    />
-                                    <button onClick={handleClickAddBtn}>추가</button>
-                                </>
+                                <ArchiveDialogForm/>
                             }
                         </div>
                         <ul>

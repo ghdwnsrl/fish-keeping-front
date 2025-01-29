@@ -15,14 +15,14 @@ export async function getArchivesByUsername({queryKey}) {
     return response.data.data
 }
 
-export function addArchivesByUsername({newArchive}) {
+export function addArchivesByUsername({name}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    return archives.post(``,{name:newArchive}, config);
+    return archives.post(``,{name}, config);
 }
 
 export function deleteArchive({name}) {

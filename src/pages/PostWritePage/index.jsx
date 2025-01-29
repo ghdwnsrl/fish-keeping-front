@@ -15,6 +15,9 @@ const PostWritePage = () => {
         onSuccess: (response) => {
             const id = response.data
             navigate(`/${id}`)
+        },
+        onError : error => {
+            console.log(error)
         }
     })
 
