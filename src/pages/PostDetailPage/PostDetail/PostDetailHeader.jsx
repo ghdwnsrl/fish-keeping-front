@@ -18,7 +18,7 @@ const PostDetailHeader = ({post}) => {
             {
                 post.username === loginUsername &&
                 <div className=' flex gap-1 text-sm mt-1 opacity-70'>
-                    <PostEditButton/>
+                    <PostEditButton post={post}/>
                     <PostDeleteButton id={post.id}/>
                 </div>
             }

@@ -32,7 +32,7 @@ const PostWritePage = () => {
     return (
         <div className='container'>
             <Title styleType='font-semibold text-2xl mb-2'>글쓰기</Title>
-            <PostEditor handleSubmit={handleSubmit}/>
+            <PostEditor onSubmit={handleSubmit}/>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 
-const PostEditButton = () => {
+const PostEditButton = ({post}) => {
     const navigate = useNavigate();
     return <span onClick={() => navigate('/edit', {
         state: {
@@ -8,7 +8,7 @@ const PostEditButton = () => {
             initTitle: post.title,
             initContent: post.content,
             prevThumbnailUrl: post.thumbnailUrl,
-            id: id
+            id: post.id
         }
     })}>수정</span>
 }

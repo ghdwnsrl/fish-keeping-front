@@ -31,7 +31,7 @@ const PostEditPage = () => {
             initContent={initContent}
             prevThumbnailUrl={prevThumbnailUrl}
             id={id}
-            handleSubmit={handleSubmit}
+            onSubmit={handleSubmit}
         />
     </div>
 }
