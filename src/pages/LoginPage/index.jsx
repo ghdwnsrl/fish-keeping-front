@@ -1,5 +1,5 @@
 import {IoLockClosed, IoMail} from "react-icons/io5";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import Input from "../../components/Input.jsx";
 import Form from "../../components/Form.jsx";
 import { login } from "../../api/user.js";
@@ -17,11 +17,15 @@ const LoginPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const redirectPath = queryParams.get("redirectPath") ?? "/";
+
     const {mutate: loginUser} = useMutation({
         mutationFn: login,
         onSuccess: (data, variables) => {
             dispatch(loginSuccess(variables.username));
-            navigate('/');
+            navigate('/'+redirectPath);
         },
         onError: (err) => {
             if (err.response && err.response.status === 401) {

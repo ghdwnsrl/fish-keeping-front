@@ -37,7 +37,7 @@ const PostDetailPage = () => {
                 </Suspense>
                 {isLogin ?
                     <CommentWriteForm postId={id}/> :
-                    <Link to='/login'><p className='text-center text-lg'><u>로그인</u> 후 이용 가능합니다.</p></Link>
+                    <Link to={`/login?redirectPath=${id}?page=${page}`}><p className='text-center text-lg'><u>로그인</u> 후 이용 가능합니다.</p></Link>
                 }
             </div>
             <div className='pt-4'>
