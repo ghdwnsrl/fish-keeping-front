@@ -6,7 +6,7 @@ import SearchBar from "./SearchBar.jsx";
 import {useSuspenseQuery} from "@tanstack/react-query";
 import {useNavigate} from "react-router-dom";
 
-function Board({initialPage, username, archiveName, searchParams, children}) {
+function Board({initialPage = 1 , username, archiveName, searchParams, children}) {
     const [currentPage, setCurrentPage] = useState(initialPage);
     const navigate = useNavigate();
     const [condition, setCondition] = useState({
@@ -20,8 +20,8 @@ function Board({initialPage, username, archiveName, searchParams, children}) {
     })
 
     const handlePageChange = ({selected}) => {
-        navigate(`?page=${selected}`)
-        setCurrentPage(selected);
+        setCurrentPage(selected + 1);
+        navigate(`?page=${selected + 1}`)
     };
 
     const onSearchBarClickHandler = (value) => {

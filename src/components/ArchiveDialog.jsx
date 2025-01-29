@@ -9,7 +9,7 @@ import ArchiveDialogForm from "./ArchiveDialogForm.jsx";
 function ArchiveDialog({watch, setValue}) {
     const [isOpen, setIsOpen] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
-    const { username } = useSelector(state => ({username: state.auth.username}))
+    const username  = useSelector(state => (state.auth.username))
 
     const {data} = useQuery({
         queryKey: ['archiveList', username],
