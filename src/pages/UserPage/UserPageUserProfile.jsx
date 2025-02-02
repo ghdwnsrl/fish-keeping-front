@@ -11,7 +11,7 @@ const UserPageUserProfile = () => {
     })
     return (
         <UserProfile profileImageUrl={data?.profileImageUrl}
-                     username={data?.username}
+                     username={data.isDeleted ? "탈퇴한 회원" : data.username}
                      introText={data?.introText}
         />
     )

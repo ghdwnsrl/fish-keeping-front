@@ -1,5 +1,5 @@
 import {IoLockClosed, IoMail} from "react-icons/io5";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Input from "../../components/Input.jsx";
 import Form from "../../components/Form.jsx";
 import { login } from "../../api/user.js";
@@ -25,22 +25,15 @@ const LoginPage = () => {
         mutationFn: login,
         onSuccess: (data, variables) => {
             dispatch(loginSuccess(variables.username));
-            navigate('/'+redirectPath);
+            navigate(redirectPath);
         },
         onError: (err) => {
-            if (err.response && err.response.status === 401) {
+            if (err.response) {
                 setFocus('username')
                 reset()
                 setError('root.serverError', {
-                    type: "403",
-                    message: "아이디 또는 비밀번호가 잘못 되었습니다. \n 아이디와 비밀번호를 정확히 입력해 주세요."
-                })
-            } else if (err.response && err.response.status === 404) {
-                setFocus('username')
-                reset()
-                setError('root.serverError', {
-                    type: "403",
-                    message: "존재하지 않는 회원입니다."
+                    type: err.response.status,
+                    message: err.response.data.message
                 })
             }
         }

@@ -5,9 +5,7 @@ import {useSelector} from "react-redux";
 
 
 const PostDetailHeader = ({post}) => {
-    const {loginUsername} = useSelector(state => ({
-        loginUsername: state.auth.username,
-    }))
+    const loginUsername = useSelector(state => state.auth.username)
 
     return <div className='flex gap-2 my-1 border-b pb-2'>
         <UserHeader data={post}

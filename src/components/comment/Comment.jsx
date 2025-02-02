@@ -9,9 +9,7 @@ function Comment({commentId, content,  postId, handleReply, ...rest}) {
     const client = useQueryClient()
     const [isEdit, setIsEdit] = useState(false)
     const {parentId, username: writer} = {...rest}
-    const {username} = useSelector(state => ({
-        username: state.auth.username,
-    }))
+    const username = useSelector(state => state.auth.username)
     const isWriter = writer === username
 
     const {mutate : deleteCommentById } = useMutation({
