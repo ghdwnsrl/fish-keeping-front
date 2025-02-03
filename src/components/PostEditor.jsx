@@ -1,11 +1,12 @@
 import {FaBox} from "react-icons/fa";
 import ArchiveDialog from "./ArchiveDialog.jsx";
-import ReactQuill from "react-quill";
+import ReactQuill, {Quill} from "react-quill";
 import Button from "./Button.jsx";
 import {useMemo} from "react";
 import Form from "./Form.jsx";
 import {useForm} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
+import {ImageActions} from "@xeger/quill-image-actions";
+import {ImageFormats} from "@xeger/quill-image-formats";
 
 const formats = [
     'font',
@@ -24,8 +25,14 @@ const formats = [
     'background',
     'size',
     'h1',
-    'image'
+    'image',
+    'float',
+    'height',
+    'width',
 ];
+
+Quill.register('modules/imageActions', ImageActions);
+Quill.register('modules/imageFormats', ImageFormats);
 
 const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', onSubmit }) => {
     const {register, handleSubmit, setValue, watch
@@ -38,6 +45,8 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
     const content = watch("content", initContent);
 
     const modules = useMemo(() => ({
+        imageActions: {},
+        imageFormats: {},
         toolbar: {
             container: [
                 [{ size: ['small', false, 'large', 'huge'] }],
@@ -47,7 +56,10 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
                 [{header: [1, 2, 3, 4, 5, false]}],
                 ['bold', 'italic', 'underline', 'strike'],
                 [{ color: [], }, { background: [] },],
-            ]
+            ],
+            ImageResize: {
+                modules: ['Resize'],
+            },
         },
     }), []);
 
