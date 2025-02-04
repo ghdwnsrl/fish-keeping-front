@@ -7,7 +7,8 @@ const UserPageUserProfile = () => {
     const {username} = useParams();
     const {data} = useSuspenseQuery({
         queryKey: ["userInfo", username],
-        queryFn: getUerInfo
+        queryFn: getUerInfo,
+        staleTime: 180000
     })
     return (
         <UserProfile profileImageUrl={data?.profileImageUrl}

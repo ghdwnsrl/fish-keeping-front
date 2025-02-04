@@ -36,14 +36,14 @@ function ArchiveDialog({watch, setValue}) {
                         <DialogTitle className="font-bold">기록할 어항 선택</DialogTitle>
                         <Description>어항을 선택해서 추억을 남겨보세요.</Description>
                         <div className='flex flex-col'>
-                            <Button block onClick={() => setIsAdd(!isAdd)}>새 어항 추가하기</Button>
+                            <Button block onClick={() => setIsAdd(!isAdd)}>{isAdd? '그만두기' : '새 어항 추가하기'}</Button>
                             {isAdd &&
-                                <ArchiveDialogForm/>
+                                <ArchiveDialogForm setIsAdd={setIsAdd}/>
                             }
                         </div>
-                        <ul>
+                        <ul className='border rounded-lg p-2'>
                             {data && data.map((tank) => {
-                                return <li className='py-1' onClick={() => handleClickTank(tank)}
+                                return <li className='hover:bg-gray-50' onClick={() => handleClickTank(tank)}
                                            key={tank.id}>{tank.name}</li>
                             })}
                         </ul>
