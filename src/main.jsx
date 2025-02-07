@@ -11,13 +11,15 @@ import PostWritePage from "./pages/PostWritePage/index.jsx";
 import UserPage from "./pages/UserPage/index.jsx";
 import Post from "./pages/UserPage/Post.jsx";
 import Tank from "./pages/UserPage/Tank.jsx";
-import ArchiveDetail from "./pages/ArchiveDetail.jsx";
+import Index from "./pages/ArchiveDetailPage/index.jsx";
 import PostEditPage from "./pages/PostEditPage/index.jsx";
 import PostDetailPage from "./pages/PostDetailPage/index.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import SettingPage from "./pages/SettingPage/index.jsx";
 import SearchPage from "./pages/SearchPage/index.jsx";
 import Test from "./pages/Test.jsx";
+import AdminPage from "./pages/AdminPage/index.jsx";
+import ArchiveDetailPage from "./pages/ArchiveDetailPage/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -80,7 +82,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/users/:username/archives/:archiveName',
-                element: <ArchiveDetail/>
+                element: <ArchiveDetailPage/>
             },
             {
                 path: '/search',

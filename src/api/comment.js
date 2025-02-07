@@ -1,4 +1,4 @@
-import {comments, posts} from "./http.js";
+import {comments} from "./http.js";
 
 export function createComment({postId, content, commentId}) {
     const config = {
@@ -44,21 +44,4 @@ export function updateComment({commentId, content }) {
         withCredentials: true
     }
     return comments.put(`${commentId}`,{content}, config)
-}
-
-export function updatePost({id, title, content, selected, urlArray, thumbnailUrl}) {
-    const config = {
-        headers: {
-            "Content-Type": `application/json`,
-        },
-        withCredentials: true
-    }
-    return posts.put(`${id}`, {
-            title: title,
-            content: content,
-            archiveName: selected,
-            images: urlArray,
-            thumbnailUrl : thumbnailUrl
-        },
-        config)
 }

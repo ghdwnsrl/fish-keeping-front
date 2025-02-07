@@ -34,3 +34,13 @@ export function deleteArchive({name}) {
     }
     return archives.delete(`${name}`, config);
 }
+
+export function updateArchive({name, changedName}) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+    return archives.put(`${name}`, {name:changedName}, config);
+}
