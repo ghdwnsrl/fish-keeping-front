@@ -1,30 +1,28 @@
-import { StrictMode } from 'react'
+import {lazy, StrictMode} from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import HomePage from "./pages/HomePage/index.jsx";
 import LoginPage from "./pages/LoginPage/index.jsx";
-import My from "./pages/UserPage/My.jsx";
-import JoinPage from "./pages/JoinPage/index.jsx";
-import PostWritePage from "./pages/PostWritePage/index.jsx";
-import UserPage from "./pages/UserPage/index.jsx";
-import Post from "./pages/UserPage/Post.jsx";
-import Tank from "./pages/UserPage/Tank.jsx";
-import Index from "./pages/ArchiveDetailPage/index.jsx";
-import PostEditPage from "./pages/PostEditPage/index.jsx";
-import PostDetailPage from "./pages/PostDetailPage/index.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import SettingPage from "./pages/SettingPage/index.jsx";
-import SearchPage from "./pages/SearchPage/index.jsx";
-import Test from "./pages/Test.jsx";
-import AdminPage from "./pages/AdminPage/index.jsx";
-import ArchiveDetailPage from "./pages/ArchiveDetailPage/index.jsx";
+import App from "./App.jsx";
+
+const PostEditPage = lazy(() => import('./pages/PostEditPage/index.jsx'));
+const My = lazy(() => import('./pages/UserPage/My.jsx'));
+const PostDetailPage = lazy(() => import('./pages/PostDetailPage'));
+const JoinPage = lazy(() => import('./pages/JoinPage/index.jsx'));
+const SettingPage = lazy(() => import('./pages/SettingPage/index.jsx'));
+const PostWritePage = lazy(() => import('./pages/PostWritePage/index.jsx'));
+const UserPage = lazy(() => import('./pages/UserPage/index.jsx'));
+const ArchiveDetailPage = lazy(() => import('./pages/ArchiveDetailPage/index.jsx'));
+const SearchPage = lazy(() => import('./pages/SearchPage/index.jsx'));
+const Post = lazy(() => import('./pages/UserPage/Post.jsx'));
+const Tank = lazy(() => import('./pages/UserPage/Tank.jsx'));
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App/>,
+        element: <App />,
         children: [
             {
                 path: '',
@@ -32,65 +30,58 @@ const router = createBrowserRouter([
             },
             {
                 path: '/edit',
-                element: <ProtectedRoute>
-                    <PostEditPage/>
-                </ProtectedRoute>
+                element: <ProtectedRoute><PostEditPage /></ProtectedRoute>
             },
             {
                 path: '/login',
-                element: <LoginPage/>,
+                element: <LoginPage/>
             },
             {
                 path: '/my',
-                element: <ProtectedRoute>
-                    <My/>
-                </ProtectedRoute>,
+                element: <ProtectedRoute><My/></ProtectedRoute>
             },
             {
                 path: '/:id',
-                element: <PostDetailPage/>
+                element: <PostDetailPage />
             },
             {
                 path: '/join',
-                element: <JoinPage/>
+                element: <JoinPage />
             },
             {
                 path: '/setting',
-                element: <ProtectedRoute>
-                    <SettingPage/>
-                </ProtectedRoute>
+                element: <ProtectedRoute><SettingPage /></ProtectedRoute>
             },
             {
                 path: '/write',
-                element: <ProtectedRoute>
-                    <PostWritePage/>
-                </ProtectedRoute>,
+                element: <ProtectedRoute><PostWritePage /></ProtectedRoute>
             },
             {
                 path: '/users/:username',
-                element: <UserPage/>,
+                element: <UserPage />,
                 children: [
                     {
                         path: 'posts',
-                        element: <Post/>
+                        element: <Post />
                     },
                     {
                         path: 'tanks',
-                        element: <Tank/>
+                        element: <Tank />
                     }
                 ]
             },
             {
                 path: '/users/:username/archives/:archiveName',
-                element: <ArchiveDetailPage/>
+                element: <ArchiveDetailPage />
             },
             {
                 path: '/search',
-                element: <SearchPage/>
+                element: <SearchPage />
             }
         ],
-        errorElement: <div>error</div>
-    }]);
+        errorElement: <div>Error</div>
+    }
+]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

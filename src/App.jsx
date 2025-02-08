@@ -3,7 +3,7 @@ import Header from "./components/page/Header.jsx";
 import Main from "./components/page/Main.jsx";
 import {Outlet} from "react-router-dom";
 import {AuthContext} from "./contexts/AuthContext.jsx";
-import {useState} from "react";
+import {Suspense, useState} from "react";
 import ScrollToTop from "./api/ScrollToTop.js";
 import {store, persistor} from './feature/store';
 import {Provider} from "react-redux";
@@ -25,7 +25,9 @@ function App() {
                         <div className='min-h-screen'>
                             <Header/>
                             <Main>
-                                <Outlet/>
+                                <Suspense>
+                                    <Outlet/>
+                                </Suspense>
                             </Main>
                         </div>
                         <GlobalDialog/>
