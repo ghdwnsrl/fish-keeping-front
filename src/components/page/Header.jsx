@@ -57,20 +57,11 @@ function Header() {
         }}>로그아웃</button>,
     ];
 
-    const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-
-    const renderNavItems = () => {
-        const items = isLogin ? authNavItems : navItems
-        return items.map(item => {
-            return item;
-        })
-    }
-
     return (
         <header className='px-4 border-b'>
             <div className='flex justify-between container mx-auto items-center h-14'>
                 <Link to='/' className='text-4xl h-full block'>
-                    <img className='h-full p-2' alt='logo' src="/logo2.svg"/>
+                    <img className='h-full p-2' alt='logo' src="/logo.svg"/>
                 </Link>
                 <nav className=' space-x-4'>
                     {isLogin? <Menu>
