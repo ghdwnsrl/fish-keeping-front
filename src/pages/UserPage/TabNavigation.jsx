@@ -1,20 +1,24 @@
-import {NavLink} from "react-router-dom";
+import LazyNavLink from "../../components/LazyNavLink.jsx";
 
 const TabNavigation = ({username}) => {
     return (
         <div className='flex gap-2 text-xl font-bold'>
-            <NavLink
+            <LazyNavLink
+                key="posts"
                 to={`/users/${username}/posts`}
-                className={({ isActive }) => isActive ? "text-blue-500 border-b-2 border-b-blue-500" : "text-black"}
+                className={({ isActive }) => isActive ? "text-sky-800 border-b-2 border-b-sky-800" : "text-black"}
+                preloadModule={() => import('../../pages/UserPage/Post.jsx')}
             >
                 모든 게시물
-            </NavLink>
-            <NavLink
+            </LazyNavLink>
+            <LazyNavLink
+                key="tanks"
                 to={`/users/${username}/tanks`}
-                className={({ isActive }) => isActive ? "text-blue-500 border-b-2 border-b-blue-500" : "text-black"}
+                className={({ isActive }) => isActive ? "text-sky-800 border-b-2 border-b-sky-800" : "text-black"}
+                preloadModule={() => import('../../pages/UserPage/Tank.jsx')}
             >
                 저장소
-            </NavLink>
+            </LazyNavLink>
         </div>
     )
 }

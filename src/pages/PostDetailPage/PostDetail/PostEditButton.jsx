@@ -7,7 +7,7 @@ const PostEditButton = ({post}) => {
             type: "수정하기",
             initTitle: post.title,
             initContent: post.content,
-            prevThumbnailUrl: post.thumbnailUrl,
+            prevThumbnailUrl: post.postImageThumbnailUrl,
             id: post.id
         }
     })}>수정</span>

@@ -4,9 +4,9 @@ import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import HomePage from "./pages/HomePage/index.jsx";
-import LoginPage from "./pages/LoginPage/index.jsx";
 import App from "./App.jsx";
 
+const LoginPage = lazy(() => import('./pages/LoginPage/index.jsx'));
 const PostEditPage = lazy(() => import('./pages/PostEditPage/index.jsx'));
 const My = lazy(() => import('./pages/UserPage/My.jsx'));
 const PostDetailPage = lazy(() => import('./pages/PostDetailPage'));

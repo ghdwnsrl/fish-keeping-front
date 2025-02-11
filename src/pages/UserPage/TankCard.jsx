@@ -2,7 +2,6 @@
 import {Link} from "react-router-dom";
 
 function TankCard({ username, props}) {
-    console.log(props)
     const {name, id, thumbnailUrl, description, lastModified, totalPosts} = props
     return (
         <Link to={`/users/${username}/archives/${name}`}>

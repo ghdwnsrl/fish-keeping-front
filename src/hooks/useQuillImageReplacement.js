@@ -1,5 +1,6 @@
 import {deleteImage} from "../api/image.js";
 import ImageUtils from "../utils/ImageUtils.js";
+import imageUtils from "../utils/ImageUtils.js";
 import useImageUpload from "./useImageUpload.jsx";
 import {useMutation} from "@tanstack/react-query";
 
@@ -29,14 +30,24 @@ export default function useQuillImageReplacement() {
     }
 
     const getThumbnail = async (initImg, newFirstImg, preThumbnailUrl = '') => {
-        console.log(initImg)
-        console.log(newFirstImg)
-        // 수정하는 경우 :
-        if (initImg && newFirstImg) { // 2.수정하는 경우
+        // 수정하는 경우
+        if (initImg && newFirstImg) {
             if ((Object.entries(initImg).toString() === Object.entries(newFirstImg).toString())) {
                 return preThumbnailUrl
             }
-            imageRemove({fileName: preThumbnailUrl})
+            imageRemove({fileName: preThumbnailUrl.match(/([^/]+\.[^.]+)$/)[0]})
+        }
+        if (newFirstImg.src.startsWith('https')) {
+            return  await imageUtils.transUrlToFile(newFirstImg.src)
+                .then(async file => {
+                    const resizedFile = await ImageUtils.resizeFile(file)
+                    const {datas} = await uploadImage(resizedFile)
+                    console.log(datas)
+                    return datas[0].url
+                })
+                .catch((error) => {
+                    console.error('오류 발생', error)
+                })
         }
         const file = ImageUtils.transBase64ToFile(newFirstImg);
         const resizedFile = await ImageUtils.resizeFile(file)

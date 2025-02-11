@@ -34,7 +34,7 @@ const formats = [
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
 
-const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', onSubmit }) => {
+const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', onSubmit, prevThumbnailUrl }) => {
     const {register, handleSubmit, setValue, watch
     } = useForm({defaultValues: {
             title : initTitle,
@@ -69,7 +69,7 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
 
     const onHandleSubmit = (value) => {
         const {title, content, selected} = value
-        onSubmit(title, content, selected, initContent);
+        onSubmit(title, content, selected, initContent, prevThumbnailUrl);
     }
 
     return (

@@ -1,12 +1,13 @@
 import {useState} from "react";
 import {FaBars} from "react-icons/fa";
-import {Link, NavLink, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {checkSessionState, logout} from "../../api/user.js";
 import * as AuthSlice from "../../feature/authSlice.js";
 import {useMutation} from "@tanstack/react-query";
 import {openModal} from "../../feature/dialogSlice.js";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
+import LazyNavLink from "../LazyNavLink.jsx";
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,13 +45,44 @@ function Header() {
     }
 
     const navItems = [
-        <NavLink key="login" to="/login" onClick={() => setIsMenuOpen(!isMenuOpen)} className='font-semibold hover:text-gray-300'>로그인</NavLink>,
+        <LazyNavLink
+            key="login"
+            to="/login"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            preloadModule={() => import('../../pages/LoginPage/index.jsx')}
+        >
+            로그인
+        </LazyNavLink>,
     ];
 
     const authNavItems = [
-        <NavLink key="write" onClick={onClickHandler} to="/write" className='font-semibold hover:text-gray-300'>작성하기</NavLink>,
-        <NavLink key="setting" onClick={onClickHandler} to="/setting" className='font-semibold hover:text-gray-300'>설정</NavLink>,
-        <NavLink key="my" to={`/users/${username}/posts`} className='font-semibold hover:text-gray-300'>마이페이지</NavLink>,
+        <LazyNavLink
+            key="write"
+            to="/write"
+            onClick={onClickHandler}
+            className='font-semibold hover:text-gray-300'
+            preloadModule={() => import('../../pages/PostWritePage/index.jsx')}
+        >
+            작성하기
+        </LazyNavLink>,
+        <LazyNavLink
+            key="setting"
+            to="/setting"
+            onClick={onClickHandler}
+            className='font-semibold hover:text-gray-300'
+            preloadModule={() => import('../../pages/SettingPage/index.jsx')}
+        >
+            설정
+        </LazyNavLink>,
+        <LazyNavLink
+            key="my"
+            to={`/users/${username}/posts`}
+            onClick={onClickHandler}
+            className='font-semibold hover:text-gray-300'
+            preloadModule={() => import('../../pages/UserPage/index.jsx')}
+        >
+            마이페이지
+        </LazyNavLink>,
         <button key="logout" className='font-semibold hover:text-gray-300 text-left' onClick={() => {
             logoutUser()
             setIsMenuOpen(false)
