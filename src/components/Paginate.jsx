@@ -8,9 +8,9 @@ const Paginate = ({totalPage, currentPage, handlePageChange}) => {
         breakLabel={"..."}
         breakClassName={"break-me"}
         pageCount={totalPage}
-        marginPagesDisplayed={5}
+        marginPagesDisplayed={0}
         forcePage={currentPage}
-        pageRangeDisplayed={2}
+        pageRangeDisplayed={10}
         onPageChange={handlePageChange}
         containerClassName="flex justify-center gap-2 items-center text-xs"
         activeClassName="bg-sky-800 text-white rounded-lg font-medium py-2"

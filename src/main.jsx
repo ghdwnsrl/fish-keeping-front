@@ -5,6 +5,8 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import HomePage from "./pages/HomePage/index.jsx";
 import App from "./App.jsx";
+import PrivacyPage from "./pages/PrivatePage/index.jsx";
+import TermPage from "./pages/TermPage/index.jsx";
 
 const LoginPage = lazy(() => import('./pages/LoginPage/index.jsx'));
 const PostEditPage = lazy(() => import('./pages/PostEditPage/index.jsx'));
@@ -77,6 +79,14 @@ const router = createBrowserRouter([
             {
                 path: '/search',
                 element: <SearchPage />
+            },
+            {
+                path: 'privacy',
+                element: <PrivacyPage/>
+            },
+            {
+                path: 'terms',
+                element: <TermPage/>
             }
         ],
         errorElement: <div>Error</div>

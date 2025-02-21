@@ -105,6 +105,9 @@ export default function useQuillImageReplacement() {
             const result = filteredCurrentMap.get(d.filename)
             endContent = endContent.replace(result, d.url)
         })
+        datas.map((d => {
+            return {d}
+        }))
         console.log(endContent)
         return { endContent, datas, thumbnailUrl};
     }

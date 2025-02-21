@@ -7,6 +7,7 @@ import {useForm} from "react-hook-form";
 import {useEffect} from "react";
 import Button from "../../components/Button.jsx";
 import {useMutation} from "@tanstack/react-query";
+import {openModal} from "../../feature/dialogSlice.js";
 
 const JoinPage = () => {
     const { register, handleSubmit, getValues, setFocus, setError, reset, formState: { errors}} = useForm();
@@ -27,7 +28,8 @@ const JoinPage = () => {
     })
 
     const onSubmit = (data) => {
-        joinUser(data);
+        return;
+        // joinUser(data);
     }
 
     useEffect(() => {
@@ -39,7 +41,9 @@ const JoinPage = () => {
               styleType='container flex flex-col h-56 items-center justify-center mt-36 gap-2'
               handleSubmit={handleSubmit(onSubmit)}
         >
-            <Input placeholder='ID'
+            <h1 className='text-red-600'>개인정보 처리 방침 추가 후 회원가입 가능 예정입니다.</h1>
+            <p className='text-red-600'>이용에 불편을 드려 죄송합니다.</p>
+            <Input placeholder='아이디'
                    name='username'
                    register={register}
                    condition={{
@@ -52,7 +56,7 @@ const JoinPage = () => {
                 <IoMail className="text-2xl mr-2"/>
             </Input>
             {errors.username && <p className='text-red-600 text-xs'>{errors.username.message}</p>}
-            <Input placeholder='PASSWORD'
+            <Input placeholder='비밀번호'
                    name='password'
                    type='password'
                    register={register}
@@ -66,7 +70,7 @@ const JoinPage = () => {
                 <IoLockClosed className="text-2xl mr-2"/>
             </Input>
             {errors.password && <p className='text-red-600 text-xs'>{errors.password.message}</p>}
-            <Input placeholder='CONFIRM PASSWORD'
+            <Input placeholder='비밀번호 재확인'
                    name='confirmPassword'
                    type='password'
                    register={register}

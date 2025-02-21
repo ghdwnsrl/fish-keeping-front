@@ -10,6 +10,7 @@ import {Provider} from "react-redux";
 import {PersistGate} from "redux-persist/integration/react";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import GlobalDialog from "./components/GlobalDialog.jsx";
+import Footer from "./components/page/Footer.jsx";
 
 const queryClient = new QueryClient()
 
@@ -29,6 +30,7 @@ function App() {
                                     <Outlet/>
                                 </Suspense>
                             </Main>
+                            <Footer/>
                         </div>
                         <GlobalDialog/>
                     </PersistGate>

@@ -50,6 +50,7 @@ function Header() {
             to="/login"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             preloadModule={() => import('../../pages/LoginPage/index.jsx')}
+            className='font-semibold hover:text-gray-500'
         >
             로그인
         </LazyNavLink>,
@@ -60,7 +61,7 @@ function Header() {
             key="write"
             to="/write"
             onClick={onClickHandler}
-            className='font-semibold hover:text-gray-300'
+            className='font-semibold hover:text-gray-500'
             preloadModule={() => import('../../pages/PostWritePage/index.jsx')}
         >
             작성하기
@@ -69,7 +70,7 @@ function Header() {
             key="setting"
             to="/setting"
             onClick={onClickHandler}
-            className='font-semibold hover:text-gray-300'
+            className='font-semibold hover:text-gray-500'
             preloadModule={() => import('../../pages/SettingPage/index.jsx')}
         >
             설정
@@ -78,12 +79,12 @@ function Header() {
             key="my"
             to={`/users/${username}/posts`}
             onClick={onClickHandler}
-            className='font-semibold hover:text-gray-300'
+            className='font-semibold hover:text-gray-500'
             preloadModule={() => import('../../pages/UserPage/index.jsx')}
         >
             마이페이지
         </LazyNavLink>,
-        <button key="logout" className='font-semibold hover:text-gray-300 text-left' onClick={() => {
+        <button key="logout" className='font-semibold hover:text-gray-500 text-left' onClick={() => {
             logoutUser()
             setIsMenuOpen(false)
         }}>로그아웃</button>,
