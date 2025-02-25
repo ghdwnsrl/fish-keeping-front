@@ -2,7 +2,7 @@ import LazyNavLink from "../LazyNavLink.jsx";
 
 const Footer = () => {
     return (
-        <div className='flex justify-center items-center space-x-1 pb-2'>
+        <footer className='flex justify-center items-center space-x-1 pb-2'>
             <div className='flex items-center'>
                 <LazyNavLink
                     key="terms"
@@ -23,7 +23,7 @@ const Footer = () => {
                 </LazyNavLink>
             </div>
             <p className='text-sm text-gray-400'>Copyright Mulkkogi All rights reserved.</p>
-        </div>
+        </footer>
     )
 }
 

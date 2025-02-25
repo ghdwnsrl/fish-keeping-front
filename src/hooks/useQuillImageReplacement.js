@@ -33,7 +33,7 @@ export default function useQuillImageReplacement() {
         // 수정하는 경우
         if (initImg && newFirstImg) {
             if ((Object.entries(initImg).toString() === Object.entries(newFirstImg).toString())) {
-                return preThumbnailUrl
+                return
             }
             imageRemove({fileName: preThumbnailUrl.match(/([^/]+\.[^.]+)$/)[0]})
         }

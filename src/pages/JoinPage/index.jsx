@@ -7,12 +7,12 @@ import {useForm} from "react-hook-form";
 import {useEffect} from "react";
 import Button from "../../components/Button.jsx";
 import {useMutation} from "@tanstack/react-query";
-import {openModal} from "../../feature/dialogSlice.js";
+import LazyNavLink from "../../components/LazyNavLink.jsx";
 
 const JoinPage = () => {
-    const { register, handleSubmit, getValues, setFocus, setError, reset, formState: { errors}} = useForm();
+    const { register, watch, handleSubmit, getValues, setFocus, setError, reset, formState: { errors}} = useForm();
     const navigate = useNavigate();
-
+    const isDisabled = watch(["ageAgree", "termsAgree", "privacyAgree"]).every(Boolean);
     const { mutate : joinUser } = useMutation({
         mutationFn: join,
         onSuccess: () => navigate('/login'),
@@ -28,8 +28,7 @@ const JoinPage = () => {
     })
 
     const onSubmit = (data) => {
-        return;
-        // joinUser(data);
+        joinUser(data);
     }
 
     useEffect(() => {
@@ -41,17 +40,65 @@ const JoinPage = () => {
               styleType='container flex flex-col h-56 items-center justify-center mt-36 gap-2'
               handleSubmit={handleSubmit(onSubmit)}
         >
-            <h1 className='text-red-600'>개인정보 처리 방침 추가 후 회원가입 가능 예정입니다.</h1>
-            <p className='text-red-600'>이용에 불편을 드려 죄송합니다.</p>
+            <div className="border rounded-xl p-4 flex flex-col items-start space-y-1 w-96">
+                <div className='flex items-center space-x-1'>
+                    <input
+                        type="checkbox"
+                        id="ageAgree"
+                        {...register("ageAgree")}
+                        className="w-4 h-4 bg-red-500"
+                    />
+                    <label htmlFor="ageAgree">만 14세 이상입니다. <span className='text-red-500'>(필수)</span></label>
+                </div>
+                <div className='flex items-center space-x-1'>
+                    <input
+                        type="checkbox"
+                        id="termsAgree"
+                        {...register("termsAgree")}
+                        className="w-4 h-4"
+                    />
+                    <label htmlFor="termsAgree">
+                        <LazyNavLink
+                            key="terms"
+                            to="/terms"
+                            className='font-semibold hover:text-gray-500'
+                            preloadModule={() => import('../../pages/TermPage/index.jsx')}
+                            target="_blank"
+                        >
+                            서비스 이용약관
+                        </LazyNavLink>
+                        을 모두 읽었으며 동의합니다. <span className='text-red-500'>(필수)</span></label>
+                </div>
+                <div className='flex items-center space-x-1'>
+                    <input
+                        type="checkbox"
+                        id="privacyAgree"
+                        {...register("privacyAgree")}
+                        className="w-4 h-4"
+                    />
+                    <label htmlFor="privacyAgree">
+                        <LazyNavLink
+                            key="privacy"
+                            to="/privacy"
+                            className='font-semibold hover:text-gray-500'
+                            preloadModule={() => import('../../pages/PrivatePage/index.jsx')}
+                            target="_blank"
+                        >
+                            개인정보처리방침
+                        </LazyNavLink>
+                        에 모두 읽었으며 동의합니다. <br/><span className='text-red-500'>(필수)</span>
+                    </label>
+                </div>
+            </div>
             <Input placeholder='아이디'
                    name='username'
                    register={register}
                    condition={{
-                               required: true,
-                               pattern: {
-                                   value: /^[a-zA-Z0-9]+$/,
-                                   message: '영문자와 숫자만 입력 가능합니다.'
-                               }
+                       required: true,
+                       pattern: {
+                           value: /^[a-zA-Z0-9]+$/,
+                           message: '영문자와 숫자만 입력 가능합니다.'
+                       }
             }}>
                 <IoMail className="text-2xl mr-2"/>
             </Input>
@@ -85,7 +132,7 @@ const JoinPage = () => {
                 <IoLockClosed className="text-2xl mr-2"/>
             </Input>
             {errors.confirmPassword && <p className='text-red-600 text-xs'>{errors.confirmPassword.message}</p>}
-            <Button type='submit' styleType='w-96 w-max:32'>확 인</Button>
+            <Button type='submit' disabled={!isDisabled} styleType='w-96 w-max:32'>확 인</Button>
             {errors.root?.serverError && (
                 <p className='text-red-600 text-xs'>{errors.root.serverError.message}</p>
             )}

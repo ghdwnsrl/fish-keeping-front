@@ -7,6 +7,8 @@ import HomePage from "./pages/HomePage/index.jsx";
 import App from "./App.jsx";
 import PrivacyPage from "./pages/PrivatePage/index.jsx";
 import TermPage from "./pages/TermPage/index.jsx";
+import AdminLoginPage from "./pages/AdminLoginPage/index.jsx";
+import AdminDashBoardPage from "./pages/AdminDashBoardPage/index.jsx";
 
 const LoginPage = lazy(() => import('./pages/LoginPage/index.jsx'));
 const PostEditPage = lazy(() => import('./pages/PostEditPage/index.jsx'));
@@ -81,12 +83,20 @@ const router = createBrowserRouter([
                 element: <SearchPage />
             },
             {
-                path: 'privacy',
+                path: '/privacy',
                 element: <PrivacyPage/>
             },
             {
-                path: 'terms',
+                path: '/terms',
                 element: <TermPage/>
+            },
+            {
+                path: '/admin',
+                element: <AdminLoginPage/>,
+            },
+            {
+                path: '/admin/dashboard',
+                element: <AdminDashBoardPage/>,
             }
         ],
         errorElement: <div>Error</div>

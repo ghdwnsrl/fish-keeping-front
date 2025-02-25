@@ -12,14 +12,14 @@ export async function login({username, password}) {
     return response.data
 }
 
-export async function join({username, password, confirmPassword}) {
+export async function join({username, password, confirmPassword, ageAgree, privacyAgree, termsAgree}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
         },
         withCredentials: true
     }
-    const response = await auth.post('/join', {username, password, confirmPassword}, config)
+    const response = await auth.post('/join', {username, password, confirmPassword, agreeReq : {ageAgree, privacyAgree, termsAgree}}, config)
     return response.data
 }
 

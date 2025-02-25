@@ -23,7 +23,7 @@ function App() {
                 <Provider store={store}>
                     <PersistGate loading={null} persistor={persistor}>
                         <ScrollToTop/>
-                        <div className='min-h-screen'>
+                        <div className='min-h-screen flex flex-col'>
                             <Header/>
                             <Main>
                                 <Suspense>

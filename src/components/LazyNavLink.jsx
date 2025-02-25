@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import { NavLink } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 
-const LazyNavLink = ({to, children, preloadModule, onClick, className }) => {
+const LazyNavLink = ({to, children, preloadModule, onClick, className, target }) => {
     const { ref, inView } = useInView({
         triggerOnce: true,
     });
@@ -18,7 +18,7 @@ const LazyNavLink = ({to, children, preloadModule, onClick, className }) => {
     }, [inView, moduleLoaded, preloadModule]);
 
     return (
-        <NavLink to={to} ref={ref} onClick={onClick} className={className}>
+        <NavLink to={to} ref={ref} onClick={onClick} target={target} className={className}>
             {children}
         </NavLink>
     );
