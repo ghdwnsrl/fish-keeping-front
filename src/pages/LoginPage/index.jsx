@@ -1,5 +1,5 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import { login } from "../../api/user.js";
+import { loginUser } from "../../api/user.js";
 import {useDispatch} from "react-redux";
 import {loginSuccess} from "../../feature/authSlice.js";
 import LoginForm from "../../components/LoginForm.jsx";
@@ -19,7 +19,7 @@ const LoginPage = () => {
 
     return (
         <div className='flex flex-col items-center'>
-            <LoginForm loginFn={login} onSuccess={onSuccess}/>
+            <LoginForm loginFn={loginUser} onSuccess={onSuccess}/>
             <Link to='/join'>회원이 아니신가요? <u>회원가입</u></Link>
         </div>
     )

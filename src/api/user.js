@@ -1,6 +1,6 @@
 import {auth} from "./http.js";
 
-export async function login({username, password}) {
+export async function loginUser({username, password}) {
     const config = {
         headers: {
             "Content-Type": `application/json`,
@@ -8,7 +8,19 @@ export async function login({username, password}) {
         withCredentials: true
     }
 
-    const response = await auth.post('/login', {username, password}, config)
+    const response = await auth.post('/login', {username, password, loginType : "USER"}, config)
+    return response.data
+}
+
+export async function loginAdmin({username, password}) {
+    const config = {
+        headers: {
+            "Content-Type": `application/json`,
+        },
+        withCredentials: true
+    }
+
+    const response = await auth.post('/login', {username, password, loginType : "ADMIN"}, config)
     return response.data
 }
 

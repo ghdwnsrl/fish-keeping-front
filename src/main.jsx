@@ -7,8 +7,8 @@ import HomePage from "./pages/HomePage/index.jsx";
 import App from "./App.jsx";
 import PrivacyPage from "./pages/PrivatePage/index.jsx";
 import TermPage from "./pages/TermPage/index.jsx";
-import AdminLoginPage from "./pages/AdminLoginPage/index.jsx";
-import AdminDashBoardPage from "./pages/AdminDashBoardPage/index.jsx";
+import AdminLoginPage from "./pages/admin/AdminLoginPage/index.jsx";
+import AdminDashBoardPage from "./pages/admin/AdminDashBoardPage/index.jsx";
 
 const LoginPage = lazy(() => import('./pages/LoginPage/index.jsx'));
 const PostEditPage = lazy(() => import('./pages/PostEditPage/index.jsx'));
