@@ -12,9 +12,9 @@ function UserPage() {
             <Suspense fallback={<UserProfileSkeleton/>}>
                 <UserPageUserProfile/>
             </Suspense>
-            <div className='flex justify-center items-center w-full flex-col'>
+            <div className='flex justify-center w-full flex-col pt-4'>
                 <TabNavigation username={username}/>
-                <div className='w-full flex justify-center'>
+                <div className='w-full pt-6 flex'>
                     <Outlet/>
                 </div>
             </div>
