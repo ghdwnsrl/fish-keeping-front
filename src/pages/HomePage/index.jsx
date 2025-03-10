@@ -5,9 +5,7 @@ import {Suspense} from "react";
 import PostSkeleton from "./skeleton/PostSkeleton.jsx";
 import PopularPostSkeleton from "./skeleton/PopularPostSkeleton.jsx";
 
-
 const HomePage = () => {
-
     return (
         <div className='container'>
             <div className='mb-5'>

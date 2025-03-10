@@ -22,6 +22,7 @@ function CommentList({postId}) {
     const handleReply = () => {
         setIsReply(!isReply)
     }
+
     return (
         <div className='gap-2 container'>
             <p className='font-semibold border-b py-2  mb-2'>댓글 {comments.totalElements}</p>

@@ -8,7 +8,7 @@ function Card({options, username, page, id, thumbnailUrl,
               className={`${options} flex items-center h-20 my-1 gap-1 rounded-xl hover:bg-gray-50`}
               onClick={handleClick}>
             <img className='rounded-xl h-16 w-16 mx-3' src={thumbnailUrl} alt='thumbnail'/>
-            <div className='flex justify-center flex-col  gap-1'>
+            <div className='flex justify-center flex-col'>
                 <p className='font-semibold text-lg'>{title}</p>
                 <PostItemFooter
                     username={username}

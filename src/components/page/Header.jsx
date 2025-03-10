@@ -22,7 +22,7 @@ function Header() {
                 if (error.response && error.response.status === 401) {
                     dispatch(openModal({
                         title: "로그인 만료",
-                        content: "로그인 페이지로 이동할까요?",
+                        content: "잠시 후, 로그인 페이지로 이동합니다.",
                         redirectPath: '/login'
                     }))
                 }
@@ -78,7 +78,6 @@ function Header() {
         <LazyNavLink
             key="my"
             to={`/users/${username}/posts`}
-            onClick={onClickHandler}
             className='font-semibold hover:text-gray-500'
             preloadModule={() => import('../../pages/UserPage/index.jsx')}
         >
@@ -94,7 +93,7 @@ function Header() {
         <header className='px-4 border-b'>
             <div className='flex justify-between container mx-auto items-center h-14'>
                 <Link to='/' className='text-4xl h-full block'>
-                    <img className='h-full p-2' alt='logo' src="/logo.svg"/>
+                    <img className='h-full p-2' alt='logo' src="/logo.png"/>
                 </Link>
                 <nav className=' space-x-4'>
                     {isLogin? <Menu>

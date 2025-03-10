@@ -17,6 +17,8 @@ const SearchPage = () => {
         USERNAME: "작성자",
     };
 
+    console.log('render')
+
     return (
             <div className='container'>
                 <Title>{searchParamsResult.type} &#39;{searchParamsResult.keyword}&#39; 검색 결과</Title>

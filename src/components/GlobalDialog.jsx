@@ -4,35 +4,52 @@ import {Description, Dialog, DialogPanel, DialogTitle} from "@headlessui/react";
 import * as AuthSlice from "../feature/authSlice.js";
 import {useNavigate} from "react-router-dom";
 import Button from "./Button.jsx";
+import {useCallback, useEffect, useState} from "react";
+import {CiClock1} from "react-icons/ci";
 
 const GlobalDialog = () => {
     const { isOpen, title, content, redirectPath } = useSelector((state) => state.dialog);
+    const [countdown, setCountdown] = useState(3);
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
+    const redirectPage = useCallback(() => {
+        dispatch(AuthSlice.logout())
+        navigate(redirectPath)
+        dispatch(closeModal());
+    },[])
+
+    useEffect(() => {
+        if (!isOpen) return;
+        setCountdown(3);
+        const interval = setInterval(() => {
+            setCountdown((prev) => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    redirectPage();
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
-    const handleOnConfirm = () => {
-        dispatch(AuthSlice.logout())
-        navigate(redirectPath)
-        dispatch(closeModal());
-    }
-
-    const handleOnClose = () => {
-        dispatch(closeModal());
-        dispatch(AuthSlice.logout())
-        navigate(redirectPath)
-    }
-
     return (
-        <Dialog open={isOpen} onClose={handleOnClose} className="relative z-50">
+        <Dialog open={true} onClose={redirectPage} className="relative z-50">
             <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                 <DialogPanel className="max-w-lg space-y-4 border bg-white p-12">
                     <DialogTitle className="font-bold text-center">{title}</DialogTitle>
                     <Description>{content}</Description>
-                    <div className='flex justify-between'>
-                        <Button styleType='w-14' onClick={() => dispatch(closeModal())}>취소</Button>
-                        <Button styleType='w-14' onClick={handleOnConfirm}>확인</Button>
+                    <div className='flex gap-1'>
+                        <div className='flex gap-0.5 items-center'>
+                            <CiClock1/>
+                            <p className='font-semibold'>로그아웃까지 {countdown}초 남았습니다.</p>
+                        </div>
+                        <Button styleType='w-12' onClick={redirectPage}>확인</Button>
                     </div>
                 </DialogPanel>
             </div>
