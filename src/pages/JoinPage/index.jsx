@@ -81,7 +81,7 @@ const JoinPage = () => {
                             key="privacy"
                             to="/privacy"
                             className='font-semibold hover:text-gray-500'
-                            preloadModule={() => import('../../pages/PrivatePage/index.jsx')}
+                            preloadModule={() => import('../PrivacyPage/index.jsx')}
                             target="_blank"
                         >
                             개인정보처리방침
