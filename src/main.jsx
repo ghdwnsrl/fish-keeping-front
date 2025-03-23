@@ -1,11 +1,11 @@
-import {lazy, StrictMode} from 'react'
+import {lazy} from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import HomePage from "./pages/HomePage/index.jsx";
 import App from "./App.jsx";
-import PrivacyPage from "./pages/PrivatePage/index.jsx";
+import PrivacyPage from "./pages/PrivacyPage/index.jsx";
 import TermPage from "./pages/TermPage/index.jsx";
 import AdminLoginPage from "./pages/admin/AdminLoginPage/index.jsx";
 import AdminDashBoardPage from "./pages/admin/AdminDashBoardPage/index.jsx";
@@ -94,6 +94,7 @@ const router = createBrowserRouter([
                 path: '/admin',
                 element: <AdminLoginPage/>,
             },
+            // todo : 접근 제한 필요
             {
                 path: '/admin/dashboard',
                 element: <AdminDashBoardPage/>,
@@ -104,7 +105,5 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById('root')).render(
-
       <RouterProvider router={router}/>
-
 )

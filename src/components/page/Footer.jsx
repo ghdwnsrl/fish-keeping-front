@@ -16,7 +16,7 @@ const Footer = () => {
                 <LazyNavLink
                     key="privacy"
                     to="/privacy"
-                    preloadModule={() => import('../../pages/PrivatePage/index.jsx')}
+                    preloadModule={() => import('../../pages/PrivacyPage/index.jsx')}
                     className='text-sm'
                 >
                     개인정보처리방침
