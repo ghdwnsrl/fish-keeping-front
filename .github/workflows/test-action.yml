@@ -27,5 +27,5 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           export PATH=$PATH:/usr/local/bin
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} || echo "Already logged in"
+          security -v unlock-keychain -p ${{ secrets.KEYCHAIN_PASSWORD }}  ~/Library/Keychains/login.keychain-db
           docker compose up -d --pull always
