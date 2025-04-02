@@ -27,5 +27,5 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           export PATH=$PATH:/usr/local/bin
-          which docker 
+          docker compose up -d --pull always
           pwd
