@@ -11,10 +11,6 @@ jobs:
     # 가장 최신의 Ubuntu 러너를 사용합니다.
 
     steps:
-    - name: Configure Docker authentication
-      run: |
-        mkdir -p ~/.docker
-        echo '{ "credsStore": "none" }' > ~/.docker/config.json
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
