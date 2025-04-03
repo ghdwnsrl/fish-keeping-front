@@ -1,4 +1,4 @@
-import {Link, useLocation, useParams, useSearchParams} from "react-router-dom";
+import {Link, useParams, useSearchParams} from "react-router-dom";
 import CommentList from "../../components/comment/CommentList.jsx";
 import {Suspense} from "react";
 import 'react-quill/dist/quill.snow.css';
@@ -19,6 +19,7 @@ const PostDetailPage = () => {
     const page = searchParams.get('page')
     const dispatch = useDispatch();
 
+    // todo : 다른 방식으로 해줘야할 듯.
     if(isNaN(id)) {
             dispatch(openModal({
                 title: "잘못된 접근입니다.",

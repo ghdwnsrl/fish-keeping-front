@@ -8,7 +8,7 @@ import {useCallback, useEffect, useState} from "react";
 import {CiClock1} from "react-icons/ci";
 
 const GlobalDialog = () => {
-    const { isOpen, title, content, redirectPath } = useSelector((state) => state.dialog);
+    const { isOpen, title, content, actionName, redirectPath } = useSelector((state) => state.dialog);
     const [countdown, setCountdown] = useState(3);
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -17,7 +17,7 @@ const GlobalDialog = () => {
         dispatch(AuthSlice.logout())
         navigate(redirectPath)
         dispatch(closeModal());
-    },[])
+    },[redirectPath])
 
     useEffect(() => {
         if (!isOpen) return;
@@ -47,7 +47,7 @@ const GlobalDialog = () => {
                     <div className='flex gap-1'>
                         <div className='flex gap-0.5 items-center'>
                             <CiClock1/>
-                            <p className='font-semibold'>로그아웃까지 {countdown}초 남았습니다.</p>
+                            <p className='font-semibold'>{actionName}까지 {countdown}초 남았습니다.</p>
                         </div>
                         <Button styleType='w-12' onClick={redirectPage}>확인</Button>
                     </div>

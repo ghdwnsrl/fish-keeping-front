@@ -1,5 +1,8 @@
 import {timeago} from "../utils/timeagoUtils.js";
 import {BiCommentDots, BiLike, BiShow} from "react-icons/bi";
+import {FaFishFins} from "react-icons/fa6";
+import {LuFish} from "react-icons/lu";
+import {FaFish} from "react-icons/fa";
 
 const PostItemFooter = ({...props}) => {
     const {username, like, createdAt, commentCount, views} = props;

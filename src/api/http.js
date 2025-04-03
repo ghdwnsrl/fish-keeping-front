@@ -13,6 +13,7 @@ function create(baseURL, options) {
                 store.dispatch(openModal({
                     title: "로그인 만료",
                     content: "로그인 페이지로 이동할까요?",
+                    actionName: "로그아웃",
                     redirectPath: '/login'
                 }))
             }

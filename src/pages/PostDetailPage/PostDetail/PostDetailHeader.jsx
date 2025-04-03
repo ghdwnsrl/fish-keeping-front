@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 
 const PostDetailHeader = ({post}) => {
     const loginUsername = useSelector(state => state.auth.username)
+    const isAdmin = useSelector(state => state.auth.isAdmin)
 
     return <div className='flex gap-2 my-1 border-b pb-2'>
         <UserHeader data={post}
@@ -14,7 +15,7 @@ const PostDetailHeader = ({post}) => {
                     height='h-10'
         >
             {
-                post.username === loginUsername &&
+                (post.username === loginUsername || isAdmin) &&
                 <div className=' flex gap-1 text-sm mt-1 opacity-70'>
                     <PostEditButton post={post}/>
                     <PostDeleteButton id={post.id}/>
