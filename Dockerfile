@@ -1,6 +1,7 @@
 FROM node:22 AS build
 
 WORKDIR /app
+RUN echo "VITE_SECURE_LOCAL_STORAGE_HASH_KEY=${VITE_SECURE_LOCAL_STORAGE_HASH_KEY}" >> .env
 COPY package*.json /app
 RUN npm ci
 COPY . .
