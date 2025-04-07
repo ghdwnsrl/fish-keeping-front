@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import Title from "../../components/Title.jsx";
 import PostEditor from "../../components/PostEditor.jsx";
-i
+
 const PostWritePage = () => {
     const {replaceImages} = useQuillImageReplacement();
     const navigate = useNavigate()
