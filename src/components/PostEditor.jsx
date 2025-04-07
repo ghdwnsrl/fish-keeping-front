@@ -7,6 +7,7 @@ import Form from "./Form.jsx";
 import {useForm} from "react-hook-form";
 import {ImageActions} from "@xeger/quill-image-actions";
 import {ImageFormats} from "@xeger/quill-image-formats";
+import {FadeLoader} from "react-spinners";
 
 const formats = [
     'font',
@@ -34,7 +35,7 @@ const formats = [
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
 
-const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', onSubmit, prevThumbnailUrl }) => {
+const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 안함', onSubmit, prevThumbnailUrl, isPending }) => {
     const {register, handleSubmit, setValue, watch
     } = useForm({defaultValues: {
             title : initTitle,
@@ -89,6 +90,11 @@ const PostEditor = ({initTitle = '', initContent = '', initSelected = '선택 �
                 formats={formats}
                 onChange={handleEditorChange}
             />
+            {isPending && (
+                <div className="fixed inset-0 flex items-center justify-center bg-white/50 z-50">
+                    <FadeLoader  color="grey" />
+                </div>
+            )}
             <div className='flex gap-2 items-center justify-end pt-2 '>
                 <Button
                     styleType='rounded w-16 shadow-sm h-8'

@@ -5,12 +5,12 @@ import {useNavigate} from "react-router-dom";
 import {useMutation} from "@tanstack/react-query";
 import Title from "../../components/Title.jsx";
 import PostEditor from "../../components/PostEditor.jsx";
-
+i
 const PostWritePage = () => {
     const {replaceImages} = useQuillImageReplacement();
     const navigate = useNavigate()
 
-    const {mutate: create} = useMutation({
+    const {mutate: create, isPending} = useMutation({
         mutationFn: createPost,
         onSuccess: (response) => {
             const id = response.data
@@ -31,7 +31,10 @@ const PostWritePage = () => {
     return (
         <div className='container'>
             <Title styleType='font-semibold text-2xl mb-2'>글쓰기</Title>
-            <PostEditor onSubmit={handleSubmit}/>
+            <PostEditor
+                onSubmit={handleSubmit}
+                isPending={isPending}
+            />
         </div>
     )
 }

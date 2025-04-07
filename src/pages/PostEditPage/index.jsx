@@ -11,7 +11,7 @@ const PostEditPage = () => {
     const navigate = useNavigate();
     const { initTitle, initContent, id, prevThumbnailUrl} = state;
 
-    const {mutate: update} = useMutation({
+    const {mutate: update, isPending} = useMutation({
         mutationFn: updatePost,
         onSuccess: () => {
             navigate(`/${id}`)
@@ -35,6 +35,7 @@ const PostEditPage = () => {
             prevThumbnailUrl={prevThumbnailUrl}
             id={id}
             onSubmit={handleSubmit}
+            isPending={isPending}
         />
     </div>
 }
